@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+
+# Local SQLite database
+*.db
+
+# Runtime / permanent storage (blog images, site assets)
+storage/
+
+# Temp processing dirs (if created locally)
+tmp/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
