@@ -80,6 +80,7 @@ class ToolConfig:
     supports_zip_download: bool = False
     supports_reset: bool = True
     supports_background_edit: bool = False  # post-result background color/image editor
+    client_side: bool = False  # processed entirely in the browser (no backend call)
 
     accepted_extensions: list[str] = field(default_factory=list)  # empty = any
     max_upload_mb: int | None = None  # per-tool size cap; None = global default
@@ -417,12 +418,13 @@ define(ToolConfig(
 ))
 define(ToolConfig(
     name="Background Remover", slug="background-remover", category="image-tools",
-    description="Make a solid/near-solid background transparent (color-key removal).",
-    seo_keywords=["Background Remover", "Remove Image Background"],
-    how_to_use=["Upload image", "Adjust tolerance", "Remove", "Download PNG"],
+    description="Remove an image background with AI — runs privately in your browser.",
+    seo_keywords=["Background Remover", "Remove Image Background", "AI Background Remover"],
+    how_to_use=["Upload image", "Click Remove", "Add a background (optional)", "Download PNG"],
     supports_single_upload=True, supports_multi_upload=False, supports_background_edit=True,
-    accepted_extensions=["jpg", "jpeg", "png", "webp"], max_upload_mb=2,
-    options=[_opt("tolerance", "Tolerance", OptionType.number, default=30, min=0, max=120)],
+    accepted_extensions=["jpg", "jpeg", "png", "webp"], max_upload_mb=10,
+    client_side=True,
+    options=[],
 ))
 define(ToolConfig(
     name="Base64 To Image", slug="base64-to-image", category="image-tools",

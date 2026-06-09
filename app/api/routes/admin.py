@@ -65,7 +65,8 @@ async def upload_image(
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_bytes(content)
 
-    url = f"{str(request.base_url).rstrip('/')}/storage/blog-images/{name}"
+    base = settings.api_base_url.rstrip("/") if settings.api_base_url else str(request.base_url).rstrip("/")
+    url = f"{base}/storage/blog-images/{name}"
     return {"url": url, "filename": name}
 
 

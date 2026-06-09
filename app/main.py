@@ -36,7 +36,14 @@ async def lifespan(app: FastAPI):
 
 
 def _seed_admin() -> None:
-    """Create a default super-admin in dev if none exists."""
+    """Seed the initial super-admin on first run (when no users exist).
+
+    Password resolution:
+      - uses ADMIN_PASSWORD from the environment if set;
+      - in development, falls back to a known default for convenience;
+      - in production WITHOUT ADMIN_PASSWORD, seeding is skipped so we never ship
+        an account with default credentials.
+    """
     from sqlalchemy import select
 
     from app.core.security import hash_password
@@ -47,13 +54,24 @@ def _seed_admin() -> None:
     with SessionLocal() as db:
         if db.execute(select(User).limit(1)).scalar_one_or_none():
             return
+        password = settings.admin_password
+        if not password:
+            if settings.environment == "production":
+                print("[seed] ADMIN_PASSWORD not set — skipping admin seed in production.")
+                return
+            password = "admin12345"  # dev convenience only
         db.add(User(
             name="Super Admin",
-            email="admin@toolkitpro.local",
-            password=hash_password("admin12345"),
+            email=settings.admin_email,
+            password=hash_password(password),
             role=UserRole.super_admin,
         ))
-        db.commit()
+        try:
+            db.commit()
+            print(f"[seed] Created admin: {settings.admin_email}")
+        except Exception:
+            # Another worker seeded it first (multi-worker startup race) — fine.
+            db.rollback()
 
 
 app = FastAPI(

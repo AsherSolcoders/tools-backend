@@ -26,6 +26,15 @@ class Settings(BaseSettings):
     # Permanent storage (blog images, site assets). Served at /storage.
     storage_dir: str = "storage"
 
+    # Public base URL of THIS backend (e.g. https://api.example.com). Used to build
+    # absolute asset URLs (blog images). Falls back to the request URL if unset —
+    # set it in production so image URLs use https behind a reverse proxy.
+    api_base_url: str = ""
+
+    # Initial admin, seeded on first run if the users table is empty.
+    admin_email: str = "admin@toolkitpro.local"
+    admin_password: str = ""  # REQUIRED in production; dev falls back to a default
+
     # Public URL for sitemap / canonical
     site_url: str = "http://localhost:3000"
 

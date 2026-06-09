@@ -144,19 +144,24 @@ RICH: dict[str, dict] = {
     },
     "background-remover": {
         "about": (
-            "Background Remover makes the background of an image transparent so your subject stands out. "
-            "It uses color-key removal, which works best on photos and graphics with a solid or "
-            "near-solid background — product shots, logos and icons are ideal.\n\n"
-            "Upload your image, adjust the tolerance to control how much of the background is removed, "
-            "and download a transparent PNG. Free, online, and your images auto-delete within 10 minutes."
+            "Background Remover uses AI to automatically detect the subject in your photo and erase "
+            "the background, leaving a clean transparent PNG. It works on people, products, animals "
+            "and objects — even tricky edges like hair — with no manual tracing.\n\n"
+            "Everything runs privately in your own browser: your image never leaves your device and "
+            "nothing is uploaded to a server. After removing the background you can place your subject "
+            "on a solid color or your own custom background image, then download the result.\n\n"
+            "The first time you use it, a small AI model (~40 MB) downloads to your browser and is "
+            "cached for instant use afterwards. Free, unlimited and completely private."
         ),
         "faqs": [
-            ("What kind of images work best?",
-             "Images with a clean, solid-colored background (like a white product photo) give the best results. Busy or gradient backgrounds are harder to key out."),
-            ("What format is the result?",
-             "A PNG with a transparent background, which you can drop onto any color or design."),
-            ("Why is my background not fully removed?",
-             "Increase the tolerance setting so more shades near the background color are made transparent."),
+            ("Is my image uploaded to a server?",
+             "No. The AI runs entirely in your browser, so your photo never leaves your device — it is completely private."),
+            ("What kinds of images work?",
+             "It handles most subjects — people, products, animals and objects — including detailed edges. Clear separation between subject and background gives the best results."),
+            ("Can I add a new background after removing the old one?",
+             "Yes. Once the background is removed you can drop your subject onto a solid color or upload your own background image, then download the final PNG."),
+            ("Why is the first run slower?",
+             "On first use a ~40 MB AI model downloads to your browser. It is cached afterwards, so later removals start instantly."),
         ],
     },
     "image-resize": {
@@ -228,6 +233,9 @@ def _is_file_tool(tool: ToolConfig) -> bool:
 
 
 def _privacy_sentence(tool: ToolConfig) -> str:
+    if getattr(tool, "client_side", False):
+        return ("This tool runs entirely in your browser — your files never leave your device "
+                "and nothing is ever uploaded to our servers.")
     if _is_file_tool(tool):
         return ("Your uploaded files are processed during your session and are automatically deleted "
                 "within 10 minutes — we never store your files or any personal data.")
@@ -305,12 +313,10 @@ def gen_faqs(tool: ToolConfig) -> list[tuple[str, str]]:
          "No. The tool runs entirely in your web browser — there is nothing to download and no account to create."),
     ]
     if _is_file_tool(tool):
-        faqs.append((
-            "Are my files safe and private?",
-            "Yes. Files are processed in your session and automatically deleted within 10 minutes. We never store your files or share them.",
-        ))
+        faqs.append(("Are my files safe and private?", _privacy_sentence(tool)))
+        cap = getattr(tool, "max_upload_mb", None) or 50
         faqs.append(("Is there a file size limit?",
-                     "You can upload files up to 50 MB each."))
+                     f"You can upload files up to {cap} MB each."))
         formats = _formats_phrase(tool)
         if formats:
             faqs.append((f"Which file formats does {tool.name} support?",
