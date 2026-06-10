@@ -9,13 +9,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    app_name: str = "Toolkit Pro"
+    app_name: str = "Toolsimpli"
     environment: str = "development"
     secret_key: str = "dev-insecure-secret-change-me"
     cors_origins: str = "http://localhost:3000"
 
     # Database. Defaults to a local SQLite file so the scaffold runs with zero config.
-    database_url: str = "sqlite:///./toolkitpro.db"
+    database_url: str = "sqlite:///./toolsimpli.db"
 
     # Temp file processing
     tmp_upload_dir: str = "/tmp/uploads"
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     api_base_url: str = ""
 
     # Initial admin, seeded on first run if the users table is empty.
-    admin_email: str = "admin@toolkitpro.local"
+    admin_email: str = "admin@toolsimpli.local"
     admin_password: str = ""  # REQUIRED in production; dev falls back to a default
 
     # Public URL for sitemap / canonical

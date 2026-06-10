@@ -196,7 +196,7 @@ def image_watermark(files: list[Path], text: str, options: dict) -> ToolResult:
         return ToolResult(meta={"error": "Pillow not installed"})
     from PIL import Image, ImageDraw, ImageFont
 
-    wm_text = options.get("text", "© Toolkit Pro") or "© Toolkit Pro"
+    wm_text = options.get("text", "© Toolsimpli") or "© Toolsimpli"
     opacity = int(255 * max(10, min(int(options.get("opacity", 50) or 50), 100)) / 100)
     hpos, vpos = _POS.get(options.get("position", "bottom-right"), ("r", "b"))
 

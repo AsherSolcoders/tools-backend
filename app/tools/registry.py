@@ -410,7 +410,7 @@ define(ToolConfig(
     supports_multi_upload=True, supports_zip_download=True,
     accepted_extensions=["jpg", "jpeg", "png", "webp"],
     options=[
-        _opt("text", "Watermark text", OptionType.text, default="© Toolkit Pro"),
+        _opt("text", "Watermark text", OptionType.text, default="© Toolsimpli"),
         _opt("position", "Position", OptionType.select, default="bottom-right",
              choices=["bottom-right", "bottom-left", "top-right", "top-left", "center"]),
         _opt("opacity", "Opacity %", OptionType.number, default=50, min=10, max=100),

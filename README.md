@@ -1,4 +1,4 @@
-# Toolkit Pro — Backend (FastAPI)
+# Toolsimpli — Backend (FastAPI)
 
 Config-driven tool engine + blog + super-admin API. No visitor data is stored.
 
@@ -11,8 +11,8 @@ cp .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
-- Without `DATABASE_URL`, the app uses a local SQLite file (`toolkitpro.db`) so it runs with zero config.
-- On first start it seeds a dev super-admin: `admin@toolkitpro.local` / `admin12345`.
+- Without `DATABASE_URL`, the app uses a local SQLite file (`toolsimpli.db`) so it runs with zero config.
+- On first start it seeds a dev super-admin: `admin@toolsimpli.local` / `admin12345`.
 - Interactive docs at `/docs`.
 
 ## Layout
