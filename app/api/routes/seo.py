@@ -36,5 +36,5 @@ def sitemap(db: Session = Depends(get_db)):
 @router.get("/robots.txt")
 def robots():
     base = settings.site_url.rstrip("/")
-    body = f"User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: {base}/sitemap.xml\n"
+    body = f"User-agent: *\nAllow: /\nDisallow: /tool-admin\nSitemap: {base}/sitemap.xml\n"
     return Response(content=body, media_type="text/plain")
