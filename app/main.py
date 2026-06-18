@@ -10,17 +10,16 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
 
 from app.api.routes import admin, blog, health, seo, tools
 from app.config import settings
+from app.core.limiter import limiter
 from app.core.security import SecureHeadersMiddleware
 from app.core.temp_files import cleanup_loop, ensure_dirs
 from app.database import init_db
-
-limiter = Limiter(key_func=get_remote_address, default_limits=["120/minute"])
 
 
 @asynccontextmanager
@@ -74,15 +73,23 @@ def _seed_admin() -> None:
             db.rollback()
 
 
+_is_prod = settings.environment == "production"
+
 app = FastAPI(
     title=settings.app_name,
     description="Config-driven SEO tools platform + blog + admin. No visitor data stored.",
     version="0.1.0",
     lifespan=lifespan,
+    # Hide the interactive API docs / schema in production to reduce surface.
+    docs_url=None if _is_prod else "/docs",
+    redoc_url=None if _is_prod else "/redoc",
+    openapi_url=None if _is_prod else "/openapi.json",
 )
 
+# Rate limiting (now actually enforced via the middleware).
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(SecureHeadersMiddleware)
 # In production, lock CORS to the explicit origin list. In development, also allow any

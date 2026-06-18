@@ -3,15 +3,15 @@
 The whole platform runs through these endpoints. The frontend reads tool configs
 and renders UIs dynamically — no per-tool endpoints exist.
 """
-from __future__ import annotations
 
 import io
 import zipfile
 from dataclasses import asdict
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
+from app.core.limiter import limiter
 from app.core.security import UploadValidationError, validate_upload
 from app.core.temp_files import new_upload_path, resolve_result
 from app.tools import get_processor, get_tool, list_categories, list_tools
@@ -55,7 +55,9 @@ def tool_config(slug: str):
 
 
 @router.post("/{slug}/process")
+@limiter.limit("60/minute")  # protect CPU-heavy processing from a single abuser
 async def process_tool(
+    request: Request,
     slug: str,
     files: list[UploadFile] = File(default=[]),
     text: str = Form(default=""),

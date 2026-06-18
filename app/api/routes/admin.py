@@ -3,7 +3,6 @@
 Visitors never authenticate; only admins do. All write endpoints require a valid
 admin bearer token.
 """
-from __future__ import annotations
 
 import uuid
 from pathlib import Path
@@ -15,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import create_access_token, get_current_admin
 from app.config import settings
+from app.core.limiter import limiter
 from app.core.security import (
     UploadValidationError,
     sanitize_text,
@@ -31,7 +31,8 @@ router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
 @router.post("/login")
-def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@limiter.limit("10/minute")  # brute-force protection (per IP)
+def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.execute(select(User).where(User.email == form.username)).scalar_one_or_none()
     if not user or not verify_password(form.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
