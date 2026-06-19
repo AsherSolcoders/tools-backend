@@ -61,3 +61,4 @@ class BlogListItem(BaseModel):
     featured_image: str | None
     status: str
     published_at: datetime | None
+    category: BlogCategoryOut | None = None

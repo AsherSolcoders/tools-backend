@@ -22,7 +22,7 @@ def sitemap(db: Session = Depends(get_db)):
     urls += [f"{base}/category/{c.slug}" for c in list_categories()]
     urls += [f"{base}/tools/{t.slug}" for t in list_tools()]
     blogs = db.execute(select(Blog).where(Blog.status == BlogStatus.published)).scalars().all()
-    urls += [f"{base}/blog/{b.slug}" for b in blogs]
+    urls += [f"{base}/{b.slug}" for b in blogs]
 
     items = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
     xml = (

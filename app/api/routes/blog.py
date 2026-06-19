@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
 from app.models import Blog, BlogCategory
@@ -20,7 +20,7 @@ def list_blogs(
     limit: int = Query(20, le=100),
     offset: int = 0,
 ):
-    stmt = select(Blog).where(Blog.status == BlogStatus.published)
+    stmt = select(Blog).options(joinedload(Blog.category)).where(Blog.status == BlogStatus.published)
     if category:
         stmt = stmt.join(BlogCategory).where(BlogCategory.slug == category)
     stmt = stmt.order_by(Blog.published_at.desc().nullslast()).limit(limit).offset(offset)
