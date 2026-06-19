@@ -14,7 +14,7 @@ from app.database import get_db
 from app.models import User
 
 ALGORITHM = "HS256"
-TOKEN_TTL_HOURS = 12
+TOKEN_TTL_HOURS = 2
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/admin/login", auto_error=False)
 
 
