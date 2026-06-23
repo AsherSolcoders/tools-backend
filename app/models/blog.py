@@ -5,7 +5,7 @@ import enum
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, String, Table, Text, func
+from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, String, Table, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -63,6 +63,10 @@ class Blog(Base):
 
     status: Mapped[BlogStatus] = mapped_column(Enum(BlogStatus), default=BlogStatus.draft)
     published_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    author: Mapped[Optional[str]] = mapped_column(String(160), nullable=True)
+    is_featured: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
+    is_popular: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 
     author_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
     category_id: Mapped[Optional[int]] = mapped_column(ForeignKey("blog_categories.id"), nullable=True)

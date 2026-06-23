@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
@@ -17,12 +17,18 @@ router = APIRouter(prefix="/api/blog", tags=["blog"])
 def list_blogs(
     db: Session = Depends(get_db),
     category: str | None = None,
+    featured: bool | None = None,
+    popular: bool | None = None,
     limit: int = Query(20, le=100),
     offset: int = 0,
 ):
     stmt = select(Blog).options(joinedload(Blog.category)).where(Blog.status == BlogStatus.published)
     if category:
-        stmt = stmt.join(BlogCategory).where(BlogCategory.slug == category)
+        stmt = stmt.join(BlogCategory, Blog.category_id == BlogCategory.id).where(BlogCategory.slug == category)
+    if featured:
+        stmt = stmt.where(Blog.is_featured.is_(True))
+    if popular:
+        stmt = stmt.where(Blog.is_popular.is_(True))
     stmt = stmt.order_by(Blog.published_at.desc().nullslast()).limit(limit).offset(offset)
     return db.execute(stmt).scalars().all()
 
@@ -37,5 +43,14 @@ def get_blog(slug: str, db: Session = Depends(get_db)):
 
 @router.get("-categories")
 def blog_categories(db: Session = Depends(get_db)):
-    cats = db.execute(select(BlogCategory)).scalars().all()
-    return [{"id": c.id, "name": c.name, "slug": c.slug} for c in cats]
+    """Categories with a count of published posts in each (for the blog sidebar)."""
+    rows = db.execute(
+        select(BlogCategory, func.count(Blog.id))
+        .outerjoin(
+            Blog,
+            (Blog.category_id == BlogCategory.id) & (Blog.status == BlogStatus.published),
+        )
+        .group_by(BlogCategory.id)
+        .order_by(BlogCategory.name)
+    ).all()
+    return [{"id": c.id, "name": c.name, "slug": c.slug, "count": count} for c, count in rows]
