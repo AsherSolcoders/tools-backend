@@ -36,6 +36,7 @@ class UploadValidationError(ValueError):
 _CONTENT_FAMILY: dict[str, set[str]] = {
     "jpg": {"jpg", "jpeg"},
     "zip": {"docx", "xlsx", "pptx", "zip"},  # Office Open XML files are ZIP containers
+    "ole": {"doc", "xls", "ppt"},  # legacy Office binary formats
 }
 
 

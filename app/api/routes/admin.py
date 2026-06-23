@@ -71,6 +71,39 @@ async def upload_image(
     return {"url": url, "filename": name}
 
 
+# Downloadable attachments a writer can embed in a post (docs, sheets, archives…).
+_FILE_EXTS = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "csv", "txt", "zip"]
+
+
+@router.post("/upload-file")
+async def upload_file(
+    request: Request,
+    file: UploadFile = File(...),
+    _: User = Depends(get_current_admin),
+):
+    """Upload an arbitrary downloadable file (PDF, Office doc, archive…) for embedding.
+
+    Returns the public URL plus the original filename so the editor can render a
+    labelled download link/button.
+    """
+    content = await file.read()
+    try:
+        validate_upload(file, _FILE_EXTS, content)
+    except UploadValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    original = (file.filename or "file").rsplit("/", 1)[-1]
+    ext = original.lower().rsplit(".", 1)[-1]
+    name = f"{uuid.uuid4().hex}.{ext}"
+    dest = Path(settings.blog_files_dir) / name
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(content)
+
+    base = settings.api_base_url.rstrip("/") if settings.api_base_url else str(request.base_url).rstrip("/")
+    url = f"{base}/storage/blog-files/{name}"
+    return {"url": url, "filename": original, "size": len(content)}
+
+
 @router.get("/dashboard")
 def dashboard(db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
     return {
@@ -84,11 +117,33 @@ def dashboard(db: Session = Depends(get_db), _: User = Depends(get_current_admin
 # --- Blog CRUD --------------------------------------------------------------
 
 
+def _apply_relations(blog: Blog, data: dict, db: Session) -> None:
+    """Pop the M2M id lists off `data` and resolve them into ORM relationships."""
+    category_ids = data.pop("category_ids", []) or []
+    related_ids = [rid for rid in (data.pop("related_ids", []) or []) if rid != blog.id]
+
+    blog.categories = (
+        db.execute(select(BlogCategory).where(BlogCategory.id.in_(category_ids))).scalars().all()
+        if category_ids else []
+    )
+    blog.related = (
+        db.execute(select(Blog).where(Blog.id.in_(related_ids))).scalars().all()
+        if related_ids else []
+    )
+    # Keep the legacy single category_id in sync (used by list views / filtering).
+    if category_ids and not data.get("category_id"):
+        data["category_id"] = category_ids[0]
+
+
 @router.post("/blogs", response_model=BlogOut)
 def create_blog(payload: BlogIn, db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
     if db.execute(select(Blog).where(Blog.slug == payload.slug)).scalar_one_or_none():
         raise HTTPException(status_code=409, detail="A blog with this slug already exists")
-    blog = Blog(**payload.model_dump())
+    data = payload.model_dump()
+    blog = Blog()
+    _apply_relations(blog, data, db)
+    for key, value in data.items():
+        setattr(blog, key, value)
     blog.title = sanitize_text(blog.title)
     if blog.status == BlogStatus.published and blog.published_at is None:
         blog.published_at = func.now()
@@ -104,7 +159,9 @@ def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
     blog = db.get(Blog, blog_id)
     if not blog:
         raise HTTPException(status_code=404, detail="Blog not found")
-    for key, value in payload.model_dump().items():
+    data = payload.model_dump()
+    _apply_relations(blog, data, db)
+    for key, value in data.items():
         setattr(blog, key, value)
     db.commit()
     db.refresh(blog)

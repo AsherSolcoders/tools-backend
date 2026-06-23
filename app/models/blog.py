@@ -5,7 +5,7 @@ import enum
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, Enum, ForeignKey, String, Text, func
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, String, Table, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -15,6 +15,23 @@ class BlogStatus(str, enum.Enum):
     draft = "draft"
     scheduled = "scheduled"
     published = "published"
+
+
+# A post can belong to many categories (in addition to its legacy primary category_id).
+blog_category_links = Table(
+    "blog_category_links",
+    Base.metadata,
+    Column("blog_id", ForeignKey("blogs.id", ondelete="CASCADE"), primary_key=True),
+    Column("category_id", ForeignKey("blog_categories.id", ondelete="CASCADE"), primary_key=True),
+)
+
+# A post can reference other posts as "related" (self-referential, directional).
+blog_related_links = Table(
+    "blog_related_links",
+    Base.metadata,
+    Column("blog_id", ForeignKey("blogs.id", ondelete="CASCADE"), primary_key=True),
+    Column("related_id", ForeignKey("blogs.id", ondelete="CASCADE"), primary_key=True),
+)
 
 
 class BlogCategory(Base):
@@ -50,6 +67,17 @@ class Blog(Base):
     author_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
     category_id: Mapped[Optional[int]] = mapped_column(ForeignKey("blog_categories.id"), nullable=True)
     category: Mapped[Optional["BlogCategory"]] = relationship(back_populates="blogs")
+
+    # Multiple categories (many-to-many) — `category_id` above stays as the primary one.
+    categories: Mapped[list["BlogCategory"]] = relationship(secondary=blog_category_links)
+
+    # Editorially-chosen related posts, surfaced on the public article page.
+    related: Mapped[list["Blog"]] = relationship(
+        "Blog",
+        secondary=blog_related_links,
+        primaryjoin="Blog.id == blog_related_links.c.blog_id",
+        secondaryjoin="Blog.id == blog_related_links.c.related_id",
+    )
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(

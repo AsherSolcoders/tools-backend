@@ -16,6 +16,16 @@ class BlogCategoryOut(BlogCategoryIn):
     id: int
 
 
+class RelatedBlog(BaseModel):
+    """Lightweight reference used for the related-posts picker and public cards."""
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    title: str
+    slug: str
+    excerpt: str | None = None
+    featured_image: str | None = None
+
+
 class BlogIn(BaseModel):
     title: str
     slug: str
@@ -30,6 +40,8 @@ class BlogIn(BaseModel):
     status: str = "draft"
     category_id: int | None = None
     author_id: int | None = None
+    category_ids: list[int] = []
+    related_ids: list[int] = []
 
 
 class BlogOut(BaseModel):
@@ -47,6 +59,8 @@ class BlogOut(BaseModel):
     tags: str | None
     status: str
     category_id: int | None
+    categories: list[BlogCategoryOut] = []
+    related: list[RelatedBlog] = []
     published_at: datetime | None
     created_at: datetime
     updated_at: datetime

@@ -43,6 +43,10 @@ class Settings(BaseSettings):
         return f"{self.storage_dir}/blog-images"
 
     @property
+    def blog_files_dir(self) -> str:
+        return f"{self.storage_dir}/blog-files"
+
+    @property
     def cors_origin_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
