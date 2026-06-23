@@ -1,6 +1,7 @@
 """Database engine, session, and Base model."""
 from __future__ import annotations
 
+import logging
 from collections.abc import Generator
 
 from sqlalchemy import create_engine, inspect, text
@@ -41,24 +42,36 @@ def init_db() -> None:
     _add_missing_columns()
 
 
-# Columns added after the initial release, applied on startup if absent.
-_ADDITIVE_COLUMNS: dict[str, dict[str, str]] = {
-    "blogs": {
-        "author": "VARCHAR(160)",
-        "is_featured": "BOOLEAN DEFAULT 0",
-        "is_popular": "BOOLEAN DEFAULT 0",
-    },
-}
-
-
 def _add_missing_columns() -> None:
+    """Add post-release columns to existing tables (idempotent, dialect-aware).
+
+    Wrapped defensively: a migration hiccup logs a warning but never prevents the
+    app from starting. Boolean defaults differ per dialect (Postgres rejects `0`).
+    """
+    is_postgres = engine.dialect.name == "postgresql"
+    false_default = "FALSE" if is_postgres else "0"
+
+    additive_columns: dict[str, dict[str, str]] = {
+        "blogs": {
+            "author": "VARCHAR(160)",
+            "is_featured": f"BOOLEAN DEFAULT {false_default}",
+            "is_popular": f"BOOLEAN DEFAULT {false_default}",
+        },
+    }
+
     inspector = inspect(engine)
     existing_tables = set(inspector.get_table_names())
-    with engine.begin() as conn:
-        for table, columns in _ADDITIVE_COLUMNS.items():
-            if table not in existing_tables:
+    for table, columns in additive_columns.items():
+        if table not in existing_tables:
+            continue
+        present = {c["name"] for c in inspector.get_columns(table)}
+        for name, ddl in columns.items():
+            if name in present:
                 continue
-            present = {c["name"] for c in inspector.get_columns(table)}
-            for name, ddl in columns.items():
-                if name not in present:
+            try:
+                with engine.begin() as conn:
                     conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}"))
+            except Exception as exc:  # noqa: BLE001 — never block startup on a migration
+                logging.getLogger("uvicorn.error").warning(
+                    "Could not add column %s.%s: %s", table, name, exc
+                )
