@@ -18,9 +18,10 @@ router = APIRouter(tags=["seo"])
 @router.get("/sitemap.xml")
 def sitemap(db: Session = Depends(get_db)):
     base = settings.site_url.rstrip("/")
+    # Tools, categories, and posts all live flat at /<slug> (no /tools/ or /category/ prefix).
     urls: list[str] = [f"{base}/", f"{base}/tools", f"{base}/blog"]
-    urls += [f"{base}/category/{c.slug}" for c in list_categories()]
-    urls += [f"{base}/tools/{t.slug}" for t in list_tools()]
+    urls += [f"{base}/{c.slug}" for c in list_categories()]
+    urls += [f"{base}/{t.slug}" for t in list_tools()]
     blogs = db.execute(select(Blog).where(Blog.status == BlogStatus.published)).scalars().all()
     urls += [f"{base}/{b.slug}" for b in blogs]
 
