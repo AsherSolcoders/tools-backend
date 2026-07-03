@@ -163,6 +163,8 @@ def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
     _apply_relations(blog, data, db)
     for key, value in data.items():
         setattr(blog, key, value)
+    if blog.status == BlogStatus.published and blog.published_at is None:
+        blog.published_at = func.now()
     db.commit()
     db.refresh(blog)
     return blog

@@ -38,6 +38,7 @@ class BlogIn(BaseModel):
     og_image: str | None = None
     tags: str | None = None
     status: str = "draft"
+    published_at: datetime | None = None
     category_id: int | None = None
     author_id: int | None = None
     author: str | None = None
