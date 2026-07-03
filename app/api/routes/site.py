@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_admin
+from app.api.deps import require_super_admin
 from app.database import get_db
 from app.models import User
 from app.models.settings import Setting
@@ -48,7 +48,7 @@ def public_site_code(db: Session = Depends(get_db)):
 
 
 @router.get("/api/admin/site-code", response_model=SiteCode)
-def admin_get_site_code(db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
+def admin_get_site_code(db: Session = Depends(get_db), _: User = Depends(require_super_admin)):
     return _read(db)
 
 
@@ -56,7 +56,7 @@ def admin_get_site_code(db: Session = Depends(get_db), _: User = Depends(get_cur
 def admin_put_site_code(
     payload: SiteCode,
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_admin),
+    _: User = Depends(require_super_admin),
 ):
     values = {_HEADER: payload.header, _BODY: payload.body, _FOOTER: payload.footer}
     existing = {

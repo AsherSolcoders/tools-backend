@@ -5,6 +5,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.user import UserRef
+
 
 class BlogCategoryIn(BaseModel):
     name: str
@@ -86,3 +88,13 @@ class BlogListItem(BaseModel):
     is_popular: bool = False
     published_at: datetime | None
     category: BlogCategoryOut | None = None
+
+
+class AdminBlogOut(BlogOut):
+    """Admin-only view of a post, including who created and last edited it.
+
+    Kept separate from the public `BlogOut` so staff names are never exposed on
+    the public blog API.
+    """
+    created_by: UserRef | None = None
+    updated_by: UserRef | None = None

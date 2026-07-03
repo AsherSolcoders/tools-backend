@@ -10,13 +10,14 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from app.api.deps import create_access_token, get_current_admin
+from app.api.deps import create_access_token, get_current_admin, require_admin
 from app.config import settings
 from app.core.limiter import limiter
 from app.core.security import (
     UploadValidationError,
+    hash_password,
     sanitize_text,
     validate_upload,
     verify_password,
@@ -24,7 +25,9 @@ from app.core.security import (
 from app.database import get_db
 from app.models import Blog, BlogCategory, ToolCategory, User
 from app.models.blog import BlogStatus
-from app.schemas.blog import BlogCategoryIn, BlogCategoryOut, BlogIn, BlogOut
+from app.models.user import UserRole
+from app.schemas.blog import AdminBlogOut, BlogCategoryIn, BlogCategoryOut, BlogIn, BlogOut
+from app.schemas.user import UserCreate, UserOut, UserUpdate
 from app.tools import list_tools
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
@@ -136,7 +139,7 @@ def _apply_relations(blog: Blog, data: dict, db: Session) -> None:
 
 
 @router.post("/blogs", response_model=BlogOut)
-def create_blog(payload: BlogIn, db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
+def create_blog(payload: BlogIn, db: Session = Depends(get_db), user: User = Depends(get_current_admin)):
     if db.execute(select(Blog).where(Blog.slug == payload.slug)).scalar_one_or_none():
         raise HTTPException(status_code=409, detail="A blog with this slug already exists")
     data = payload.model_dump()
@@ -145,6 +148,8 @@ def create_blog(payload: BlogIn, db: Session = Depends(get_db), _: User = Depend
     for key, value in data.items():
         setattr(blog, key, value)
     blog.title = sanitize_text(blog.title)
+    blog.created_by_id = user.id
+    blog.updated_by_id = user.id
     if blog.status == BlogStatus.published and blog.published_at is None:
         blog.published_at = func.now()
     db.add(blog)
@@ -155,7 +160,7 @@ def create_blog(payload: BlogIn, db: Session = Depends(get_db), _: User = Depend
 
 @router.put("/blogs/{blog_id}", response_model=BlogOut)
 def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
-                _: User = Depends(get_current_admin)):
+                user: User = Depends(get_current_admin)):
     blog = db.get(Blog, blog_id)
     if not blog:
         raise HTTPException(status_code=404, detail="Blog not found")
@@ -163,6 +168,7 @@ def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
     _apply_relations(blog, data, db)
     for key, value in data.items():
         setattr(blog, key, value)
+    blog.updated_by_id = user.id
     if blog.status == BlogStatus.published and blog.published_at is None:
         blog.published_at = func.now()
     db.commit()
@@ -171,7 +177,7 @@ def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
 
 
 @router.delete("/blogs/{blog_id}")
-def delete_blog(blog_id: int, db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
+def delete_blog(blog_id: int, db: Session = Depends(get_db), _: User = Depends(require_admin)):
     blog = db.get(Blog, blog_id)
     if not blog:
         raise HTTPException(status_code=404, detail="Blog not found")
@@ -180,9 +186,13 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db), _: User = Depends(g
     return {"deleted": blog_id}
 
 
-@router.get("/blogs", response_model=list[BlogOut])
+@router.get("/blogs", response_model=list[AdminBlogOut])
 def admin_list_blogs(db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
-    return db.execute(select(Blog).order_by(Blog.created_at.desc())).scalars().all()
+    return db.execute(
+        select(Blog)
+        .options(joinedload(Blog.created_by), joinedload(Blog.updated_by))
+        .order_by(Blog.created_at.desc())
+    ).scalars().all()
 
 
 # --- Blog categories --------------------------------------------------------
@@ -200,10 +210,97 @@ def create_blog_category(payload: BlogCategoryIn, db: Session = Depends(get_db),
 
 @router.delete("/blog-categories/{cat_id}")
 def delete_blog_category(cat_id: int, db: Session = Depends(get_db),
-                         _: User = Depends(get_current_admin)):
+                         _: User = Depends(require_admin)):
     cat = db.get(BlogCategory, cat_id)
     if not cat:
         raise HTTPException(status_code=404, detail="Category not found")
     db.delete(cat)
     db.commit()
     return {"deleted": cat_id}
+
+
+# --- Staff users ------------------------------------------------------------
+
+_ASSIGNABLE_ROLES = {"admin", "editor"}
+
+
+def _can_manage(actor: User, target_role: str) -> bool:
+    """super_admin manages admin + editor; admin manages only editor."""
+    if actor.role == UserRole.super_admin:
+        return target_role in _ASSIGNABLE_ROLES
+    if actor.role == UserRole.admin:
+        return target_role == "editor"
+    return False
+
+
+@router.get("/users", response_model=list[UserOut])
+def list_users(db: Session = Depends(get_db), _: User = Depends(require_admin)):
+    return db.execute(select(User).order_by(User.created_at.desc())).scalars().all()
+
+
+@router.post("/users", response_model=UserOut, status_code=201)
+def create_user(payload: UserCreate, db: Session = Depends(get_db),
+                actor: User = Depends(require_admin)):
+    role = (payload.role or "editor").strip().lower()
+    if role not in _ASSIGNABLE_ROLES:
+        raise HTTPException(status_code=400, detail="Role must be 'admin' or 'editor'.")
+    if not _can_manage(actor, role):
+        raise HTTPException(status_code=403, detail="You can only create editors.")
+    if len(payload.password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")
+    if db.execute(select(User).where(User.email == str(payload.email).lower())).scalar_one_or_none():
+        raise HTTPException(status_code=409, detail="A user with this email already exists.")
+    user = User(
+        name=sanitize_text(payload.name),
+        email=str(payload.email).lower(),
+        password=hash_password(payload.password),
+        role=UserRole(role),
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.put("/users/{user_id}", response_model=UserOut)
+def update_user(user_id: int, payload: UserUpdate, db: Session = Depends(get_db),
+                actor: User = Depends(require_admin)):
+    target = db.get(User, user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+    if target.role == UserRole.super_admin:
+        raise HTTPException(status_code=403, detail="The super admin account cannot be modified here.")
+    if not _can_manage(actor, target.role.value):
+        raise HTTPException(status_code=403, detail="You do not have permission to edit this user.")
+    if payload.name is not None:
+        target.name = sanitize_text(payload.name)
+    if payload.password:
+        if len(payload.password) < 8:
+            raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")
+        target.password = hash_password(payload.password)
+    if payload.role is not None:
+        new_role = payload.role.strip().lower()
+        if new_role not in _ASSIGNABLE_ROLES:
+            raise HTTPException(status_code=400, detail="Role must be 'admin' or 'editor'.")
+        if not _can_manage(actor, new_role):
+            raise HTTPException(status_code=403, detail="You cannot assign that role.")
+        target.role = UserRole(new_role)
+    db.commit()
+    db.refresh(target)
+    return target
+
+
+@router.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db), actor: User = Depends(require_admin)):
+    target = db.get(User, user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+    if target.id == actor.id:
+        raise HTTPException(status_code=400, detail="You cannot delete your own account.")
+    if target.role == UserRole.super_admin:
+        raise HTTPException(status_code=403, detail="The super admin account cannot be deleted.")
+    if not _can_manage(actor, target.role.value):
+        raise HTTPException(status_code=403, detail="You do not have permission to delete this user.")
+    db.delete(target)
+    db.commit()
+    return {"deleted": user_id}

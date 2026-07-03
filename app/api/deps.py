@@ -44,3 +44,21 @@ def get_current_admin(
     if not user:
         raise creds_error
     return user
+
+
+def _require_roles(*allowed: str):
+    """Dependency factory: allow only the given roles, else 403."""
+    def guard(user: User = Depends(get_current_admin)) -> User:
+        if user.role.value not in allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action.",
+            )
+        return user
+    return guard
+
+
+# super_admin + admin may manage users and delete content; editors cannot.
+require_admin = _require_roles("super_admin", "admin")
+# Only the super_admin (ENV account) may touch site-wide code / analytics injection.
+require_super_admin = _require_roles("super_admin")

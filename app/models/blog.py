@@ -69,6 +69,13 @@ class Blog(Base):
     is_popular: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 
     author_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+
+    # Audit trail: which staff user created and last edited this post.
+    created_by_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+    updated_by_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+    created_by: Mapped[Optional["User"]] = relationship("User", foreign_keys=[created_by_id])
+    updated_by: Mapped[Optional["User"]] = relationship("User", foreign_keys=[updated_by_id])
+
     category_id: Mapped[Optional[int]] = mapped_column(ForeignKey("blog_categories.id"), nullable=True)
     category: Mapped[Optional["BlogCategory"]] = relationship(back_populates="blogs")
 

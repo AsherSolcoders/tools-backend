@@ -56,6 +56,8 @@ def _add_missing_columns() -> None:
             "author": "VARCHAR(160)",
             "is_featured": f"BOOLEAN DEFAULT {false_default}",
             "is_popular": f"BOOLEAN DEFAULT {false_default}",
+            "created_by_id": "INTEGER",
+            "updated_by_id": "INTEGER",
         },
     }
 
