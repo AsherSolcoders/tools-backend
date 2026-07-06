@@ -64,6 +64,19 @@ def count_blogs(
     return {"count": db.execute(stmt).scalar_one()}
 
 
+@router.get("-canonical/{slug}")
+def blog_canonical(slug: str, db: Session = Depends(get_db)):
+    """If `slug` is a previous slug of a live post, return its current slug (for a 301 redirect)."""
+    rows = db.execute(
+        select(Blog).where(Blog.old_slugs.isnot(None)).where(_visible())
+    ).scalars().all()
+    for b in rows:
+        olds = [s.strip() for s in (b.old_slugs or "").split(",") if s.strip()]
+        if slug in olds and b.slug != slug:
+            return {"slug": b.slug}
+    raise HTTPException(status_code=404, detail="Not found")
+
+
 @router.get("/{slug}", response_model=BlogOut)
 def get_blog(slug: str, db: Session = Depends(get_db)):
     blog = db.execute(

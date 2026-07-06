@@ -31,6 +31,7 @@ class RelatedBlog(BaseModel):
 class BlogIn(BaseModel):
     title: str
     slug: str
+    old_slugs: str | None = None
     content: str
     excerpt: str | None = None
     featured_image: str | None = None
@@ -55,6 +56,7 @@ class BlogOut(BaseModel):
     id: int
     title: str
     slug: str
+    old_slugs: str | None = None
     content: str
     excerpt: str | None
     featured_image: str | None

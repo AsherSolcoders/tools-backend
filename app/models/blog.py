@@ -50,6 +50,8 @@ class Blog(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(255))
     slug: Mapped[str] = mapped_column(String(280), unique=True, index=True)
+    # Comma-separated previous slugs — old indexed URLs 301-redirect to the current slug.
+    old_slugs: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
     content: Mapped[str] = mapped_column(Text)
     excerpt: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     featured_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)

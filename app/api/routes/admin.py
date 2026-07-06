@@ -165,10 +165,18 @@ def update_blog(blog_id: int, payload: BlogIn, db: Session = Depends(get_db),
     if not blog:
         raise HTTPException(status_code=404, detail="Blog not found")
     data = payload.model_dump()
+    prev_slug = blog.slug
     _apply_relations(blog, data, db)
     for key, value in data.items():
         setattr(blog, key, value)
     blog.updated_by_id = user.id
+    # When the slug changes, remember the old one so its indexed URL can redirect.
+    if prev_slug and prev_slug != blog.slug:
+        olds = [s.strip() for s in (blog.old_slugs or "").split(",") if s.strip()]
+        if prev_slug not in olds:
+            olds.append(prev_slug)
+        # never keep the current slug in the redirect list (avoids a self-redirect loop)
+        blog.old_slugs = ",".join(s for s in olds if s != blog.slug) or None
     if blog.status == BlogStatus.published and blog.published_at is None:
         blog.published_at = func.now()
     db.commit()
@@ -203,6 +211,24 @@ def create_blog_category(payload: BlogCategoryIn, db: Session = Depends(get_db),
                          _: User = Depends(get_current_admin)):
     cat = BlogCategory(**payload.model_dump())
     db.add(cat)
+    db.commit()
+    db.refresh(cat)
+    return cat
+
+
+@router.put("/blog-categories/{cat_id}", response_model=BlogCategoryOut)
+def update_blog_category(cat_id: int, payload: BlogCategoryIn, db: Session = Depends(get_db),
+                         _: User = Depends(get_current_admin)):
+    cat = db.get(BlogCategory, cat_id)
+    if not cat:
+        raise HTTPException(status_code=404, detail="Category not found")
+    clash = db.execute(
+        select(BlogCategory).where(BlogCategory.slug == payload.slug, BlogCategory.id != cat_id)
+    ).scalar_one_or_none()
+    if clash:
+        raise HTTPException(status_code=409, detail="Another category already uses this slug.")
+    cat.name = payload.name
+    cat.slug = payload.slug
     db.commit()
     db.refresh(cat)
     return cat

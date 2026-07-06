@@ -58,6 +58,7 @@ def _add_missing_columns() -> None:
             "is_popular": f"BOOLEAN DEFAULT {false_default}",
             "created_by_id": "INTEGER",
             "updated_by_id": "INTEGER",
+            "old_slugs": "VARCHAR(1000)",
         },
     }
 
