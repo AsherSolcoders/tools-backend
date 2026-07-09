@@ -16,13 +16,22 @@ from app.core.security import UploadValidationError, validate_upload
 from app.core.temp_files import new_upload_path, resolve_result
 from app.tools import get_processor, get_tool, list_categories, list_tools
 from app.tools.content import enrich
+from app.tools.seo_meta import PAGE_META
 
 router = APIRouter(prefix="/api/tools", tags=["tools"])
 
 
 @router.get("/categories")
 def categories():
-    return [asdict(c) for c in list_categories()]
+    out = []
+    for c in list_categories():
+        d = asdict(c)
+        m = PAGE_META.get(c.slug)
+        if m:
+            d["meta_title"] = m["meta_title"]
+            d["meta_description"] = m["meta_description"]
+        out.append(d)
+    return out
 
 
 @router.get("")
@@ -51,6 +60,12 @@ def tool_config(slug: str):
     data = tool.public_dict()
     data["implemented"] = get_processor(slug) is not None
     data.update(enrich(tool))  # about, features, benefits, faqs
+    m = PAGE_META.get(slug)
+    if m:
+        data["meta_title"] = m["meta_title"]
+        data["meta_description"] = m["meta_description"]
+        if m["keywords"]:
+            data["seo_keywords"] = m["keywords"]
     return data
 
 

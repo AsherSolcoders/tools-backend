@@ -11,6 +11,8 @@ from app.schemas.user import UserRef
 class BlogCategoryIn(BaseModel):
     name: str
     slug: str
+    meta_title: str | None = None
+    meta_description: str | None = None
 
 
 class BlogCategoryOut(BlogCategoryIn):

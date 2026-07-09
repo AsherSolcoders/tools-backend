@@ -60,6 +60,10 @@ def _add_missing_columns() -> None:
             "updated_by_id": "INTEGER",
             "old_slugs": "VARCHAR(1000)",
         },
+        "blog_categories": {
+            "meta_title": "VARCHAR(255)",
+            "meta_description": "VARCHAR(500)",
+        },
     }
 
     inspector = inspect(engine)

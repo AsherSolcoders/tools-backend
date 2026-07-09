@@ -40,6 +40,8 @@ class BlogCategory(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
     slug: Mapped[str] = mapped_column(String(160), unique=True, index=True)
+    meta_title: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    meta_description: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
 
     blogs: Mapped[list["Blog"]] = relationship(back_populates="category")
 

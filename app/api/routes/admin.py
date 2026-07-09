@@ -229,6 +229,8 @@ def update_blog_category(cat_id: int, payload: BlogCategoryIn, db: Session = Dep
         raise HTTPException(status_code=409, detail="Another category already uses this slug.")
     cat.name = payload.name
     cat.slug = payload.slug
+    cat.meta_title = payload.meta_title
+    cat.meta_description = payload.meta_description
     db.commit()
     db.refresh(cat)
     return cat

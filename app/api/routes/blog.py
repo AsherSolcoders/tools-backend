@@ -99,4 +99,14 @@ def blog_categories(db: Session = Depends(get_db)):
         .group_by(BlogCategory.id)
         .order_by(BlogCategory.name)
     ).all()
-    return [{"id": c.id, "name": c.name, "slug": c.slug, "count": count} for c, count in rows]
+    return [
+        {
+            "id": c.id,
+            "name": c.name,
+            "slug": c.slug,
+            "count": count,
+            "meta_title": c.meta_title,
+            "meta_description": c.meta_description,
+        }
+        for c, count in rows
+    ]

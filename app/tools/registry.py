@@ -24,13 +24,65 @@ class Category:
     name: str
     description: str
     icon: str
+    meta_title: str = ""
+    meta_description: str = ""
+    content: str = ""  # HTML shown on the category landing page
+
+
+_PDF_CONTENT = """
+<p>ToolSimpli's free online PDF tools give you everything you need to manage PDF files without installing any software. Whether you want to merge PDF files into one, split a PDF into smaller files, or compress a PDF to save storage space, our all in one PDF tools suite handles it in seconds, directly from your browser.</p>
+<p>Working with documents often means switching between formats. Our platform lets you convert PDF to Word for easy editing, or use the convert Word to PDF tool to turn reports, resumes and contracts into a shareable, universally readable format. Need images instead? The convert PDF to JPG tool extracts pages as high quality images, while the convert JPG to PDF tool lets you combine photos or scanned pages into a single polished document.</p>
+<p>Security and organization matter too. Add a PDF watermark to protect your brand or confidential material, password protect a PDF using our PDF protect tool, or organize PDF pages before sharing. Every tool runs quickly, works on desktop and mobile, and requires no sign-up, so you can get your files ready and move on with your day.</p>
+<p>ToolSimpli is built as a free online PDF editor alternative for everyday tasks, with no watermarked downloads, no hidden fees, and no complicated menus. Files you upload are processed securely and are not stored longer than necessary, giving you peace of mind while you merge, split, compress or convert. Explore the full set of PDF tools below and find the one that fits your task in just a couple of clicks.</p>
+"""
+
+_IMAGE_CONTENT = """
+<p>Images are everywhere on the web, and ToolSimpli's image tools make it simple to prepare them for any purpose. Use the resize an image tool to fit exact dimensions for social media, or compress an image to shrink file size without visibly reducing quality, perfect for faster loading websites and easier email attachments.</p>
+<p>Need precise control over composition? Our crop an image tool and rotate an image tool let you fine-tune photos in a few clicks, right from your browser. When file formats don't match what you need, the convert PNG to JPG tool and convert JPG to PNG tool handle quick, lossless-looking conversions, while the convert WebP to PNG tool and convert PNG to WebP tool keep your images compatible with modern, fast-loading web formats.</p>
+<p>For creators and businesses, protecting original work matters. Add a watermark to an image to stamp text or logos onto photos before sharing them publicly, while our remove image background tool uses smart detection to cut out subjects cleanly for product photos, profile pictures, or design projects, with no design software or manual masking required.</p>
+<p>Every tool on this page works instantly in your browser, supports common formats like JPG, PNG and WebP, and keeps your files private during processing. There's no cost, no account needed, and no limit on how many images you can edit. Browse the full toolkit below to resize, compress, crop, convert or enhance your images in just a few clicks.</p>
+"""
+
+_TEXT_CONTENT = """
+<p>Writers, students and developers all need reliable text tools, and ToolSimpli brings the most useful ones together in one place. Use the word counter to track word and sentence counts for essays and assignments, or the character counter to stay within strict limits for titles, tweets, and meta descriptions.</p>
+<p>Formatting text correctly saves time. Our case converter instantly switches text between uppercase, lowercase, title case and sentence case, while the text reverser flips characters or word order for creative projects and quick checks. If you're cleaning up lists or data, the duplicate line remover and text sorter organize and de-duplicate content in seconds, no spreadsheet needed.</p>
+<p>Developers and designers often need placeholder or sample content, so our lorem ipsum generator and random text generator create ready-to-use filler text for mockups and layout testing. For working with links and query strings safely, use the URL encoder to convert special characters, or the URL decoder to reverse the process, so URLs display and function correctly across browsers and applications.</p>
+<p>Every text tool on ToolSimpli runs directly in your browser with no sign-up and no software installation. Paste your text, get instant results, and copy the output with one click. Whether you're proofreading an assignment, cleaning a dataset, or preparing content for the web, these free text tools are built to save time and reduce manual work. Explore the full collection below to find the right tool for your task.</p>
+"""
+
+_DEV_CONTENT = """
+<p>ToolSimpli's developer tools are built to speed up everyday coding tasks without switching between multiple apps or installing extensions. Use the JSON formatter to instantly beautify messy JSON, or the JSON validator to catch syntax errors before they break your application, and the JSON minifier when you need to shrink JSON payloads for production.</p>
+<p>Encoding and decoding data is a routine part of development. Our Base64 encoder converts text and files to Base64 in one click, the Base64 decoder reverses the process, and the dedicated Base64 to image converter and image to Base64 converter make it easy to embed images directly in code or extract images from encoded strings.</p>
+<p>Shipping faster, lighter code matters for performance. The CSS minifier and JS minifier strip out unnecessary whitespace and comments to shrink file sizes and improve page load times, while the HTML formatter cleans up and indents markup for easier reading and debugging. For generating unique identifiers in databases and APIs, the UUID generator produces valid, random UUIDs instantly.</p>
+<p>All developer tools on ToolSimpli run client-side friendly workflows in the browser, require no account, and support copy-paste or file upload where relevant. Whether you're debugging an API response, preparing assets for production, or generating test data, this toolkit is designed to be fast, accurate and free to use as often as you need. Browse the full list below to find the right developer tool for your workflow.</p>
+"""
 
 
 CATEGORIES: list[Category] = [
-    Category("pdf-tools", "PDF Tools", "Merge, split, convert and manage PDF files.", "file-text"),
-    Category("image-tools", "Image Tools", "Compress, convert, resize and edit images.", "image"),
-    Category("text-tools", "Text Tools", "Count, convert, sort and transform text.", "type"),
-    Category("developer-tools", "Developer Tools", "Format, minify, encode and generate.", "code"),
+    Category(
+        "pdf-tools", "PDF Tools", "Merge, split, convert and manage PDF files.", "file-text",
+        meta_title="Free Online PDF Tools – Merge, Compress, Convert & Edit PDF | ToolSimpli",
+        meta_description="Use ToolSimpli's free online PDF tools to merge, split, compress, convert, watermark and protect PDF files instantly. No installation needed, 100% secure and free.",
+        content=_PDF_CONTENT.strip(),
+    ),
+    Category(
+        "image-tools", "Image Tools", "Compress, convert, resize and edit images.", "image",
+        meta_title="Free Online Image Tools – Resize, Compress, Crop & Convert Images | ToolSimpli",
+        meta_description="ToolSimpli's free image tools let you resize, compress, crop, rotate, convert and watermark images online in seconds. Fast, secure and easy to use, no software required.",
+        content=_IMAGE_CONTENT.strip(),
+    ),
+    Category(
+        "text-tools", "Text Tools", "Count, convert, sort and transform text.", "type",
+        meta_title="Free Online Text Tools – Word Counter, Case Converter & More | ToolSimpli",
+        meta_description="ToolSimpli's free text tools help you count words, convert text case, sort lines, generate lorem ipsum and encode or decode URLs instantly online. No download required.",
+        content=_TEXT_CONTENT.strip(),
+    ),
+    Category(
+        "developer-tools", "Developer Tools", "Format, minify, encode and generate.", "code",
+        meta_title="Free Online Developer Tools – JSON, Base64, Minifiers & More | ToolSimpli",
+        meta_description="ToolSimpli's free developer tools let you format and validate JSON, encode or decode Base64, minify CSS and JS, generate UUIDs and more, all online with no setup.",
+        content=_DEV_CONTENT.strip(),
+    ),
 ]
 
 
