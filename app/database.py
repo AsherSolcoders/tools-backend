@@ -50,6 +50,7 @@ def _add_missing_columns() -> None:
     """
     is_postgres = engine.dialect.name == "postgresql"
     false_default = "FALSE" if is_postgres else "0"
+    ts_type = "TIMESTAMPTZ" if is_postgres else "DATETIME"
 
     additive_columns: dict[str, dict[str, str]] = {
         "blogs": {
@@ -59,6 +60,7 @@ def _add_missing_columns() -> None:
             "created_by_id": "INTEGER",
             "updated_by_id": "INTEGER",
             "old_slugs": "VARCHAR(1000)",
+            "display_date": ts_type,
         },
         "blog_categories": {
             "meta_title": "VARCHAR(255)",

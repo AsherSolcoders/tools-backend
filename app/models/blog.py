@@ -69,6 +69,8 @@ class Blog(Base):
     published_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
     author: Mapped[Optional[str]] = mapped_column(String(160), nullable=True)
+    # Editor-chosen date shown publicly (byline). Falls back to created_at when unset.
+    display_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     is_featured: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
     is_popular: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 

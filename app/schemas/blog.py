@@ -44,6 +44,7 @@ class BlogIn(BaseModel):
     tags: str | None = None
     status: str = "draft"
     published_at: datetime | None = None
+    display_date: datetime | None = None
     category_id: int | None = None
     author_id: int | None = None
     author: str | None = None
@@ -75,6 +76,7 @@ class BlogOut(BaseModel):
     categories: list[BlogCategoryOut] = []
     related: list[RelatedBlog] = []
     published_at: datetime | None
+    display_date: datetime | None = None
     created_at: datetime
     updated_at: datetime
 
@@ -91,6 +93,8 @@ class BlogListItem(BaseModel):
     is_featured: bool = False
     is_popular: bool = False
     published_at: datetime | None
+    display_date: datetime | None = None
+    created_at: datetime
     category: BlogCategoryOut | None = None
 
 
