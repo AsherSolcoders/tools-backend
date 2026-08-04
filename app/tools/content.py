@@ -22,6 +22,72 @@ CATEGORY_LABELS = {
 # --- Hand-written content for popular / high-traffic tools -------------------
 # Each entry may supply: about (str), faqs (list of (question, answer)).
 RICH: dict[str, dict] = {
+    "pdf-studio": {
+        "about": (
+            "PDF Studio is a complete, free online PDF editor that runs entirely in your browser. Open "
+            "any PDF and edit it visually: add or edit text, insert and replace images, add links, apply "
+            "filters, and fine tune each page without installing any software.\n\n"
+            "Unlike simple converters, PDF Studio gives you page level control. You can reorder, "
+            "duplicate, rotate, trim or delete pages, add a logo or watermark, and adjust colors, then "
+            "export a clean, flattened PDF ready to share.\n\n"
+            "Because everything happens on your device, your files are never uploaded to a server. There "
+            "is no sign up, no watermark and no limit, and your document stays completely private."
+        ),
+        "faqs": [
+            ("Is PDF Studio really free?",
+             "Yes. PDF Studio is completely free to use, with no sign up, no watermark and no page limits."),
+            ("Are my PDF files uploaded to a server?",
+             "No. PDF Studio runs entirely in your browser, so your file never leaves your device. Nothing is uploaded or stored."),
+            ("What can I edit in a PDF?",
+             "You can add and edit text, insert or replace images, add links, apply filters, and reorder, duplicate, rotate or delete pages before exporting."),
+            ("Does it work on mobile?",
+             "It works best on a desktop or laptop where you have room to edit, but it will also open in modern mobile browsers."),
+        ],
+    },
+    "invoice-generator": {
+        "about": (
+            "Invoice Generator is a free online tool that helps freelancers, small businesses and "
+            "agencies create professional invoices in minutes. Add your logo, your business and client "
+            "details, and as many line items as you need, then download a clean PDF ready to send.\n\n"
+            "Totals are calculated for you as you type, including tax, discount, shipping, amount paid "
+            "and the balance due. You can pick from dozens of world currencies so the invoice fits your "
+            "client wherever they are.\n\n"
+            "Everything runs in your browser, so your billing details are never uploaded or stored. There "
+            "is no sign up and no cost, and you can create as many invoices as you like."
+        ),
+        "faqs": [
+            ("Is the Invoice Generator free?",
+             "Yes, it is completely free with no sign up and no limit on how many invoices you create."),
+            ("Is my invoice data uploaded anywhere?",
+             "No. The tool runs entirely in your browser, so your business and client details are never uploaded or stored."),
+            ("Can I add my logo and choose a currency?",
+             "Yes. You can upload your logo and pick from dozens of currencies so the invoice matches your business."),
+            ("What format is the invoice downloaded in?",
+             "Your invoice is generated as a clean PDF with selectable text, ready to email or print."),
+        ],
+    },
+    "resume-builder": {
+        "about": (
+            "Resume Builder is a free online tool for creating a clean, modern, professional resume in "
+            "minutes. Fill in your details, add your experience, education and skills, optionally add a "
+            "photo, and watch a live preview update as you type.\n\n"
+            "When you are ready, download a print ready PDF with crisp, selectable text and automatic "
+            "page breaks for longer resumes. The layout is designed to be clear and easy for recruiters "
+            "and applicant tracking systems to read.\n\n"
+            "Everything runs in your browser, so your personal information is never uploaded or stored. "
+            "There is no sign up and no cost."
+        ),
+        "faqs": [
+            ("Is the Resume Builder free?",
+             "Yes, it is completely free to use, with no sign up and no watermark on your resume."),
+            ("Is my personal information uploaded?",
+             "No. The Resume Builder runs entirely in your browser, so your details and photo never leave your device."),
+            ("Can I add a photo to my resume?",
+             "Yes. You can upload a passport or profile photo, which is embedded in your resume and never uploaded to a server."),
+            ("What format is the resume downloaded in?",
+             "Your resume downloads as a print ready PDF with selectable text and automatic page breaks."),
+        ],
+    },
     "image-compressor": {
         "about": (
             "Image Compressor is a free online tool that reduces the file size of your JPG, PNG and "

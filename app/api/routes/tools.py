@@ -46,6 +46,9 @@ def all_tools(category: str | None = None):
                 "category": t.category,
                 "description": t.description,
                 "implemented": get_processor(t.slug) is not None,
+                "pro": t.pro,
+                "custom_ui": t.custom_ui,
+                "coming_soon": t.coming_soon,
             }
             for t in tools
         ],

@@ -83,6 +83,11 @@ CATEGORIES: list[Category] = [
         meta_description="ToolSimpli's free developer tools let you format and validate JSON, encode or decode Base64, minify CSS and JS, generate UUIDs and more, all online with no setup.",
         content=_DEV_CONTENT.strip(),
     ),
+    Category(
+        "pro-tools", "Pro Tools", "Advanced, all-in-one tools that run entirely in your browser.", "sparkles",
+        meta_title="Pro Tools – Advanced Free Online Tools | ToolSimpli",
+        meta_description="ToolSimpli Pro Tools: powerful, all-in-one online apps like the PDF Studio, Invoice Generator and Resume Builder. Fast, private, and free.",
+    ),
 ]
 
 
@@ -137,6 +142,13 @@ class ToolConfig:
     accepted_extensions: list[str] = field(default_factory=list)  # empty = any
     max_upload_mb: int | None = None  # per-tool size cap; None = global default
     options: list[Option] = field(default_factory=list)
+
+    # Pro tools — rich, fully client-side apps shown in a highlighted "Pro Tools"
+    # container. `custom_ui` = rendered by a bespoke frontend component (not the
+    # generic tool UI); `coming_soon` = announced but not built yet.
+    pro: bool = False
+    custom_ui: bool = False
+    coming_soon: bool = False
 
     def public_dict(self) -> dict:
         d = asdict(self)
@@ -655,4 +667,44 @@ define(ToolConfig(
     how_to_use=["Paste HTML", "Format", "Copy result"],
     input_kind=InputKind.text, supports_single_upload=False,
     options=[_opt("indent", "Indent", OptionType.number, default=2, min=0, max=8)],
+))
+
+
+# ---- PRO TOOLS (rich, fully client-side; rendered by bespoke frontend components) ----
+define(ToolConfig(
+    name="PDF Studio", slug="pdf-studio", category="pro-tools",
+    description="All-in-one PDF editor: edit pages, add text and images, apply filters, and export — right in your browser.",
+    seo_keywords=["PDF editor online", "edit PDF free", "PDF studio", "online PDF editor"],
+    how_to_use=[
+        "Open a PDF by clicking Open PDF or dragging a file onto the page.",
+        "Edit any page: add text, insert or replace images, add links, or apply filters.",
+        "Reorder, duplicate, rotate or delete pages as needed.",
+        "Click Export to download your edited PDF.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["pdf"],
+))
+define(ToolConfig(
+    name="Invoice Generator", slug="invoice-generator", category="pro-tools",
+    description="Create professional invoices with line items, tax and totals, then download a clean PDF.",
+    seo_keywords=["invoice generator", "free invoice maker", "create invoice online", "invoice PDF"],
+    how_to_use=[
+        "Add your logo and fill in your business (From) and client (Bill To) details.",
+        "Add line items with a description, quantity and rate — amounts calculate automatically.",
+        "Set tax, discount, shipping, amount paid and your currency.",
+        "Click Download PDF to save a clean, professional invoice.",
+    ],
+    input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="Resume Builder", slug="resume-builder", category="pro-tools",
+    description="Build a polished, modern resume from a simple form and export it as a print-ready PDF.",
+    seo_keywords=["resume builder", "free resume maker", "CV builder online", "resume PDF"],
+    how_to_use=[
+        "Fill in your personal details and a short professional summary.",
+        "Add your work experience and education, one entry at a time.",
+        "List your skills and optionally upload a passport or profile photo.",
+        "Click Download PDF to get a clean, print-ready resume.",
+    ],
+    input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
 ))
