@@ -3,19 +3,36 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
+from app.core.slug import normalize_slug_list, slugify
 from app.schemas.user import UserRef
 
 
-class BlogCategoryIn(BaseModel):
+def _clean_slug(value: str) -> str:
+    """Shared slug validator: normalize, and reject input that leaves nothing."""
+    slug = slugify(value)
+    if not slug:
+        raise ValueError("Slug must contain at least one letter or number.")
+    return slug
+
+
+class BlogCategoryBase(BaseModel):
     name: str
     slug: str
     meta_title: str | None = None
     meta_description: str | None = None
 
 
-class BlogCategoryOut(BlogCategoryIn):
+class BlogCategoryIn(BlogCategoryBase):
+    # Slug normalization lives on the *input* model only. When BlogCategoryOut
+    # inherited from this, reading a row whose slug wasn't already normalized
+    # returned a rewritten slug (breaking links), and one that normalized to
+    # nothing raised on read — turning a GET into a 500.
+    _norm_slug = field_validator("slug")(_clean_slug)
+
+
+class BlogCategoryOut(BlogCategoryBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
 
@@ -52,6 +69,21 @@ class BlogIn(BaseModel):
     is_popular: bool = False
     category_ids: list[int] = []
     related_ids: list[int] = []
+
+    _norm_slug = field_validator("slug")(_clean_slug)
+
+    @field_validator("title")
+    @classmethod
+    def _trim_title(cls, value: str) -> str:
+        # Trim only. The title is NOT HTML-escaped here: it is rendered as a React
+        # text node (and via JSON.stringify in JSON-LD), both of which escape on
+        # output. Escaping at storage too produced a literal "&amp;" in titles.
+        return value.strip()
+
+    @field_validator("old_slugs")
+    @classmethod
+    def _norm_old_slugs(cls, value: str | None) -> str | None:
+        return normalize_slug_list(value)
 
 
 class BlogOut(BaseModel):

@@ -18,7 +18,6 @@ from app.core.limiter import limiter
 from app.core.security import (
     UploadValidationError,
     hash_password,
-    sanitize_text,
     validate_upload,
     verify_password,
 )
@@ -147,7 +146,11 @@ def create_blog(payload: BlogIn, db: Session = Depends(get_db), user: User = Dep
     _apply_relations(blog, data, db)
     for key, value in data.items():
         setattr(blog, key, value)
-    blog.title = sanitize_text(blog.title)
+    # Title is stored verbatim (the schema only trims it). It used to be
+    # HTML-escaped here, which stored "SEO &amp; PPC" and showed that literally on
+    # the site — and because update_blog never escaped, the next save silently
+    # "fixed" it. Titles are rendered as text, so output escaping is the right
+    # layer and escaping here only ever double-escaped.
     blog.created_by_id = user.id
     blog.updated_by_id = user.id
     if blog.status == BlogStatus.published and blog.published_at is None:
@@ -279,7 +282,9 @@ def create_user(payload: UserCreate, db: Session = Depends(get_db),
     if db.execute(select(User).where(User.email == str(payload.email).lower())).scalar_one_or_none():
         raise HTTPException(status_code=409, detail="A user with this email already exists.")
     user = User(
-        name=sanitize_text(payload.name),
+        # Same reasoning as the blog title: names render as text, so escaping here
+        # would show "Smith &amp; Sons" on the author byline.
+        name=payload.name.strip(),
         email=str(payload.email).lower(),
         password=hash_password(payload.password),
         role=UserRole(role),
@@ -301,7 +306,7 @@ def update_user(user_id: int, payload: UserUpdate, db: Session = Depends(get_db)
     if not _can_manage(actor, target.role.value):
         raise HTTPException(status_code=403, detail="You do not have permission to edit this user.")
     if payload.name is not None:
-        target.name = sanitize_text(payload.name)
+        target.name = payload.name.strip()
     if payload.password:
         if len(payload.password) < 8:
             raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")

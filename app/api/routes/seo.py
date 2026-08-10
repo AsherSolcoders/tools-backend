@@ -34,8 +34,28 @@ def sitemap(db: Session = Depends(get_db)):
     return Response(content=xml, media_type="application/xml")
 
 
+# AI crawlers/assistants we explicitly welcome. `User-agent: *` already allows
+# them, but naming them makes the intent unambiguous to each vendor's parser.
+AI_USER_AGENTS = (
+    "GPTBot",           # OpenAI — training
+    "OAI-SearchBot",    # OpenAI — ChatGPT search index
+    "ChatGPT-User",     # OpenAI — user-initiated browsing
+    "Google-Extended",  # Google — Gemini / AI answers
+    "ClaudeBot",        # Anthropic — training
+    "Claude-User",      # Anthropic — user-initiated browsing
+    "Claude-SearchBot", # Anthropic — search index
+    "PerplexityBot",    # Perplexity
+)
+
+
 @router.get("/robots.txt")
 def robots():
     base = settings.site_url.rstrip("/")
-    body = f"User-agent: *\nAllow: /\nDisallow: /tool-admin\nSitemap: {base}/sitemap.xml\n"
+    # NOTE: /tool-admin is deliberately NOT listed here. A Disallow line would
+    # publish the admin URL to anyone reading robots.txt; the route is kept out
+    # of search results with `noindex, nofollow` (see app/tool-admin/layout.tsx)
+    # plus an X-Robots-Tag header, which robots.txt cannot do anyway.
+    groups = ["User-agent: *\nAllow: /"]
+    groups += [f"User-agent: {ua}\nAllow: /" for ua in AI_USER_AGENTS]
+    body = "\n\n".join(groups) + f"\n\nSitemap: {base}/sitemap.xml\n"
     return Response(content=body, media_type="text/plain")
