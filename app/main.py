@@ -14,7 +14,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
-from app.api.routes import admin, blog, health, seo, site, tools
+from app.api.routes import admin, blog, health, media, seo, site, tools
 from app.config import settings
 from app.core.limiter import limiter
 from app.core.security import SecureHeadersMiddleware
@@ -116,6 +116,7 @@ app.include_router(health.router)
 app.include_router(tools.router)
 app.include_router(blog.router)
 app.include_router(admin.router)
+app.include_router(media.router)
 app.include_router(seo.router)
 app.include_router(site.router)
 

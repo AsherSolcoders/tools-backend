@@ -10,14 +10,16 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.api.deps import create_access_token, get_current_admin, require_admin
 from app.config import settings
+from app.core.images import shrink_for_web, strip_image_metadata
 from app.core.limiter import limiter
 from app.core.security import (
     UploadValidationError,
     hash_password,
+    validate_svg,
     validate_upload,
     verify_password,
 )
@@ -59,10 +61,27 @@ async def upload_image(
     content = await file.read()
     try:
         validate_upload(file, _IMAGE_EXTS, content)
+        # SVG has no magic bytes, so validate_upload's content check skips it
+        # entirely — any file named .svg gets through. Check it explicitly.
+        if (file.filename or "").lower().endswith(".svg"):
+            validate_svg(content)
     except UploadValidationError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
     ext = (file.filename or "").lower().rsplit(".", 1)[-1]
+
+    # Downscale to a sane maximum and re-encode as WebP. Uploads were being stored
+    # at full resolution (a 1731px screenshot ≈ 2.2 MB), which the blog listing then
+    # downloaded twelve times over for 234px cards. Returns None for SVG/GIF and
+    # animated images, which are stored as-is.
+    shrunk = shrink_for_web(content)
+    if shrunk is not None:
+        content, ext = shrunk
+    else:
+        # Not re-encoded, so metadata is still in there — strip it. (A re-encode
+        # already drops EXIF, so this is only needed on the untouched path.)
+        content = strip_image_metadata(content)
+
     name = f"{uuid.uuid4().hex}.{ext}"
     dest = Path(settings.blog_images_dir) / name
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -201,7 +220,14 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db), _: User = Depends(r
 def admin_list_blogs(db: Session = Depends(get_db), _: User = Depends(get_current_admin)):
     return db.execute(
         select(Blog)
-        .options(joinedload(Blog.created_by), joinedload(Blog.updated_by))
+        # categories is a collection, so selectinload (one extra query) rather than
+        # joinedload — the admin list renders a category column, and lazy loading
+        # would fire a query per row.
+        .options(
+            joinedload(Blog.created_by),
+            joinedload(Blog.updated_by),
+            selectinload(Blog.categories),
+        )
         .order_by(Blog.created_at.desc())
     ).scalars().all()
 

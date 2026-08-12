@@ -84,7 +84,21 @@ def get_blog(slug: str, db: Session = Depends(get_db)):
     ).scalar_one_or_none()
     if not blog:
         raise HTTPException(status_code=404, detail="Blog post not found")
-    return blog
+
+    out = BlogOut.model_validate(blog)
+    # `Blog.related` is an unfiltered relationship holding whatever an editor
+    # picked, so a draft or a scheduled post whose time hasn't come can sit in it.
+    # Those must not surface publicly: this same endpoint 404s them, so the card
+    # would link nowhere. Re-check visibility in SQL rather than in Python so the
+    # `published_at <= now()` comparison stays on the database clock.
+    if out.related:
+        visible_ids = set(
+            db.execute(
+                select(Blog.id).where(Blog.id.in_([r.id for r in out.related]), _visible())
+            ).scalars().all()
+        )
+        out.related = [r for r in out.related if r.id in visible_ids]
+    return out
 
 
 @router.get("-categories")

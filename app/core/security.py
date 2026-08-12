@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import html
+import re
 
 import bcrypt
 from fastapi import UploadFile
@@ -106,11 +107,55 @@ def validate_upload(
             )
 
 
+# An SVG is XML, not a bitmap, so it can carry script. Served from our own domain
+# and opened directly in a tab, that script runs in our origin. These patterns are
+# grounds for REJECTING the upload rather than trying to clean it: rejecting fails
+# closed, whereas sanitizing SVG is notoriously easy to get subtly wrong.
+_SVG_FORBIDDEN: tuple[tuple[re.Pattern[bytes], str], ...] = (
+    (re.compile(rb"<\s*script", re.I), "a <script> block"),
+    (re.compile(rb"<\s*foreignObject", re.I), "a <foreignObject> block"),
+    (re.compile(rb"javascript\s*:", re.I), "a javascript: URL"),
+    (re.compile(rb"<!\s*ENTITY", re.I), "an XML entity declaration"),
+    # onload=, onclick=, onmouseover=… the classic scriptless-looking vector.
+    (re.compile(rb"\son[a-z]+\s*=", re.I), "an inline event handler"),
+)
+
+
+def validate_svg(content: bytes) -> None:
+    """Reject an SVG upload that could execute script when opened directly.
+
+    Raises UploadValidationError with a message naming what was found, so the
+    author knows how to fix their file instead of seeing a generic failure.
+    """
+    if b"<svg" not in content.lower():
+        raise UploadValidationError("This .svg file doesn't look like an SVG image.")
+    for pattern, what in _SVG_FORBIDDEN:
+        if pattern.search(content):
+            raise UploadValidationError(
+                f"This SVG was rejected because it contains {what}. Re-export it as a "
+                f"plain SVG (most editors offer 'no scripting'), or upload a PNG instead."
+            )
+
+
 class SecureHeadersMiddleware(BaseHTTPMiddleware):
     """Adds baseline security headers to every response."""
 
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
+        # Uploaded files are user content served from our own origin. `sandbox` puts
+        # any direct navigation to them in an opaque origin with scripting disabled,
+        # so a script-bearing SVG can't run even if one is already on disk from
+        # before validate_svg existed. Rendering via <img> is unaffected — browsers
+        # never execute scripts in SVG loaded that way.
+        if request.url.path.startswith("/storage"):
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox"
+            )
+            # Stored filenames are random UUIDs that are never rewritten (a changed
+            # image gets a new name), so the bytes behind a URL can't change. That
+            # makes `immutable` safe and lets repeat visits skip revalidation
+            # entirely instead of spending a 304 round-trip per image.
+            response.headers.setdefault("Cache-Control", "public, max-age=31536000, immutable")
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "SAMEORIGIN"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
