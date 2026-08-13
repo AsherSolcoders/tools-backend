@@ -108,7 +108,9 @@ def blog_categories(db: Session = Depends(get_db)):
         select(BlogCategory, func.count(Blog.id))
         .outerjoin(
             Blog,
-            (Blog.category_id == BlogCategory.id) & (Blog.status == BlogStatus.published),
+            # `_visible()`, not `status == published`: a due scheduled post is live
+            # but keeps the `scheduled` status, so every category undercounted.
+            and_(Blog.category_id == BlogCategory.id, _visible()),
         )
         .group_by(BlogCategory.id)
         .order_by(BlogCategory.name)
