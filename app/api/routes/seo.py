@@ -1,6 +1,8 @@
 """SEO endpoints: dynamic sitemap.xml and robots.txt."""
 from __future__ import annotations
 
+from urllib.parse import urlsplit, urlunsplit
+
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from sqlalchemy import select
@@ -15,11 +17,41 @@ from app.tools import list_categories, list_tools
 router = APIRouter(tags=["seo"])
 
 
+def _canonical_base() -> str:
+    """Site origin with https and the www host.
+
+    SITE_URL is configured as the apex domain, but the site serves from www — so
+    without this the sitemap advertised a different host than every canonical tag,
+    which splits ranking signals between two URLs.
+    """
+    base = settings.site_url.rstrip("/")
+    parts = urlsplit(base if "//" in base else f"https://{base}")
+    host = parts.netloc
+    is_local = host.split(":")[0] in {"localhost", "127.0.0.1", "0.0.0.0"}
+    if not is_local:
+        if not host.startswith("www."):
+            host = f"www.{host}"
+        return urlunsplit(("https", host, "", "", ""))
+    return urlunsplit((parts.scheme, host, "", "", ""))
+
+
 @router.get("/sitemap.xml")
 def sitemap(db: Session = Depends(get_db)):
-    base = settings.site_url.rstrip("/")
+    base = _canonical_base()
     # Tools, categories, and posts all live flat at /<slug> (no /tools/ or /category/ prefix).
-    urls: list[str] = [f"{base}/", f"{base}/tools", f"{base}/blog", f"{base}/faq", f"{base}/about"]
+    # Only canonical URLs belong in a sitemap. /faq and /about were listed here but
+    # both 307 to /faqs and /about-us, so search engines were being pointed at
+    # redirects instead of the real pages.
+    urls: list[str] = [
+        f"{base}/",
+        f"{base}/tools",
+        f"{base}/blog",
+        f"{base}/faqs",
+        f"{base}/about-us",
+        f"{base}/privacy-policy",
+        f"{base}/terms-condition",
+        f"{base}/disclaimer",
+    ]
     urls += [f"{base}/{c.slug}" for c in list_categories()]
     urls += [f"{base}/{t.slug}" for t in list_tools()]
     blogs = db.execute(select(Blog).where(Blog.status == BlogStatus.published)).scalars().all()
@@ -50,7 +82,7 @@ AI_USER_AGENTS = (
 
 @router.get("/robots.txt")
 def robots():
-    base = settings.site_url.rstrip("/")
+    base = _canonical_base()
     # NOTE: /tool-admin is deliberately NOT listed here. A Disallow line would
     # publish the admin URL to anyone reading robots.txt; the route is kept out
     # of search results with `noindex, nofollow` (see app/tool-admin/layout.tsx)
