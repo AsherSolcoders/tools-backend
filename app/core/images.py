@@ -28,6 +28,12 @@ _SAVE_PARAMS: dict[str, dict[str, object]] = {
 # disk by requesting thousands of sizes.
 THUMB_WIDTHS = (96, 480, 960)
 
+# Exact boxes, center-cropped to fill. Cards display in a fixed box, so serving a
+# width-only thumbnail meant the file's aspect ratio never matched the rendered
+# one — CSS object-fit hid it visually, but auditors flag the mismatch and the
+# browser has to crop on every paint. Serving the final shape avoids both.
+THUMB_BOXES = ((560, 360), (96, 96))
+
 # Originals are downscaled to this on upload. A 1731px-wide PNG straight from a
 # screenshot tool was ~2.2 MB; capped and re-encoded it is ~175 KB, and no layout
 # on the site displays an image wider than this.
@@ -48,8 +54,12 @@ def _encode_webp(image, quality: int = 82) -> bytes:
     return buf.getvalue()
 
 
-def make_thumbnail(content: bytes, width: int) -> bytes | None:
-    """Downscale `content` to `width` px wide and return it as WebP.
+def make_thumbnail(content: bytes, width: int, height: int | None = None) -> bytes | None:
+    """Resize `content` and return it as WebP.
+
+    With `height`, the image is center-cropped to fill that exact box (like CSS
+    `object-fit: cover`) so the file's aspect ratio matches how it is displayed.
+    Without it, only the width is constrained and the ratio is preserved.
 
     Returns None when a thumbnail can't be produced — animated images, SVG, or
     anything Pillow can't decode — so callers can fall back to the original file
@@ -66,8 +76,11 @@ def make_thumbnail(content: bytes, width: int) -> bytes | None:
             if getattr(opened, "n_frames", 1) > 1:
                 return None  # animated: a still frame would be a worse experience
             image = ImageOps.exif_transpose(opened) or opened
-            # Never upscale: a small source stays its own size.
-            if image.width > width:
+            if height is not None:
+                # `fit` scales then crops from the centre, matching object-cover.
+                image = ImageOps.fit(image, (width, height), Image.LANCZOS, centering=(0.5, 0.5))
+            elif image.width > width:
+                # Never upscale: a small source stays its own size.
                 image = image.resize(
                     (width, max(1, round(image.height * width / image.width))),
                     Image.LANCZOS,
