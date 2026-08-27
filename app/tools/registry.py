@@ -58,7 +58,20 @@ _DEV_CONTENT = """
 """
 
 
+_CALC_CONTENT = """
+<p>ToolSimpli's free calculators handle the everyday sums that are easy to get wrong on paper. Work out a loan or mortgage payment before you commit, check what a discount really saves you, split a bill fairly, or see how long it takes to reach a savings goal — each one runs instantly in your browser with no sign-up.</p>
+<p>Money questions are the ones people ask most. The loan calculator, mortgage calculator, car loan calculator and EMI calculator all show the monthly payment alongside the total interest you'll pay, so you can compare offers on what they actually cost rather than on the headline rate. The compound interest calculator and savings goal calculator work the other way round, showing what regular saving turns into over time.</p>
+<p>For day-to-day maths there's a percentage calculator, percentage change calculator, discount calculator, tip calculator and VAT calculator — quick answers for shopping, invoicing and splitting costs. On the health side, the BMI calculator and BMR calculator give you a reading plus the daily calorie figure that goes with your activity level.</p>
+<p>Every calculator is free, needs no account, and keeps whatever you type on your own screen. Nothing you enter is stored. Pick a calculator below and get your answer in a couple of seconds.</p>
+"""
+
 CATEGORIES: list[Category] = [
+    Category(
+        "calculators", "Calculators", "Loan, savings, percentage, health and date calculators.", "calculator",
+        meta_title="Free Online Calculators – Loan, EMI, Percentage, BMI & More | ToolSimpli",
+        meta_description="Free online calculators for loans, mortgages, EMI, compound interest, percentages, discounts, tips, VAT, BMI and dates. Instant results, no signup required.",
+        content=_CALC_CONTENT.strip(),
+    ),
     Category(
         "pdf-tools", "PDF Tools", "Merge, split, convert and manage PDF files.", "file-text",
         meta_title="Free Online PDF Tools – Merge, Compress, Convert & Edit PDF | ToolSimpli",
@@ -707,4 +720,196 @@ define(ToolConfig(
         "Click Download PDF to get a clean, print-ready resume.",
     ],
     input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
+))
+
+
+# ---- CALCULATORS ----
+define(ToolConfig(
+    name="Loan Calculator", slug="loan-calculator", category="calculators",
+    description="Work out the monthly payment and total interest on any loan.",
+    seo_keywords=['Loan Calculator', 'Monthly Payment Calculator', 'Loan Interest Calculator'],
+    how_to_use=['Enter the loan amount', 'Set the interest rate and term', 'Read the monthly payment'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Loan amount", OptionType.number, default=10000, min=1),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=8, min=0),
+        _opt("years", "Term (years)", OptionType.number, default=5, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Mortgage Calculator", slug="mortgage-calculator", category="calculators",
+    description="Estimate a home loan payment from price, deposit, rate and term.",
+    seo_keywords=['Mortgage Calculator', 'Home Loan Calculator', 'Mortgage Payment Calculator'],
+    how_to_use=['Enter the property price', 'Enter your deposit', 'Set rate and term'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("price", "Property price", OptionType.number, default=250000, min=1),
+        _opt("down_payment", "Deposit", OptionType.number, default=50000, min=0),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=6, min=0),
+        _opt("years", "Term (years)", OptionType.number, default=25, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Car Loan Calculator", slug="car-loan-calculator", category="calculators",
+    description="See the monthly cost and total interest on a car loan.",
+    seo_keywords=['Car Loan Calculator', 'Auto Loan Calculator', 'Vehicle Finance Calculator'],
+    how_to_use=['Enter the amount borrowed', 'Set rate and term', 'Read the monthly payment'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Loan amount", OptionType.number, default=20000, min=1),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=7, min=0),
+        _opt("years", "Term (years)", OptionType.number, default=5, min=1),
+    ],
+))
+define(ToolConfig(
+    name="EMI Calculator", slug="emi-calculator", category="calculators",
+    description="Calculate an equated monthly instalment for any loan term in months.",
+    seo_keywords=['EMI Calculator', 'Equated Monthly Instalment', 'Loan EMI Calculator'],
+    how_to_use=['Enter the loan amount', 'Set the rate', 'Enter the term in months'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Loan amount", OptionType.number, default=100000, min=1),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=10, min=0),
+        _opt("months", "Term (months)", OptionType.number, default=24, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Compound Interest Calculator", slug="compound-interest-calculator", category="calculators",
+    description="See what savings grow to with compound interest.",
+    seo_keywords=['Compound Interest Calculator', 'Investment Growth Calculator', 'Savings Interest Calculator'],
+    how_to_use=['Enter your starting amount', 'Set the rate and years', 'Read the final balance'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("principal", "Starting amount", OptionType.number, default=1000, min=0),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=7, min=0),
+        _opt("years", "Years", OptionType.number, default=10, min=1),
+        _opt("compounds_per_year", "Compounds per year", OptionType.number, default=12, min=1, max=365),
+    ],
+))
+define(ToolConfig(
+    name="Simple Interest Calculator", slug="simple-interest-calculator", category="calculators",
+    description="Calculate simple interest and the total repayable.",
+    seo_keywords=['Simple Interest Calculator', 'Interest Calculator', 'Flat Interest Calculator'],
+    how_to_use=['Enter the principal', 'Set the rate and years', 'Read the interest'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("principal", "Principal", OptionType.number, default=1000, min=0),
+        _opt("rate", "Annual rate (%)", OptionType.number, default=5, min=0),
+        _opt("years", "Years", OptionType.number, default=3, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Savings Goal Calculator", slug="savings-goal-calculator", category="calculators",
+    description="Find out how long it takes to reach a savings target.",
+    seo_keywords=['Savings Goal Calculator', 'Save For Goal Calculator', 'Savings Time Calculator'],
+    how_to_use=['Enter your target', 'Enter what you save monthly', 'Read the time needed'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("goal", "Savings goal", OptionType.number, default=10000, min=1),
+        _opt("monthly", "Monthly contribution", OptionType.number, default=250, min=1),
+        _opt("rate", "Annual interest rate (%)", OptionType.number, default=4, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Percentage Calculator", slug="percentage-calculator", category="calculators",
+    description="Find a percentage of a number, plus the value with it added or removed.",
+    seo_keywords=['Percentage Calculator', 'Percent Of Number', 'Calculate Percentage'],
+    how_to_use=['Enter the number', 'Enter the percentage', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=200),
+        _opt("percent", "Percentage (%)", OptionType.number, default=15),
+    ],
+))
+define(ToolConfig(
+    name="Percentage Change Calculator", slug="percentage-change-calculator", category="calculators",
+    description="Work out the percentage increase or decrease between two numbers.",
+    seo_keywords=['Percentage Change Calculator', 'Percent Increase Calculator', 'Percent Decrease Calculator'],
+    how_to_use=['Enter the original value', 'Enter the new value', 'Read the change'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("old_value", "Original value", OptionType.number, default=100),
+        _opt("new_value", "New value", OptionType.number, default=125),
+    ],
+))
+define(ToolConfig(
+    name="Discount Calculator", slug="discount-calculator", category="calculators",
+    description="See the sale price and how much a discount saves you.",
+    seo_keywords=['Discount Calculator', 'Sale Price Calculator', 'Percent Off Calculator'],
+    how_to_use=['Enter the original price', 'Enter the discount', 'Read the final price'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("price", "Original price", OptionType.number, default=100, min=0),
+        _opt("discount", "Discount (%)", OptionType.number, default=20, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Tip Calculator", slug="tip-calculator", category="calculators",
+    description="Work out a tip and split the bill between people.",
+    seo_keywords=['Tip Calculator', 'Bill Split Calculator', 'Gratuity Calculator'],
+    how_to_use=['Enter the bill', 'Choose a tip percentage', 'Set how many people'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("bill", "Bill amount", OptionType.number, default=50, min=0),
+        _opt("tip_percent", "Tip (%)", OptionType.number, default=15, min=0),
+        _opt("people", "Split between", OptionType.number, default=1, min=1),
+    ],
+))
+define(ToolConfig(
+    name="VAT Calculator", slug="vat-calculator", category="calculators",
+    description="Add VAT to a price or work backwards to the net amount.",
+    seo_keywords=['VAT Calculator', 'Sales Tax Calculator', 'Add Or Remove VAT'],
+    how_to_use=['Enter the amount', 'Set the VAT rate', 'Choose add or remove'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Amount", OptionType.number, default=100, min=0),
+        _opt("rate", "VAT rate (%)", OptionType.number, default=20, min=0),
+        _opt("mode", "Mode", OptionType.select, default="add", choices=["add", "remove"]),
+    ],
+))
+define(ToolConfig(
+    name="BMI Calculator", slug="bmi-calculator", category="calculators",
+    description="Calculate body mass index and see which range it falls in.",
+    seo_keywords=['BMI Calculator', 'Body Mass Index Calculator', 'BMI Checker'],
+    how_to_use=['Enter your weight in kg', 'Enter your height in cm', 'Read your BMI'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("weight_kg", "Weight (kg)", OptionType.number, default=70, min=1),
+        _opt("height_cm", "Height (cm)", OptionType.number, default=175, min=1),
+    ],
+))
+define(ToolConfig(
+    name="BMR Calculator", slug="bmr-calculator", category="calculators",
+    description="Estimate your basal metabolic rate and daily calorie needs.",
+    seo_keywords=['BMR Calculator', 'Basal Metabolic Rate', 'Daily Calorie Calculator'],
+    how_to_use=['Enter weight, height and age', 'Choose sex and activity level', 'Read your daily calories'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("weight_kg", "Weight (kg)", OptionType.number, default=70, min=1),
+        _opt("height_cm", "Height (cm)", OptionType.number, default=175, min=1),
+        _opt("age", "Age", OptionType.number, default=30, min=1, max=120),
+        _opt("sex", "Sex", OptionType.select, default="male", choices=["male", "female"]),
+        _opt("activity", "Activity level", OptionType.select, default="sedentary", choices=["sedentary", "light", "moderate", "active", "very active"]),
+    ],
+))
+define(ToolConfig(
+    name="Age Calculator", slug="age-calculator", category="calculators",
+    description="Work out an exact age in years, months and days.",
+    seo_keywords=['Age Calculator', 'Date Of Birth Calculator', 'How Old Am I'],
+    how_to_use=['Enter the date of birth', 'Read the exact age'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("birth_date", "Date of birth (YYYY-MM-DD)", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Date Difference Calculator", slug="date-difference-calculator", category="calculators",
+    description="Count the days, weeks and months between two dates.",
+    seo_keywords=['Date Difference Calculator', 'Days Between Dates', 'Date Duration Calculator'],
+    how_to_use=['Enter the start date', 'Enter the end date', 'Read the difference'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("start_date", "Start date (YYYY-MM-DD)", OptionType.text, default=""),
+        _opt("end_date", "End date (YYYY-MM-DD)", OptionType.text, default=""),
+    ],
 ))
