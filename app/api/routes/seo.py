@@ -1,14 +1,13 @@
 """SEO endpoints: dynamic sitemap.xml and robots.txt."""
 from __future__ import annotations
 
-from urllib.parse import urlsplit, urlunsplit
-
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.core.urls import canonical_base
 from app.database import get_db
 from app.models import Blog
 from app.models.blog import BlogStatus
@@ -17,27 +16,11 @@ from app.tools import list_categories, list_tools
 router = APIRouter(tags=["seo"])
 
 
-def _canonical_base() -> str:
-    """Site origin with https and the www host.
-
-    SITE_URL is configured as the apex domain, but the site serves from www — so
-    without this the sitemap advertised a different host than every canonical tag,
-    which splits ranking signals between two URLs.
-    """
-    base = settings.site_url.rstrip("/")
-    parts = urlsplit(base if "//" in base else f"https://{base}")
-    host = parts.netloc
-    is_local = host.split(":")[0] in {"localhost", "127.0.0.1", "0.0.0.0"}
-    if not is_local:
-        if not host.startswith("www."):
-            host = f"www.{host}"
-        return urlunsplit(("https", host, "", "", ""))
-    return urlunsplit((parts.scheme, host, "", "", ""))
 
 
 @router.get("/sitemap.xml")
 def sitemap(db: Session = Depends(get_db)):
-    base = _canonical_base()
+    base = canonical_base()
     # Tools, categories, and posts all live flat at /<slug> (no /tools/ or /category/ prefix).
     # Only canonical URLs belong in a sitemap. /faq and /about were listed here but
     # both 307 to /faqs and /about-us, so search engines were being pointed at
@@ -82,7 +65,7 @@ AI_USER_AGENTS = (
 
 @router.get("/robots.txt")
 def robots():
-    base = _canonical_base()
+    base = canonical_base()
     # NOTE: /tool-admin is deliberately NOT listed here. A Disallow line would
     # publish the admin URL to anyone reading robots.txt; the route is kept out
     # of search results with `noindex, nofollow` (see app/tool-admin/layout.tsx)

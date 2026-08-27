@@ -5,6 +5,7 @@ and renders UIs dynamically — no per-tool endpoints exist.
 """
 
 import io
+import re
 import zipfile
 from dataclasses import asdict
 
@@ -16,9 +17,43 @@ from app.core.security import UploadValidationError, validate_upload
 from app.core.temp_files import new_upload_path, resolve_result
 from app.tools import get_processor, get_tool, list_categories, list_tools
 from app.tools.content import enrich
+from app.core.schema import category_schema, tool_schema
 from app.tools.seo_meta import PAGE_META
 
 router = APIRouter(prefix="/api/tools", tags=["tools"])
+
+
+def _ensure_free(text: str, *, subject: str) -> str:
+    """Guarantee the word "Free" appears in a meta title/description.
+
+    Most entries already say it, so this only fills the gaps — and it applies at
+    response time, meaning a tool added later gets the treatment without anyone
+    remembering to edit its copy.
+    """
+    if not text:
+        return text
+    if re.search(r"\bfree\b", text, re.I):
+        return text
+    return f"Free {text}" if subject == "title" else f"Free tool. {text}"
+
+
+def _tool_meta(slug: str, name: str, description: str) -> dict:
+    """Meta title/description for a tool, always mentioning that it's free.
+
+    Falls back to the tool's own name/description when it has no hand-written
+    entry, so every tool page gets a usable title instead of an empty one.
+    """
+    m = PAGE_META.get(slug) or {}
+    title = m.get("meta_title") or f"{name} – Online Tool | ToolSimpli"
+    desc = m.get("meta_description") or description
+    out = {
+        "meta_title": _ensure_free(title, subject="title"),
+        "meta_description": _ensure_free(desc, subject="description"),
+    }
+    if m.get("keywords"):
+        out["seo_keywords"] = m["keywords"]
+    return out
+
 
 
 @router.get("/categories")
@@ -28,8 +63,10 @@ def categories():
         d = asdict(c)
         m = PAGE_META.get(c.slug)
         if m:
-            d["meta_title"] = m["meta_title"]
-            d["meta_description"] = m["meta_description"]
+            d["meta_title"] = _ensure_free(m["meta_title"], subject="title")
+            d["meta_description"] = _ensure_free(m["meta_description"], subject="description")
+        d["schema"] = category_schema(c, list_tools(c.slug),
+                                      meta_description=d.get("meta_description", ""))
         out.append(d)
     return out
 
@@ -63,12 +100,11 @@ def tool_config(slug: str):
     data = tool.public_dict()
     data["implemented"] = get_processor(slug) is not None
     data.update(enrich(tool))  # about, features, benefits, faqs
-    m = PAGE_META.get(slug)
-    if m:
-        data["meta_title"] = m["meta_title"]
-        data["meta_description"] = m["meta_description"]
-        if m["keywords"]:
-            data["seo_keywords"] = m["keywords"]
+    data.update(_tool_meta(slug, tool.name, tool.description))
+    # Structured data is derived from the tool config + its FAQs, so a new tool
+    # gets valid JSON-LD without anyone writing it by hand.
+    data["schema"] = tool_schema(tool, faqs=data.get("faqs"),
+                                 meta_description=data["meta_description"])
     return data
 
 

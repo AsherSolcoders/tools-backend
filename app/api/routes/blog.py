@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
 from app.models import Blog, BlogCategory
 from app.models.blog import BlogStatus
+from app.core.schema import blog_schema
 from app.schemas.blog import BlogListItem, BlogOut
 
 router = APIRouter(prefix="/api/blog", tags=["blog"])
@@ -77,7 +78,9 @@ def blog_canonical(slug: str, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Not found")
 
 
-@router.get("/{slug}", response_model=BlogOut)
+# No response_model: the payload adds a generated `schema` block that BlogOut
+# would strip out.
+@router.get("/{slug}")
 def get_blog(slug: str, db: Session = Depends(get_db)):
     blog = db.execute(
         select(Blog).where(Blog.slug == slug).where(_visible())
@@ -98,7 +101,11 @@ def get_blog(slug: str, db: Session = Depends(get_db)):
             ).scalars().all()
         )
         out.related = [r for r in out.related if r.id in visible_ids]
-    return out
+
+    # Structured data generated from the stored post — no hand-written JSON-LD.
+    payload = out.model_dump()
+    payload["schema"] = blog_schema(blog)
+    return payload
 
 
 @router.get("-categories")
