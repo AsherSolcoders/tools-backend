@@ -1309,3 +1309,682 @@ define(ToolConfig(
         _opt("hourly_rate", "Hourly rate (optional)", OptionType.number, default=0, min=0),
     ],
 ))
+define(ToolConfig(
+    name="Amortization Calculator", slug="amortization-calculator", category="calculators",
+    description="See a year-by-year breakdown of interest and principal on a loan.",
+    seo_keywords=['Amortization Calculator', 'Loan Schedule', 'Amortization Table'],
+    how_to_use=['Enter the loan', 'Set rate and term', 'Read the schedule'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Loan amount", OptionType.number, default=200000, min=1),
+        _opt("rate", "Annual rate (%)", OptionType.number, default=6, min=0),
+        _opt("years", "Term (years)", OptionType.number, default=20, min=1, max=50),
+    ],
+))
+define(ToolConfig(
+    name="Refinance Calculator", slug="refinance-calculator", category="calculators",
+    description="Compare your current loan with a new one and find the break-even point.",
+    seo_keywords=['Refinance Calculator', 'Mortgage Refinance', 'Refinance Break Even'],
+    how_to_use=['Enter your balance', 'Enter both rates', 'Add closing costs'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("balance", "Current balance", OptionType.number, default=180000, min=1),
+        _opt("current_rate", "Current rate (%)", OptionType.number, default=7, min=0),
+        _opt("years_left", "Years left", OptionType.number, default=20, min=1),
+        _opt("new_rate", "New rate (%)", OptionType.number, default=5, min=0),
+        _opt("new_years", "New term (years)", OptionType.number, default=20, min=1),
+        _opt("closing_costs", "Closing costs", OptionType.number, default=3000, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Debt Payoff Calculator", slug="debt-payoff-calculator", category="calculators",
+    description="See how long a fixed monthly payment takes to clear a debt.",
+    seo_keywords=['Debt Payoff Calculator', 'Debt Snowball', 'Payoff Time'],
+    how_to_use=['Enter the balance', 'Enter the rate', 'Enter your monthly payment'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("balance", "Balance", OptionType.number, default=5000, min=1),
+        _opt("rate", "Annual rate (%)", OptionType.number, default=18, min=0),
+        _opt("monthly_payment", "Monthly payment", OptionType.number, default=250, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Credit Card Payoff Calculator", slug="credit-card-payoff-calculator", category="calculators",
+    description="Find out how long a card balance takes to clear, and the interest cost.",
+    seo_keywords=['Credit Card Payoff Calculator', 'Card Interest', 'Payoff Time'],
+    how_to_use=['Enter the balance', 'Enter the APR', 'Enter your payment'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("balance", "Balance", OptionType.number, default=3000, min=1),
+        _opt("apr", "APR (%)", OptionType.number, default=22, min=0),
+        _opt("monthly_payment", "Monthly payment", OptionType.number, default=150, min=1),
+    ],
+))
+define(ToolConfig(
+    name="APR Calculator", slug="apr-calculator", category="calculators",
+    description="Find the true APR once fees are included in the cost of a loan.",
+    seo_keywords=['APR Calculator', 'Effective APR', 'True Interest Rate'],
+    how_to_use=['Enter the loan and fees', 'Set rate and term', 'Read the effective APR'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Loan amount", OptionType.number, default=10000, min=1),
+        _opt("fees", "Fees", OptionType.number, default=300, min=0),
+        _opt("rate", "Nominal rate (%)", OptionType.number, default=8, min=0),
+        _opt("years", "Term (years)", OptionType.number, default=5, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Down Payment Calculator", slug="down-payment-calculator", category="calculators",
+    description="Work out a deposit and the loan amount left over.",
+    seo_keywords=['Down Payment Calculator', 'Deposit Calculator', 'Loan To Value'],
+    how_to_use=['Enter the price', 'Choose a deposit percentage'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("price", "Purchase price", OptionType.number, default=300000, min=1),
+        _opt("percent", "Deposit (%)", OptionType.number, default=20, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Investment ROI Calculator", slug="investment-roi-calculator", category="calculators",
+    description="Calculate return on investment and the annualised rate.",
+    seo_keywords=['ROI Calculator', 'Return On Investment', 'Investment Return'],
+    how_to_use=['Enter what you invested', 'Enter what it returned', 'Add the years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("invested", "Amount invested", OptionType.number, default=10000, min=1),
+        _opt("returned", "Value now", OptionType.number, default=15000, min=0),
+        _opt("years", "Years held", OptionType.number, default=3, min=0),
+    ],
+))
+define(ToolConfig(
+    name="SIP Calculator", slug="sip-calculator", category="calculators",
+    description="See what a monthly investment grows to over time.",
+    seo_keywords=['SIP Calculator', 'Monthly Investment', 'Systematic Investment Plan'],
+    how_to_use=['Enter your monthly amount', 'Set the return rate', 'Choose the years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("monthly", "Monthly investment", OptionType.number, default=5000, min=1),
+        _opt("rate", "Expected return (%)", OptionType.number, default=12, min=0),
+        _opt("years", "Years", OptionType.number, default=10, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Lumpsum Investment Calculator", slug="lumpsum-calculator", category="calculators",
+    description="See what a one-off investment grows to.",
+    seo_keywords=['Lumpsum Calculator', 'One Time Investment', 'Investment Growth'],
+    how_to_use=['Enter the amount', 'Set the return rate', 'Choose the years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Amount", OptionType.number, default=100000, min=1),
+        _opt("rate", "Expected return (%)", OptionType.number, default=12, min=0),
+        _opt("years", "Years", OptionType.number, default=10, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Retirement Calculator", slug="retirement-calculator", category="calculators",
+    description="Project your retirement pot and the income it could provide.",
+    seo_keywords=['Retirement Calculator', 'Retirement Savings', 'Pension Projection'],
+    how_to_use=['Enter your age and savings', 'Add your monthly saving', 'Read the projection'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("current_age", "Current age", OptionType.number, default=30, min=1, max=100),
+        _opt("retirement_age", "Retirement age", OptionType.number, default=60, min=2, max=100),
+        _opt("current_savings", "Current savings", OptionType.number, default=20000, min=0),
+        _opt("monthly_saving", "Monthly saving", OptionType.number, default=500, min=0),
+        _opt("rate", "Expected return (%)", OptionType.number, default=7, min=0),
+    ],
+))
+define(ToolConfig(
+    name="401k Calculator", slug="401k-calculator", category="calculators",
+    description="Project a workplace pension including the employer match.",
+    seo_keywords=['401k Calculator', 'Pension Calculator', 'Employer Match'],
+    how_to_use=['Enter your salary', 'Set your contribution', 'Add the employer match'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("annual_salary", "Annual salary", OptionType.number, default=60000, min=1),
+        _opt("contribution_percent", "Your contribution (%)", OptionType.number, default=6, min=0, max=100),
+        _opt("employer_match_percent", "Employer match (%)", OptionType.number, default=3, min=0, max=100),
+        _opt("rate", "Expected return (%)", OptionType.number, default=7, min=0),
+        _opt("years", "Years", OptionType.number, default=30, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Future Value Calculator", slug="future-value-calculator", category="calculators",
+    description="Find the future or present value of a sum of money.",
+    seo_keywords=['Future Value Calculator', 'Present Value', 'Time Value Of Money'],
+    how_to_use=['Enter the amount', 'Choose future or present', 'Set rate and years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Amount", OptionType.number, default=10000, min=0),
+        _opt("rate", "Rate (%)", OptionType.number, default=7, min=0),
+        _opt("years", "Years", OptionType.number, default=10, min=0),
+        _opt("direction", "Calculate", OptionType.select, default="future", choices=["future", "present"]),
+    ],
+))
+define(ToolConfig(
+    name="Annuity Calculator", slug="annuity-calculator", category="calculators",
+    description="Find the future and present value of a regular payment stream.",
+    seo_keywords=['Annuity Calculator', 'Annuity Value', 'Payment Stream'],
+    how_to_use=['Enter the payment', 'Set the rate', 'Choose the number of years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("payment", "Payment per year", OptionType.number, default=1000, min=0),
+        _opt("rate", "Rate (%)", OptionType.number, default=5, min=0),
+        _opt("years", "Years", OptionType.number, default=20, min=1),
+    ],
+))
+define(ToolConfig(
+    name="Dividend Calculator", slug="dividend-calculator", category="calculators",
+    description="Work out dividend income and yield from your holding.",
+    seo_keywords=['Dividend Calculator', 'Dividend Yield', 'Dividend Income'],
+    how_to_use=['Enter your shares', 'Enter the dividend', 'Add the share price'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("shares", "Shares held", OptionType.number, default=500, min=0),
+        _opt("dividend_per_share", "Annual dividend per share", OptionType.number, default=2.5, min=0),
+        _opt("share_price", "Share price", OptionType.number, default=50, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Inflation Calculator", slug="inflation-calculator", category="calculators",
+    description="See how inflation changes what your money is worth.",
+    seo_keywords=['Inflation Calculator', 'Purchasing Power', 'Money Value Over Time'],
+    how_to_use=['Enter the amount', 'Set the inflation rate', 'Choose the years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Amount", OptionType.number, default=1000, min=0),
+        _opt("rate", "Inflation rate (%)", OptionType.number, default=3, min=0),
+        _opt("years", "Years", OptionType.number, default=10, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Net Worth Calculator", slug="net-worth-calculator", category="calculators",
+    description="Total up assets and debts to find your net worth.",
+    seo_keywords=['Net Worth Calculator', 'Assets Minus Liabilities', 'Personal Net Worth'],
+    how_to_use=['Enter your assets', 'Enter your debts', 'Read your net worth'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("assets", "Total assets", OptionType.number, default=250000, min=0),
+        _opt("liabilities", "Total liabilities", OptionType.number, default=90000, min=0),
+    ],
+))
+define(ToolConfig(
+    name="FD and RD Calculator", slug="fd-rd-calculator", category="calculators",
+    description="Work out maturity on a fixed or recurring deposit.",
+    seo_keywords=['FD Calculator', 'RD Calculator', 'Deposit Maturity'],
+    how_to_use=['Choose fixed or recurring', 'Enter the amount', 'Set rate and years'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("type", "Deposit type", OptionType.select, default="fixed", choices=["fixed", "recurring"]),
+        _opt("amount", "Amount (fixed)", OptionType.number, default=100000, min=0),
+        _opt("monthly", "Monthly (recurring)", OptionType.number, default=5000, min=0),
+        _opt("rate", "Interest rate (%)", OptionType.number, default=7, min=0),
+        _opt("years", "Years", OptionType.number, default=5, min=1),
+        _opt("compounds_per_year", "Compounds per year", OptionType.number, default=4, min=1, max=365),
+    ],
+))
+define(ToolConfig(
+    name="Salary Calculator", slug="salary-calculator", category="calculators",
+    description="Convert a salary between hourly, daily, weekly, monthly and yearly.",
+    seo_keywords=['Salary Calculator', 'Hourly To Salary', 'Annual Salary'],
+    how_to_use=['Enter the amount', 'Choose the period', 'Read every other period'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("amount", "Amount", OptionType.number, default=60000, min=0),
+        _opt("period", "Per", OptionType.select, default="year", choices=["hour", "day", "week", "month", "year"]),
+        _opt("hours_per_week", "Hours per week", OptionType.number, default=40, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Paycheck Calculator", slug="paycheck-calculator", category="calculators",
+    description="Estimate take-home pay from gross salary and your deduction rates.",
+    seo_keywords=['Paycheck Calculator', 'Take Home Pay', 'Net Salary'],
+    how_to_use=['Enter gross pay', 'Enter your tax rate', 'Add other deductions'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("gross_annual", "Gross annual pay", OptionType.number, default=60000, min=0),
+        _opt("tax_percent", "Tax (%)", OptionType.number, default=20, min=0, max=100),
+        _opt("other_deductions_percent", "Other deductions (%)", OptionType.number, default=5, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Markup and Margin Calculator", slug="markup-margin-calculator", category="calculators",
+    description="Work out profit, markup and margin from cost and price.",
+    seo_keywords=['Markup Calculator', 'Margin Calculator', 'Profit Margin'],
+    how_to_use=['Enter your cost', 'Enter your price', 'Read markup and margin'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("cost", "Cost", OptionType.number, default=60, min=0),
+        _opt("price", "Selling price", OptionType.number, default=100, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Break Even Calculator", slug="break-even-calculator", category="calculators",
+    description="Find how many units you must sell to cover your costs.",
+    seo_keywords=['Break Even Calculator', 'Break Even Point', 'Break Even Analysis'],
+    how_to_use=['Enter fixed costs', 'Enter price per unit', 'Enter variable cost'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("fixed_costs", "Fixed costs", OptionType.number, default=10000, min=0),
+        _opt("price_per_unit", "Price per unit", OptionType.number, default=25, min=0),
+        _opt("variable_cost_per_unit", "Variable cost per unit", OptionType.number, default=15, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Overtime Calculator", slug="overtime-calculator", category="calculators",
+    description="Calculate overtime pay and total earnings for a week.",
+    seo_keywords=['Overtime Calculator', 'Overtime Pay', 'Time And A Half'],
+    how_to_use=['Enter your rate', 'Enter normal and overtime hours', 'Read your pay'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("hourly_rate", "Hourly rate", OptionType.number, default=20, min=0),
+        _opt("normal_hours", "Normal hours", OptionType.number, default=40, min=0),
+        _opt("overtime_hours", "Overtime hours", OptionType.number, default=8, min=0),
+        _opt("overtime_multiplier", "Overtime multiplier", OptionType.number, default=1.5, min=1, max=3),
+    ],
+))
+define(ToolConfig(
+    name="Commission Calculator", slug="commission-calculator", category="calculators",
+    description="Work out sales commission and total earnings.",
+    seo_keywords=['Commission Calculator', 'Sales Commission', 'Commission Rate'],
+    how_to_use=['Enter your sales', 'Enter the rate', 'Add any base salary'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("sales", "Total sales", OptionType.number, default=50000, min=0),
+        _opt("rate", "Commission rate (%)", OptionType.number, default=5, min=0, max=100),
+        _opt("base_salary", "Base salary", OptionType.number, default=0, min=0),
+    ],
+))
+define(ToolConfig(
+    name="TDEE Calculator", slug="tdee-calculator", category="calculators",
+    description="Find your daily calorie needs and targets for losing or gaining weight.",
+    seo_keywords=['TDEE Calculator', 'Daily Calorie Needs', 'Maintenance Calories'],
+    how_to_use=['Enter your details', 'Choose activity level', 'Read your targets'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("weight_kg", "Weight (kg)", OptionType.number, default=70, min=1),
+        _opt("height_cm", "Height (cm)", OptionType.number, default=175, min=1),
+        _opt("age", "Age", OptionType.number, default=30, min=1, max=120),
+        _opt("sex", "Sex", OptionType.select, default="male", choices=["male", "female"]),
+        _opt("activity", "Activity level", OptionType.select, default="moderate", choices=["sedentary", "light", "moderate", "active", "very active"]),
+    ],
+))
+define(ToolConfig(
+    name="Macro Calculator", slug="macro-calculator", category="calculators",
+    description="Split a calorie target into protein, carbs and fat.",
+    seo_keywords=['Macro Calculator', 'Macronutrient Split', 'IIFYM Calculator'],
+    how_to_use=['Enter your calories', 'Choose a split', 'Read your macros'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("calories", "Daily calories", OptionType.number, default=2200, min=1),
+        _opt("goal", "Split", OptionType.select, default="balanced", choices=["balanced", "low carb", "high protein", "endurance"]),
+    ],
+))
+define(ToolConfig(
+    name="Pregnancy Due Date Calculator", slug="pregnancy-due-date-calculator", category="calculators",
+    description="Estimate a due date from the last period.",
+    seo_keywords=['Due Date Calculator', 'Pregnancy Calculator', 'Estimated Due Date'],
+    how_to_use=['Enter the first day of your last period', 'Set your cycle length'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("last_period", "Last period (YYYY-MM-DD)", OptionType.text, default=""),
+        _opt("cycle_length", "Cycle length (days)", OptionType.number, default=28, min=20, max=45),
+    ],
+))
+define(ToolConfig(
+    name="Ovulation Calculator", slug="ovulation-calculator", category="calculators",
+    description="Find your likely ovulation date and fertile window.",
+    seo_keywords=['Ovulation Calculator', 'Fertile Window', 'Period Calculator'],
+    how_to_use=['Enter your last period', 'Set your cycle length'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("last_period", "Last period (YYYY-MM-DD)", OptionType.text, default=""),
+        _opt("cycle_length", "Cycle length (days)", OptionType.number, default=28, min=20, max=45),
+    ],
+))
+define(ToolConfig(
+    name="Target Heart Rate Calculator", slug="target-heart-rate-calculator", category="calculators",
+    description="Find your training heart rate zones.",
+    seo_keywords=['Target Heart Rate', 'Heart Rate Zones', 'Max Heart Rate'],
+    how_to_use=['Enter your age', 'Add your resting heart rate', 'Read your zones'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("age", "Age", OptionType.number, default=30, min=1, max=120),
+        _opt("resting_hr", "Resting heart rate", OptionType.number, default=65, min=30, max=120),
+    ],
+))
+define(ToolConfig(
+    name="Blood Alcohol Calculator", slug="bac-calculator", category="calculators",
+    description="Estimate blood alcohol concentration from drinks and time.",
+    seo_keywords=['BAC Calculator', 'Blood Alcohol Content', 'Alcohol Calculator'],
+    how_to_use=['Enter the drinks', 'Enter your weight', 'Add hours since drinking'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("standard_drinks", "Standard drinks", OptionType.number, default=3, min=0),
+        _opt("weight_kg", "Weight (kg)", OptionType.number, default=75, min=1),
+        _opt("sex", "Sex", OptionType.select, default="male", choices=["male", "female"]),
+        _opt("hours_since", "Hours since first drink", OptionType.number, default=2, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Sleep Calculator", slug="sleep-calculator", category="calculators",
+    description="Find the best times to wake up based on sleep cycles.",
+    seo_keywords=['Sleep Calculator', 'Sleep Cycle Calculator', 'Best Wake Time'],
+    how_to_use=['Enter your bedtime', 'Read the best wake times'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("bedtime", "Bedtime (HH:MM)", OptionType.text, default="23:00"),
+    ],
+))
+define(ToolConfig(
+    name="Scientific Calculator", slug="scientific-calculator", category="calculators",
+    description="Evaluate any arithmetic expression, with roots, logs and trig.",
+    seo_keywords=['Scientific Calculator', 'Online Calculator', 'Expression Calculator'],
+    how_to_use=['Type an expression', 'Use sqrt, sin, log and pi', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("expression", "Expression", OptionType.text, default="2 * (3 + 4) ** 2"),
+    ],
+))
+define(ToolConfig(
+    name="Probability Calculator", slug="probability-calculator", category="calculators",
+    description="Work out probability, odds and the chance over repeated trials.",
+    seo_keywords=['Probability Calculator', 'Odds Calculator', 'Chance Calculator'],
+    how_to_use=['Enter favourable outcomes', 'Enter total outcomes', 'Add trials'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("favourable", "Favourable outcomes", OptionType.number, default=1, min=0),
+        _opt("total", "Total outcomes", OptionType.number, default=6, min=1),
+        _opt("trials", "Trials", OptionType.number, default=1, min=1, max=10000),
+    ],
+))
+define(ToolConfig(
+    name="Prime and Factor Calculator", slug="prime-factor-calculator", category="calculators",
+    description="Find prime factors and all divisors of a number.",
+    seo_keywords=['Prime Factorization', 'Factor Calculator', 'Is It Prime'],
+    how_to_use=['Enter a whole number', 'Read its factors'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("number", "Number", OptionType.number, default=360, min=2),
+    ],
+))
+define(ToolConfig(
+    name="Random Number Generator", slug="random-number-generator", category="calculators",
+    description="Generate random numbers in any range, with or without repeats.",
+    seo_keywords=['Random Number Generator', 'Random Picker', 'Number Randomiser'],
+    how_to_use=['Set the range', 'Choose how many', 'Generate'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("min", "Minimum", OptionType.number, default=1),
+        _opt("max", "Maximum", OptionType.number, default=100),
+        _opt("count", "How many", OptionType.number, default=5, min=1, max=1000),
+        _opt("unique", "No repeats", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Number Base Converter", slug="number-base-converter", category="calculators",
+    description="Convert between binary, octal, decimal, hex and any base to 36.",
+    seo_keywords=['Number Base Converter', 'Binary To Decimal', 'Hex Converter'],
+    how_to_use=['Enter the number', 'Choose the bases', 'Read every conversion'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.text, default="255"),
+        _opt("from_base", "From base", OptionType.number, default=10, min=2, max=36),
+        _opt("to_base", "To base", OptionType.number, default=2, min=2, max=36),
+    ],
+))
+define(ToolConfig(
+    name="Slope Calculator", slug="slope-calculator", category="calculators",
+    description="Find slope, distance and midpoint between two points.",
+    seo_keywords=['Slope Calculator', 'Distance Formula', 'Midpoint Calculator'],
+    how_to_use=['Enter both points', 'Read slope, distance and midpoint'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("x1", "x1", OptionType.number, default=0),
+        _opt("y1", "y1", OptionType.number, default=0),
+        _opt("x2", "x2", OptionType.number, default=4),
+        _opt("y2", "y2", OptionType.number, default=3),
+    ],
+))
+define(ToolConfig(
+    name="Perimeter Calculator", slug="perimeter-calculator", category="calculators",
+    description="Find the perimeter or circumference of common shapes.",
+    seo_keywords=['Perimeter Calculator', 'Circumference Calculator', 'Shape Perimeter'],
+    how_to_use=['Choose the shape', 'Enter measurements', 'Read the perimeter'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("shape", "Shape", OptionType.select, default="rectangle", choices=["rectangle", "square", "circle", "triangle"]),
+        _opt("a", "Length / side / radius", OptionType.number, default=10, min=0),
+        _opt("b", "Width / second side", OptionType.number, default=5, min=0),
+        _opt("c", "Third side", OptionType.number, default=7, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Triangle Calculator", slug="triangle-calculator", category="calculators",
+    description="Find area, perimeter and angles from three sides.",
+    seo_keywords=['Triangle Calculator', 'Triangle Area', 'Heron Formula'],
+    how_to_use=['Enter the three sides', 'Read area and angles'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("a", "Side a", OptionType.number, default=3, min=0),
+        _opt("b", "Side b", OptionType.number, default=4, min=0),
+        _opt("c", "Side c", OptionType.number, default=5, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Ohms Law Calculator", slug="ohms-law-calculator", category="calculators",
+    description="Enter any two of volts, amps and ohms to find the rest.",
+    seo_keywords=['Ohms Law Calculator', 'Voltage Calculator', 'Watts Calculator'],
+    how_to_use=['Enter any two values', 'Leave the third at zero', 'Read the rest'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("volts", "Volts", OptionType.number, default=12, min=0),
+        _opt("amps", "Amps", OptionType.number, default=0, min=0),
+        _opt("ohms", "Ohms", OptionType.number, default=4, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Resistor Color Code Calculator", slug="resistor-color-code-calculator", category="calculators",
+    description="Read a resistor's value from its colour bands.",
+    seo_keywords=['Resistor Color Code', 'Resistor Calculator', 'Band Colour Code'],
+    how_to_use=['Pick each band colour', 'Read the resistance'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("band1", "Band 1", OptionType.select, default="brown", choices=["black","brown","red","orange","yellow","green","blue","violet","grey","white"]),
+        _opt("band2", "Band 2", OptionType.select, default="black", choices=["black","brown","red","orange","yellow","green","blue","violet","grey","white"]),
+        _opt("multiplier", "Multiplier", OptionType.select, default="red", choices=["black","brown","red","orange","yellow","green","blue","violet","grey","white","gold","silver"]),
+        _opt("tolerance", "Tolerance", OptionType.select, default="gold", choices=["brown","red","green","blue","violet","gold","silver"]),
+    ],
+))
+define(ToolConfig(
+    name="Pressure Converter", slug="pressure-converter", category="calculators",
+    description="Convert between Pa, kPa, bar, psi, atm and mmHg.",
+    seo_keywords=['Pressure Converter', 'psi to bar', 'Pressure Units'],
+    how_to_use=['Enter the value', 'Pick the units', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=1),
+        _opt("from", "From", OptionType.select, default="bar", choices=['Pa', 'kPa', 'bar', 'psi', 'atm', 'mmHg']),
+        _opt("to", "To", OptionType.select, default="psi", choices=['Pa', 'kPa', 'bar', 'psi', 'atm', 'mmHg']),
+    ],
+))
+define(ToolConfig(
+    name="Energy Converter", slug="energy-converter", category="calculators",
+    description="Convert joules, calories, watt-hours and BTU.",
+    seo_keywords=['Energy Converter', 'Joules To Calories', 'kWh Converter'],
+    how_to_use=['Enter the value', 'Pick the units', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=1),
+        _opt("from", "From", OptionType.select, default="kWh", choices=['J', 'kJ', 'cal', 'kcal', 'Wh', 'kWh', 'BTU']),
+        _opt("to", "To", OptionType.select, default="kJ", choices=['J', 'kJ', 'cal', 'kcal', 'Wh', 'kWh', 'BTU']),
+    ],
+))
+define(ToolConfig(
+    name="Power Converter", slug="power-converter", category="calculators",
+    description="Convert watts, kilowatts, megawatts and horsepower.",
+    seo_keywords=['Power Converter', 'Watts To Horsepower', 'kW to hp'],
+    how_to_use=['Enter the value', 'Pick the units', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=1),
+        _opt("from", "From", OptionType.select, default="kW", choices=['W', 'kW', 'MW', 'hp']),
+        _opt("to", "To", OptionType.select, default="hp", choices=['W', 'kW', 'MW', 'hp']),
+    ],
+))
+define(ToolConfig(
+    name="Fuel Economy Converter", slug="fuel-economy-converter", category="calculators",
+    description="Convert between mpg, km/l and L/100km.",
+    seo_keywords=['Fuel Economy Converter', 'MPG To L100km', 'Fuel Consumption'],
+    how_to_use=['Enter the figure', 'Choose its unit', 'Read every other unit'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=30, min=0),
+        _opt("from", "Unit", OptionType.select, default="mpg (US)", choices=["mpg (US)", "mpg (UK)", "km/l", "L/100km"]),
+    ],
+))
+define(ToolConfig(
+    name="Cooking Converter", slug="cooking-converter", category="calculators",
+    description="Convert cups, tablespoons, teaspoons, millilitres and more.",
+    seo_keywords=['Cooking Converter', 'Cups To ML', 'Recipe Converter'],
+    how_to_use=['Enter the value', 'Pick the units', 'Read the result'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=1),
+        _opt("from", "From", OptionType.select, default="cup", choices=['ml', 'l', 'tsp', 'tbsp', 'cup', 'pt', 'qt', 'gal', 'fl oz']),
+        _opt("to", "To", OptionType.select, default="ml", choices=['ml', 'l', 'tsp', 'tbsp', 'cup', 'pt', 'qt', 'gal', 'fl oz']),
+    ],
+))
+define(ToolConfig(
+    name="Shoe Size Converter", slug="shoe-size-converter", category="calculators",
+    description="Convert shoe sizes between US, UK and EU.",
+    seo_keywords=['Shoe Size Converter', 'US To EU Shoe Size', 'Shoe Size Chart'],
+    how_to_use=['Enter the size', 'Choose the region', 'Read every other size'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("size", "Size", OptionType.number, default=9, min=0),
+        _opt("from", "Region", OptionType.select, default="US men", choices=["US men", "US women", "UK", "EU"]),
+    ],
+))
+define(ToolConfig(
+    name="Grade Calculator", slug="grade-calculator", category="calculators",
+    description="Work out a weighted grade and what you still need to score.",
+    seo_keywords=['Grade Calculator', 'Weighted Grade', 'Final Grade Calculator'],
+    how_to_use=['Enter your scores', 'Enter matching weights', 'Add a target if you like'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("scores", "Scores (comma separated)", OptionType.text, default="85, 90, 78"),
+        _opt("weights", "Weights (comma separated)", OptionType.text, default="30, 30, 40"),
+        _opt("target_grade", "Target grade (optional)", OptionType.number, default=0, min=0, max=100),
+        _opt("remaining_weight", "Remaining weight (optional)", OptionType.number, default=0, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Split Bill Calculator", slug="split-bill-calculator", category="calculators",
+    description="Split a bill with tip and tax between any number of people.",
+    seo_keywords=['Split Bill Calculator', 'Bill Splitter', 'Share The Bill'],
+    how_to_use=['Enter the bill', 'Add tip and tax', 'Choose how many people'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("bill", "Bill amount", OptionType.number, default=120, min=0),
+        _opt("people", "People", OptionType.number, default=4, min=1, max=100),
+        _opt("tip_percent", "Tip (%)", OptionType.number, default=10, min=0),
+        _opt("tax_percent", "Tax (%)", OptionType.number, default=0, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Mileage Calculator", slug="mileage-calculator", category="calculators",
+    description="Work out mileage reimbursement for a journey.",
+    seo_keywords=['Mileage Calculator', 'Mileage Reimbursement', 'Travel Expenses'],
+    how_to_use=['Enter the distance', 'Enter the rate', 'Read the total'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("distance", "Distance (km)", OptionType.number, default=1200, min=0),
+        _opt("rate_per_km", "Rate per km", OptionType.number, default=0.45, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Concrete Calculator", slug="concrete-calculator", category="calculators",
+    description="Work out how much concrete a slab needs.",
+    seo_keywords=['Concrete Calculator', 'Concrete Volume', 'Cement Calculator'],
+    how_to_use=['Enter the slab size', 'Set the depth', 'Read the volume and bags'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("length_m", "Length (m)", OptionType.number, default=5, min=0),
+        _opt("width_m", "Width (m)", OptionType.number, default=3, min=0),
+        _opt("depth_cm", "Depth (cm)", OptionType.number, default=10, min=0),
+        _opt("waste_percent", "Waste allowance (%)", OptionType.number, default=10, min=0, max=50),
+    ],
+))
+define(ToolConfig(
+    name="Tile Calculator", slug="tile-calculator", category="calculators",
+    description="Work out how many tiles a floor or wall needs.",
+    seo_keywords=['Tile Calculator', 'Flooring Calculator', 'How Many Tiles'],
+    how_to_use=['Enter the area', 'Enter your tile size', 'Read the count'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("area_m2", "Area (m²)", OptionType.number, default=20, min=0),
+        _opt("tile_width_cm", "Tile width (cm)", OptionType.number, default=30, min=1),
+        _opt("tile_height_cm", "Tile height (cm)", OptionType.number, default=30, min=1),
+        _opt("waste_percent", "Waste allowance (%)", OptionType.number, default=10, min=0, max=50),
+    ],
+))
+define(ToolConfig(
+    name="Carbon Footprint Calculator", slug="carbon-footprint-calculator", category="calculators",
+    description="Estimate your yearly CO2 from driving, electricity and flights.",
+    seo_keywords=['Carbon Footprint Calculator', 'CO2 Calculator', 'Emissions Calculator'],
+    how_to_use=['Enter your driving', 'Add your electricity use', 'Add flight hours'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("car_km_per_year", "Car km per year", OptionType.number, default=12000, min=0),
+        _opt("electricity_kwh_per_month", "Electricity (kWh/month)", OptionType.number, default=300, min=0),
+        _opt("flight_hours_per_year", "Flight hours per year", OptionType.number, default=10, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Dice Roller", slug="dice-roller", category="calculators",
+    description="Roll any number of dice with any number of sides.",
+    seo_keywords=['Dice Roller', 'Roll Dice Online', 'Random Dice'],
+    how_to_use=['Choose the sides', 'Choose how many', 'Roll'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("sides", "Sides per die", OptionType.number, default=6, min=2, max=1000),
+        _opt("count", "How many dice", OptionType.number, default=2, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Time Duration Calculator", slug="time-duration-calculator", category="calculators",
+    description="Find the time between two clock times.",
+    seo_keywords=['Time Duration Calculator', 'Hours Between Times', 'Time Difference'],
+    how_to_use=['Enter both times', 'Read the duration'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("start_time", "Start (HH:MM)", OptionType.text, default="09:00"),
+        _opt("end_time", "End (HH:MM)", OptionType.text, default="17:30"),
+    ],
+))
+define(ToolConfig(
+    name="Time Calculator", slug="time-calculator", category="calculators",
+    description="Add or subtract hours and minutes from a time.",
+    seo_keywords=['Time Calculator', 'Add Hours To Time', 'Time Math'],
+    how_to_use=['Enter the time', 'Choose add or subtract', 'Enter hours and minutes'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("time", "Time (HH:MM)", OptionType.text, default="14:30"),
+        _opt("operation", "Operation", OptionType.select, default="add", choices=["add", "subtract"]),
+        _opt("hours", "Hours", OptionType.number, default=2),
+        _opt("minutes", "Minutes", OptionType.number, default=45),
+    ],
+))
+define(ToolConfig(
+    name="Time Zone Converter", slug="timezone-converter", category="calculators",
+    description="Convert a time between any two world time zones.",
+    seo_keywords=['Time Zone Converter', 'World Clock', 'UTC Converter'],
+    how_to_use=['Enter the time', 'Choose both zones', 'Read the converted time'],
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("datetime", "Date and time (YYYY-MM-DD HH:MM, blank = now)", OptionType.text, default=""),
+        _opt("from_zone", "From zone", OptionType.text, default="UTC"),
+        _opt("to_zone", "To zone", OptionType.text, default="Asia/Karachi"),
+    ],
+))
