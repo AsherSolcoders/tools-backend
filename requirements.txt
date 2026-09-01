@@ -15,6 +15,14 @@ PyMuPDF==1.25.1
 python-docx==1.1.2
 qrcode==8.0
 python-barcode==0.15.1
+# Used directly by the JSON/YAML converter. It already arrived as a transitive
+# dependency of uvicorn[standard], but a tool that imports it should say so —
+# otherwise a future uvicorn release could drop it and break the tool silently.
+PyYAML==6.0.2
+# Regex engine with a wall-clock timeout, used to run visitor-supplied patterns
+# without a catastrophic backtrack freezing the server (app/core/regex_guard.py).
+# The guard degrades to refusing risky patterns if this is not installed.
+regex==2024.11.6
 
 # Optional: ML background removal (rembg). Needs ~500 MB RAM for the U2Net model,
 # so it is NOT installed by default — the Background Remover automatically uses the

@@ -159,8 +159,19 @@ def blog_schema(post: Any, *, faqs: list[dict] | None = None) -> dict[str, Any]:
         article["dateModified"] = updated
     if getattr(post, "featured_image", None):
         article["image"] = post.featured_image
+    # Prefer the linked profile: pointing `author` at a real URL with its own
+    # Person node is what lets a search engine connect the byline to the E-E-A-T
+    # signals on the profile page, which a bare name cannot do.
+    profile = getattr(post, "author_user", None)
     author = getattr(post, "author", None)
-    if author:
+    if profile is not None and getattr(profile, "slug", None) and getattr(profile, "profile_public", True):
+        article["author"] = {
+            "@type": "Person",
+            "@id": f"{canonical_url(f'/author/{profile.slug}')}#person",
+            "name": profile.name,
+            "url": canonical_url(f"/author/{profile.slug}"),
+        }
+    elif author:
         article["author"] = {"@type": "Person", "name": author}
     else:
         article["author"] = _organization()
@@ -205,4 +216,66 @@ def website_schema() -> dict[str, Any]:
             "publisher": _organization(),
         },
         _organization(),
+    )
+
+
+def author_schema(author: Any, posts: list[Any] | None = None) -> dict[str, Any]:
+    """An author profile: ProfilePage wrapping a Person, plus what they wrote.
+
+    `ProfilePage` is Google's own recommendation for a page *about* a person, as
+    opposed to `Person` alone, which describes the entity but not the page.
+    """
+    url = canonical_url(f"/author/{author.slug}")
+    socials = [
+        getattr(author, key, None)
+        for key in ("facebook", "twitter", "linkedin", "instagram", "youtube", "website")
+    ]
+    person: dict[str, Any] = {
+        "@type": "Person",
+        "@id": f"{url}#person",
+        "name": author.name,
+        "url": url,
+    }
+    if getattr(author, "profession", None):
+        person["jobTitle"] = author.profession
+    if getattr(author, "bio", None):
+        person["description"] = author.bio
+    if getattr(author, "image", None):
+        person["image"] = author.image
+    # Only the address the user opted into publishing — never the login email.
+    if getattr(author, "contact_email", None):
+        person["email"] = author.contact_email
+    if getattr(author, "address", None):
+        person["address"] = author.address
+    if getattr(author, "education", None):
+        person["alumniOf"] = {"@type": "EducationalOrganization", "name": author.education}
+    skills = [s.strip() for s in (getattr(author, "skills", None) or "").split(",") if s.strip()]
+    if skills:
+        person["knowsAbout"] = skills
+    links = [s for s in socials if s]
+    if links:
+        person["sameAs"] = links
+    person["worksFor"] = _organization()
+
+    profile = {
+        "@type": "ProfilePage",
+        "@id": url,
+        "url": url,
+        "name": author.name,
+        "mainEntity": {"@id": f"{url}#person"},
+        "isPartOf": {"@id": f"{canonical_url('/')}#website"},
+    }
+    if posts:
+        profile["hasPart"] = [
+            {
+                "@type": "BlogPosting",
+                "headline": p.title,
+                "url": canonical_url(f"/{p.slug}"),
+            }
+            for p in posts
+        ]
+    return _graph(
+        profile,
+        person,
+        _breadcrumbs([("Home", "/"), ("Blog", "/blog"), (author.name, f"/author/{author.slug}")]),
     )

@@ -151,8 +151,19 @@ async def process_tool(
         dest.write_bytes(content)
         saved_paths.append(dest)
 
+    # Processors are synchronous and CPU-bound — PDF rendering, image resizing,
+    # regex matching. Called directly from this async handler they would run ON
+    # the event loop, so one slow tool stalls every other request on the box,
+    # the blog and the health check included. A worker thread keeps the stall
+    # local to the request that caused it.
+    from starlette.concurrency import run_in_threadpool
+
     try:
-        result = processor(files=saved_paths, text=text, options=parsed_options)
+        result = await run_in_threadpool(
+            processor, files=saved_paths, text=text, options=parsed_options
+        )
+    except RecursionError:
+        raise HTTPException(status_code=422, detail="That input is nested too deeply to process.")
     except Exception as e:  # surface processing errors cleanly
         raise HTTPException(status_code=422, detail=f"Processing failed: {e}")
 

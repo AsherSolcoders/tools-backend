@@ -6,7 +6,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from app.core.slug import normalize_slug_list, slugify
-from app.schemas.user import UserRef
+from app.schemas.user import AuthorRef, UserRef
 
 
 def _clean_slug(value: str) -> str:
@@ -63,8 +63,10 @@ class BlogIn(BaseModel):
     published_at: datetime | None = None
     display_date: datetime | None = None
     category_id: int | None = None
+    # Who gets the byline. The display name is derived from this account on the
+    # server (see admin._assign_author) rather than being typed in, so a post can
+    # never credit a name that no profile page backs. Editors cannot set it.
     author_id: int | None = None
-    author: str | None = None
     is_featured: bool = False
     is_popular: bool = False
     category_ids: list[int] = []
@@ -103,6 +105,7 @@ class BlogOut(BaseModel):
     status: str
     category_id: int | None
     author: str | None = None
+    author_user: AuthorRef | None = None
     is_featured: bool = False
     is_popular: bool = False
     categories: list[BlogCategoryOut] = []
@@ -122,6 +125,7 @@ class BlogListItem(BaseModel):
     featured_image: str | None
     status: str
     author: str | None = None
+    author_user: AuthorRef | None = None
     is_featured: bool = False
     is_popular: bool = False
     published_at: datetime | None

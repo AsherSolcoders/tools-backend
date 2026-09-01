@@ -14,7 +14,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
-from app.api.routes import admin, blog, health, media, seo, site, tools
+from app.api.routes import admin, authors, blog, health, media, seo, site, tools
 from app.config import settings
 from app.core.limiter import limiter
 from app.core.security import SecureHeadersMiddleware
@@ -43,6 +43,19 @@ def _seed_admin() -> None:
       - in production WITHOUT ADMIN_PASSWORD, seeding is skipped so we never ship
         an account with default credentials.
     """
+    # Refuse to run in production on the placeholder signing key.
+    #
+    # That default sits in this repository, so anyone who can read it could mint
+    # a valid admin token and sign in as the super admin. Failing at startup
+    # makes that impossible to miss; a log warning at this severity gets scrolled
+    # past. Set SECRET_KEY in the server's .env before deploying.
+    if settings.environment == "production" and settings.secret_key == "dev-insecure-secret-change-me":
+        raise RuntimeError(
+            "SECRET_KEY is still the development placeholder, which is published in "
+            "the repository. Set a long random SECRET_KEY in .env before starting in "
+            "production — every admin session token is signed with it."
+        )
+
     from sqlalchemy import select
 
     from app.core.security import hash_password
@@ -115,6 +128,7 @@ app.mount("/storage", StaticFiles(directory=settings.storage_dir), name="storage
 app.include_router(health.router)
 app.include_router(tools.router)
 app.include_router(blog.router)
+app.include_router(authors.router)
 app.include_router(admin.router)
 app.include_router(media.router)
 app.include_router(seo.router)

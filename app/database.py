@@ -50,6 +50,7 @@ def _add_missing_columns() -> None:
     """
     is_postgres = engine.dialect.name == "postgresql"
     false_default = "FALSE" if is_postgres else "0"
+    true_default = "TRUE" if is_postgres else "1"
     ts_type = "TIMESTAMPTZ" if is_postgres else "DATETIME"
 
     additive_columns: dict[str, dict[str, str]] = {
@@ -61,6 +62,27 @@ def _add_missing_columns() -> None:
             "updated_by_id": "INTEGER",
             "old_slugs": "VARCHAR(1000)",
             "display_date": ts_type,
+        },
+        "users": {
+            "slug": "VARCHAR(180)",
+            "image": "VARCHAR(500)",
+            "cover_image": "VARCHAR(500)",
+            "bio": "TEXT",
+            "profession": "VARCHAR(160)",
+            "education": "VARCHAR(160)",
+            "skills": "VARCHAR(500)",
+            "experience": "VARCHAR(160)",
+            "address": "VARCHAR(300)",
+            "contact_email": "VARCHAR(255)",
+            "facebook": "VARCHAR(500)",
+            "twitter": "VARCHAR(500)",
+            "linkedin": "VARCHAR(500)",
+            "instagram": "VARCHAR(500)",
+            "youtube": "VARCHAR(500)",
+            "website": "VARCHAR(500)",
+            "meta_title": "VARCHAR(255)",
+            "meta_description": "VARCHAR(500)",
+            "profile_public": f"BOOLEAN DEFAULT {true_default}",
         },
         "blog_categories": {
             "meta_title": "VARCHAR(255)",

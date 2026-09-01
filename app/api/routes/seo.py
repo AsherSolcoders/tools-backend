@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.core.urls import canonical_base
 from app.database import get_db
-from app.models import Blog
+from app.models import Blog, User
 from app.models.blog import BlogStatus
 from app.tools import list_categories, list_tools
 
@@ -39,6 +39,11 @@ def sitemap(db: Session = Depends(get_db)):
     urls += [f"{base}/{t.slug}" for t in list_tools()]
     blogs = db.execute(select(Blog).where(Blog.status == BlogStatus.published)).scalars().all()
     urls += [f"{base}/{b.slug}" for b in blogs]
+    # Author profiles. Only public ones with a slug — the rest have no page.
+    people = db.execute(
+        select(User).where(User.profile_public.is_(True), User.slug.isnot(None))
+    ).scalars().all()
+    urls += [f"{base}/author/{u.slug}" for u in people]
 
     items = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
     xml = (

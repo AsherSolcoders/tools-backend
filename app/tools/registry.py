@@ -65,7 +65,20 @@ _CALC_CONTENT = """
 <p>Every calculator is free, needs no account, and keeps whatever you type on your own screen. Nothing you enter is stored. Pick a calculator below and get your answer in a couple of seconds.</p>
 """
 
+_SEO_CONTENT = """
+<p>ToolSimpli's free SEO tools cover the checks you actually run before a page goes live. Generate the meta tags, Open Graph tags and canonical link that decide how a page looks when it is shared or listed, preview the result as a SERP snippet, and confirm the title and description fit before Google truncates them.</p>
+<p>Structured data is where most sites lose rich results. The schema markup generator writes valid JSON-LD for articles, products, FAQs, breadcrumbs, local businesses and reviews, and the structured data validator checks what you already have — so a missing required field is caught here rather than in Search Console six weeks later.</p>
+<p>For on-page work, paste your HTML and get the heading structure, image alt coverage, internal and outbound links, anchor text spread and code-to-text ratio in one pass. Content tools cover keyword density, keyword prominence, keyword combinations and a content brief you can hand to a writer. Technical tools generate robots.txt, XML sitemaps, hreflang tags and .htaccess redirects, and test a robots.txt against a URL before you deploy it.</p>
+<p>Every tool runs on what you paste in. Nothing is crawled, nothing is stored, and no account is needed. Pick a tool below and get the answer in a couple of seconds.</p>
+"""
+
 CATEGORIES: list[Category] = [
+    Category(
+        "seo-tools", "SEO Tools", "Meta tags, schema markup, sitemaps and on-page audits.", "trending-up",
+        meta_title="Free SEO Tools – Meta Tags, Schema, Sitemap & On-Page Audit | ToolSimpli",
+        meta_description="Free online SEO tools to generate meta tags, Open Graph, schema markup, robots.txt and sitemaps, plus on-page checks for headings, alt text and links. No signup.",
+        content=_SEO_CONTENT.strip(),
+    ),
     Category(
         "calculators", "Calculators", "Loan, savings, percentage, health and date calculators.", "calculator",
         meta_title="Free Online Calculators – Loan, EMI, Percentage, BMI & More | ToolSimpli",
@@ -1986,5 +1999,1721 @@ define(ToolConfig(
         _opt("datetime", "Date and time (YYYY-MM-DD HH:MM, blank = now)", OptionType.text, default=""),
         _opt("from_zone", "From zone", OptionType.text, default="UTC"),
         _opt("to_zone", "To zone", OptionType.text, default="Asia/Karachi"),
+    ],
+))
+define(ToolConfig(
+    name="Sentence and Paragraph Counter", slug="sentence-paragraph-counter", category="text-tools",
+    description="Count sentences and paragraphs, with averages for each.",
+    seo_keywords=['Sentence Counter', 'Paragraph Counter', 'Sentence Count Tool'],
+    how_to_use=['Paste your text', 'Read the counts'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Line Counter", slug="line-counter", category="text-tools",
+    description="Count total, empty, unique and longest lines.",
+    seo_keywords=['Line Counter', 'Count Lines', 'Line Count Tool'],
+    how_to_use=['Paste your text', 'Read the line counts'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Keyword Density Checker", slug="keyword-density-checker", category="text-tools",
+    description="See which words dominate your text, and by how much.",
+    seo_keywords=['Keyword Density Checker', 'Word Frequency', 'Keyword Density Tool'],
+    how_to_use=['Paste your text', 'Set the minimum word length', 'Read the densities'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("min_length", "Minimum word length", OptionType.number, default=3, min=1, max=20),
+        _opt("top", "How many keywords", OptionType.number, default=20, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Readability Checker", slug="readability-checker", category="text-tools",
+    description="Score your writing with Flesch, Flesch-Kincaid and Gunning Fog.",
+    seo_keywords=['Readability Checker', 'Flesch Reading Ease', 'Readability Score'],
+    how_to_use=['Paste your text', 'Read the score and grade level'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Text Analyzer", slug="text-analyzer", category="text-tools",
+    description="Full statistics for any text in one pass.",
+    seo_keywords=['Text Analyzer', 'Text Statistics', 'Text Analysis Tool'],
+    how_to_use=['Paste your text', 'Read the statistics'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Headline Analyzer", slug="headline-analyzer", category="text-tools",
+    description="Score a headline on length, numbers and power words.",
+    seo_keywords=['Headline Analyzer', 'Title Analyzer', 'Headline Score'],
+    how_to_use=['Type your headline', 'Read the score and suggestions'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Text Summarizer", slug="text-summarizer", category="text-tools",
+    description="Shorten long text by keeping only its most important sentences.",
+    seo_keywords=['Text Summarizer', 'Summarize Text', 'Article Summarizer'],
+    how_to_use=['Paste your text', 'Choose how many sentences', 'Read the summary'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("sentences", "Sentences to keep", OptionType.number, default=3, min=1, max=20),
+    ],
+))
+define(ToolConfig(
+    name="Style Checker", slug="style-checker", category="text-tools",
+    description="Catch repeated words, spacing slips and sentences that run too long.",
+    seo_keywords=['Style Checker', 'Punctuation Checker', 'Writing Checker'],
+    how_to_use=['Paste your text', 'Review the issues found'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Palindrome Checker", slug="palindrome-checker", category="text-tools",
+    description="Check whether a word or phrase reads the same backwards.",
+    seo_keywords=['Palindrome Checker', 'Is It A Palindrome', 'Palindrome Test'],
+    how_to_use=['Type a word or phrase', 'See the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Uppercase Converter", slug="uppercase-converter", category="text-tools",
+    description="Turn any text into UPPERCASE.",
+    seo_keywords=['Uppercase Converter', 'Text To Uppercase', 'Capital Letters'],
+    how_to_use=['Paste your text', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Lowercase Converter", slug="lowercase-converter", category="text-tools",
+    description="Turn any text into lowercase.",
+    seo_keywords=['Lowercase Converter', 'Text To Lowercase', 'Small Letters'],
+    how_to_use=['Paste your text', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Capitalize Each Word", slug="capitalize-each-word", category="text-tools",
+    description="Capitalize the first letter of every word, leaving acronyms intact.",
+    seo_keywords=['Capitalize Each Word', 'Title Case Converter', 'Capitalize Text'],
+    how_to_use=['Paste your text', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Remove Extra Spaces", slug="remove-extra-spaces", category="text-tools",
+    description="Collapse repeated spaces and tabs down to one.",
+    seo_keywords=['Remove Extra Spaces', 'Remove Double Spaces', 'Space Remover'],
+    how_to_use=['Paste your text', 'Copy the cleaned text'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Trim Whitespace", slug="trim-whitespace", category="text-tools",
+    description="Strip spaces from the start, the end, or both ends of every line.",
+    seo_keywords=['Trim Whitespace', 'Trim Spaces', 'Whitespace Remover'],
+    how_to_use=['Paste your text', 'Choose which end', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("where", "Trim", OptionType.select, default="both", choices=["both", "start", "end"]),
+    ],
+))
+define(ToolConfig(
+    name="Remove Line Breaks", slug="remove-line-breaks", category="text-tools",
+    description="Join wrapped lines back into flowing paragraphs.",
+    seo_keywords=['Remove Line Breaks', 'Remove Newlines', 'Join Lines'],
+    how_to_use=['Paste your text', 'Choose whether to keep paragraphs', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("keep_paragraphs", "Keep paragraph breaks", OptionType.boolean, default=True),
+        _opt("add_space", "Add a space where lines join", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Add Line Breaks", slug="add-line-breaks", category="text-tools",
+    description="Wrap text to a set width, or break it after a chosen character.",
+    seo_keywords=['Add Line Breaks', 'Insert Line Breaks', 'Wrap Text'],
+    how_to_use=['Paste your text', 'Choose wrap width or a marker', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Break", OptionType.select, default="width", choices=["width", "after"]),
+        _opt("width", "Wrap width", OptionType.number, default=80, min=10, max=500),
+        _opt("after", "Break after this character", OptionType.text, default="."),
+    ],
+))
+define(ToolConfig(
+    name="Remove Empty Lines", slug="remove-empty-lines", category="text-tools",
+    description="Delete blank lines from a list or a document.",
+    seo_keywords=['Remove Empty Lines', 'Delete Blank Lines', 'Remove Blank Rows'],
+    how_to_use=['Paste your text', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Remove Specific Characters", slug="remove-specific-characters", category="text-tools",
+    description="Strip chosen characters, all punctuation, or all digits.",
+    seo_keywords=['Remove Characters', 'Remove Symbols', 'Character Remover'],
+    how_to_use=['Paste your text', 'Enter the characters to remove', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("characters", "Characters to remove", OptionType.text, default=""),
+        _opt("remove_punctuation", "Remove all punctuation", OptionType.boolean, default=False),
+        _opt("remove_digits", "Remove all digits", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Text Cleaner", slug="text-cleaner", category="text-tools",
+    description="Every tidy-up in one pass — spacing, blank lines, HTML, smart quotes.",
+    seo_keywords=['Text Cleaner', 'Clean Text Online', 'Text Formatter'],
+    how_to_use=['Paste your text', 'Tick what to clean', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("fix_smart_quotes", "Straighten curly quotes and dashes", OptionType.boolean, default=True),
+        _opt("single_spaces", "Collapse repeated spaces", OptionType.boolean, default=True),
+        _opt("remove_empty_lines", "Remove blank lines", OptionType.boolean, default=True),
+        _opt("strip_html", "Strip HTML tags", OptionType.boolean, default=False),
+        _opt("remove_urls", "Remove URLs", OptionType.boolean, default=False),
+        _opt("remove_punctuation", "Remove punctuation", OptionType.boolean, default=False),
+        _opt("remove_numbers", "Remove numbers", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Find and Replace", slug="find-and-replace", category="text-tools",
+    description="Replace text across a whole document, with optional regex.",
+    seo_keywords=['Find And Replace', 'Replace Text Online', 'Search And Replace'],
+    how_to_use=['Paste your text', 'Enter what to find and what to replace it with', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("find", "Find", OptionType.text, default=""),
+        _opt("replace", "Replace with", OptionType.text, default=""),
+        _opt("case_sensitive", "Match case", OptionType.boolean, default=True),
+        _opt("regex", "Treat as a regular expression", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Shuffle Lines", slug="shuffle-lines", category="text-tools",
+    description="Put a list of lines into random order.",
+    seo_keywords=['Shuffle Lines', 'Randomize Lines', 'Random Line Order'],
+    how_to_use=['Paste your lines', 'Shuffle', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Add Prefix and Suffix", slug="add-prefix-suffix", category="text-tools",
+    description="Wrap every line with text of your choice.",
+    seo_keywords=['Add Prefix To Lines', 'Add Suffix', 'Prefix Suffix Tool'],
+    how_to_use=['Paste your lines', 'Enter a prefix or suffix', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("prefix", "Prefix", OptionType.text, default=""),
+        _opt("suffix", "Suffix", OptionType.text, default=""),
+        _opt("skip_empty", "Skip blank lines", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Add Line Numbers", slug="add-line-numbers", category="text-tools",
+    description="Number every line, with your own separator.",
+    seo_keywords=['Add Line Numbers', 'Number Lines', 'Line Numbering Tool'],
+    how_to_use=['Paste your text', 'Set the starting number', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("start", "Start at", OptionType.number, default=1),
+        _opt("separator", "Separator", OptionType.text, default=". "),
+        _opt("pad", "Line up the numbers", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Text Repeater", slug="text-repeater", category="text-tools",
+    description="Repeat text as many times as you need.",
+    seo_keywords=['Text Repeater', 'Repeat Text', 'Duplicate Text'],
+    how_to_use=['Paste your text', 'Choose how many times', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("times", "Repetitions", OptionType.number, default=5, min=1, max=10000),
+        _opt("separator", "Separated by", OptionType.select, default="newline", choices=["newline", "space", "comma", "none"]),
+    ],
+))
+define(ToolConfig(
+    name="Column Extractor", slug="column-extractor", category="text-tools",
+    description="Pull a single column out of CSV or other delimited text.",
+    seo_keywords=['Column Extractor', 'CSV Column Extractor', 'Split Columns'],
+    how_to_use=['Paste your rows', 'Pick the delimiter and column', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("delimiter", "Delimiter", OptionType.select, default="comma", choices=["comma", "tab", "pipe", "semicolon", "space"]),
+        _opt("column", "Column number", OptionType.number, default=1, min=1, max=200),
+    ],
+))
+define(ToolConfig(
+    name="Single Line Converter", slug="single-line-converter", category="text-tools",
+    description="Collapse text into one line, or split one line back out.",
+    seo_keywords=['Text To One Line', 'Multi Line To Single Line', 'Line Joiner'],
+    how_to_use=['Paste your text', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Convert", OptionType.select, default="to_single", choices=["to_single", "to_lines"]),
+        _opt("separator", "Separator", OptionType.text, default=" "),
+    ],
+))
+define(ToolConfig(
+    name="Text Diff Checker", slug="text-diff", category="text-tools",
+    description="Compare two texts and see exactly what changed.",
+    seo_keywords=['Text Diff', 'Compare Text', 'Text Comparison Tool'],
+    how_to_use=['Paste the original', 'Paste the changed version', 'Read the differences'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("compare_with", "Compare with", OptionType.text, default=""),
+        _opt("ignore_case", "Ignore case", OptionType.boolean, default=False),
+        _opt("ignore_whitespace", "Ignore leading and trailing spaces", OptionType.boolean, default=False),
+        _opt("context", "Context lines", OptionType.number, default=2, min=0, max=10),
+    ],
+))
+define(ToolConfig(
+    name="Common and Unique Lines", slug="common-unique-lines", category="text-tools",
+    description="Find the lines two lists share, or the ones only one has.",
+    seo_keywords=['Compare Lists', 'Common Lines', 'Unique Lines Finder'],
+    how_to_use=['Paste both lists', 'Choose what to keep', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("compare_with", "Second list", OptionType.text, default=""),
+        _opt("mode", "Keep", OptionType.select, default="common", choices=["common", "only_first", "only_second", "not_shared"]),
+        _opt("case_sensitive", "Match case", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Base64 Text Converter", slug="base64-text", category="text-tools",
+    description="Encode text to Base64, or decode it back.",
+    seo_keywords=['Base64 Encode', 'Base64 Decode', 'Base64 Converter'],
+    how_to_use=['Paste your text', 'Choose encode or decode', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+        _opt("url_safe", "URL-safe alphabet", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="HTML Entity Converter", slug="html-entity-converter", category="text-tools",
+    description="Escape text for HTML, or turn entities back into characters.",
+    seo_keywords=['HTML Entity Encode', 'HTML Entity Decode', 'HTML Escape Tool'],
+    how_to_use=['Paste your text', 'Choose encode or decode', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+    ],
+))
+define(ToolConfig(
+    name="Unicode Converter", slug="unicode-converter", category="text-tools",
+    description="Move between readable text, \\uXXXX escapes and UTF-8 bytes.",
+    seo_keywords=['Unicode Converter', 'UTF-8 Converter', 'Unicode Escape'],
+    how_to_use=['Paste your text', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Convert", OptionType.select, default="to_escapes", choices=["to_escapes", "from_escapes", "to_bytes", "from_bytes"]),
+    ],
+))
+define(ToolConfig(
+    name="Binary to Text Converter", slug="binary-text-converter", category="text-tools",
+    description="Convert text to binary and binary back to text.",
+    seo_keywords=['Binary To Text', 'Text To Binary', 'Binary Translator'],
+    how_to_use=['Paste text or binary', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+    ],
+))
+define(ToolConfig(
+    name="Hex to Text Converter", slug="hex-text-converter", category="text-tools",
+    description="Convert text to hexadecimal and hex back to text.",
+    seo_keywords=['Hex To Text', 'Text To Hex', 'Hexadecimal Converter'],
+    how_to_use=['Paste text or hex', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+    ],
+))
+define(ToolConfig(
+    name="ASCII and Octal Converter", slug="ascii-octal-converter", category="text-tools",
+    description="Convert text to character codes in decimal or octal.",
+    seo_keywords=['ASCII Converter', 'Octal Converter', 'Character Code Converter'],
+    how_to_use=['Paste text or codes', 'Pick decimal or octal', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+        _opt("base", "Number base", OptionType.select, default="decimal", choices=["decimal", "octal"]),
+    ],
+))
+define(ToolConfig(
+    name="ROT13 and Caesar Cipher", slug="caesar-cipher", category="text-tools",
+    description="Shift letters by any amount — ROT13 by default.",
+    seo_keywords=['ROT13', 'Caesar Cipher', 'Letter Shift Cipher'],
+    how_to_use=['Paste your text', 'Set the shift', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+        _opt("shift", "Shift by", OptionType.number, default=13, min=1, max=25),
+    ],
+))
+define(ToolConfig(
+    name="Morse Code Translator", slug="morse-code-translator", category="text-tools",
+    description="Translate text to Morse code and back.",
+    seo_keywords=['Morse Code Translator', 'Text To Morse', 'Morse Decoder'],
+    how_to_use=['Paste text or Morse', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+    ],
+))
+define(ToolConfig(
+    name="Number to Words Converter", slug="number-to-words", category="text-tools",
+    description="Spell any number out in English words.",
+    seo_keywords=['Number To Words', 'Number Spelling', 'Numbers In Words'],
+    how_to_use=['Type a number', 'Copy the words'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Words to Number Converter", slug="words-to-number", category="text-tools",
+    description="Turn a number written in words back into digits.",
+    seo_keywords=['Words To Number', 'Text To Number', 'Word Number Converter'],
+    how_to_use=['Type the number in words', 'Copy the digits'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Roman Numeral Converter", slug="roman-numeral-converter", category="text-tools",
+    description="Convert between numbers and Roman numerals, both ways.",
+    seo_keywords=['Roman Numeral Converter', 'Number To Roman', 'Roman To Number'],
+    how_to_use=['Type a number or a numeral', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Email Extractor", slug="email-extractor", category="text-tools",
+    description="Pull every email address out of a block of text.",
+    seo_keywords=['Email Extractor', 'Extract Emails', 'Email Finder'],
+    how_to_use=['Paste your text', 'Copy the addresses'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("unique", "Remove duplicates", OptionType.boolean, default=True),
+        _opt("lowercase", "Lowercase them", OptionType.boolean, default=True),
+        _opt("sort", "Sort alphabetically", OptionType.boolean, default=False),
+        _opt("separator", "Separated by", OptionType.select, default="newline", choices=["newline", "comma"]),
+    ],
+))
+define(ToolConfig(
+    name="URL Extractor", slug="url-extractor", category="text-tools",
+    description="Pull every link out of text or pasted HTML.",
+    seo_keywords=['URL Extractor', 'Link Extractor', 'Extract URLs'],
+    how_to_use=['Paste your text', 'Copy the links'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("unique", "Remove duplicates", OptionType.boolean, default=True),
+        _opt("domains_only", "Domains only", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Phone Number Extractor", slug="phone-extractor", category="text-tools",
+    description="Find phone numbers in any block of text.",
+    seo_keywords=['Phone Number Extractor', 'Extract Phone Numbers', 'Phone Finder'],
+    how_to_use=['Paste your text', 'Copy the numbers'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("unique", "Remove duplicates", OptionType.boolean, default=True),
+        _opt("digits_only", "Strip formatting", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Number Extractor", slug="number-extractor", category="text-tools",
+    description="Pull every number out of text, with a running total.",
+    seo_keywords=['Number Extractor', 'Extract Numbers', 'Digit Extractor'],
+    how_to_use=['Paste your text', 'Copy the numbers'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("include_decimals", "Include decimals", OptionType.boolean, default=True),
+        _opt("unique", "Remove duplicates", OptionType.boolean, default=False),
+        _opt("sort", "Sort smallest first", OptionType.boolean, default=False),
+        _opt("separator", "Separated by", OptionType.select, default="newline", choices=["newline", "comma"]),
+    ],
+))
+define(ToolConfig(
+    name="Text Between Delimiters", slug="delimiter-extractor", category="text-tools",
+    description="Extract everything sitting between two markers.",
+    seo_keywords=['Extract Text Between', 'Delimiter Extractor', 'Text Between Characters'],
+    how_to_use=['Paste your text', 'Set the opening and closing markers', 'Copy the matches'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("start", "Opening marker", OptionType.text, default="["),
+        _opt("end", "Closing marker", OptionType.text, default="]"),
+        _opt("include_markers", "Keep the markers", OptionType.boolean, default=False),
+        _opt("across_lines", "Match across lines", OptionType.boolean, default=False),
+        _opt("unique", "Remove duplicates", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Random String Generator", slug="random-string-generator", category="text-tools",
+    description="Generate random strings, passwords and keys.",
+    seo_keywords=['Random String Generator', 'Password Generator', 'Random Key Generator'],
+    how_to_use=['Set the length', 'Pick the character sets', 'Generate'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("length", "Length", OptionType.number, default=16, min=1, max=512),
+        _opt("count", "How many", OptionType.number, default=5, min=1, max=200),
+        _opt("lowercase", "Lowercase letters", OptionType.boolean, default=True),
+        _opt("uppercase", "Uppercase letters", OptionType.boolean, default=True),
+        _opt("digits", "Digits", OptionType.boolean, default=True),
+        _opt("symbols", "Symbols", OptionType.boolean, default=False),
+        _opt("exclude_ambiguous", "Avoid look-alike characters", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Random Word Generator", slug="random-word-generator", category="text-tools",
+    description="Generate random words or names for names, tests and games.",
+    seo_keywords=['Random Word Generator', 'Random Name Generator', 'Word Picker'],
+    how_to_use=['Choose words or names', 'Set how many', 'Generate'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Generate", OptionType.select, default="words", choices=["words", "names"]),
+        _opt("count", "How many", OptionType.number, default=10, min=1, max=500),
+        _opt("unique", "No repeats", OptionType.boolean, default=True),
+        _opt("capitalize", "Capitalize", OptionType.boolean, default=False),
+        _opt("separator", "Separated by", OptionType.select, default="newline", choices=["newline", "comma"]),
+    ],
+))
+define(ToolConfig(
+    name="Username Generator", slug="username-generator", category="text-tools",
+    description="Generate available-looking usernames and handles.",
+    seo_keywords=['Username Generator', 'Handle Generator', 'Nickname Generator'],
+    how_to_use=['Optionally type a base word', 'Pick a style', 'Generate'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="word_word", choices=["word_word", "name_number", "word_word_number"]),
+        _opt("separator", "Joiner", OptionType.text, default="_"),
+        _opt("count", "How many", OptionType.number, default=10, min=1, max=200),
+    ],
+))
+define(ToolConfig(
+    name="Placeholder Data Generator", slug="placeholder-data-generator", category="text-tools",
+    description="Generate fake rows for testing, as JSON, CSV or SQL.",
+    seo_keywords=['Placeholder Data Generator', 'Fake Data Generator', 'Test Data Generator'],
+    how_to_use=['Choose the format', 'Set how many rows', 'Generate'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("rows", "Rows", OptionType.number, default=10, min=1, max=500),
+        _opt("format", "Format", OptionType.select, default="json", choices=["json", "csv", "sql"]),
+    ],
+))
+define(ToolConfig(
+    name="Fancy Text Generator", slug="fancy-text-generator", category="text-tools",
+    description="Turn text into every Unicode style at once — bold, script, bubble and more.",
+    seo_keywords=['Fancy Text Generator', 'Stylish Text', 'Cool Fonts Copy Paste'],
+    how_to_use=['Type your text', 'Pick the style you like', 'Copy it'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Bold and Italic Unicode Text", slug="bold-italic-text", category="text-tools",
+    description="Bold, italic, script, fraktur and monospace text you can paste anywhere.",
+    seo_keywords=['Bold Text Generator', 'Italic Text Generator', 'Unicode Font Converter'],
+    how_to_use=['Type your text', 'Choose a style', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="bold", choices=["bold", "italic", "bold italic", "script", "bold script", "fraktur", "double-struck", "sans-serif", "sans bold", "sans italic", "monospace", "wide"]),
+    ],
+))
+define(ToolConfig(
+    name="Small Text and Superscript Generator", slug="small-superscript-text", category="text-tools",
+    description="Small caps, superscript and subscript text.",
+    seo_keywords=['Small Text Generator', 'Superscript Generator', 'Subscript Text'],
+    how_to_use=['Type your text', 'Choose a style', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="small caps", choices=["small caps", "superscript", "subscript"]),
+    ],
+))
+define(ToolConfig(
+    name="Strikethrough and Underline Text", slug="strikethrough-text", category="text-tools",
+    description="Add a strike, underline or overline that survives copy and paste.",
+    seo_keywords=['Strikethrough Text', 'Underline Text Generator', 'Crossed Out Text'],
+    how_to_use=['Type your text', 'Choose a style', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="strikethrough", choices=["strikethrough", "underline", "double underline", "overline", "slash"]),
+    ],
+))
+define(ToolConfig(
+    name="Bubble and Square Text", slug="bubble-square-text", category="text-tools",
+    description="Turn letters into circled or squared characters.",
+    seo_keywords=['Bubble Text Generator', 'Circled Text', 'Square Text Generator'],
+    how_to_use=['Type your text', 'Choose bubble or square', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="bubble", choices=["bubble", "square"]),
+    ],
+))
+define(ToolConfig(
+    name="Zalgo Glitch Text Generator", slug="zalgo-text-generator", category="text-tools",
+    description="Create the corrupted, glitchy Zalgo look.",
+    seo_keywords=['Zalgo Text Generator', 'Glitch Text', 'Cursed Text Generator'],
+    how_to_use=['Type your text', 'Set the intensity', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("intensity", "Intensity", OptionType.number, default=5, min=1, max=30),
+        _opt("above", "Marks above", OptionType.boolean, default=True),
+        _opt("below", "Marks below", OptionType.boolean, default=True),
+        _opt("middle", "Marks through", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Upside Down Text Generator", slug="upside-down-text", category="text-tools",
+    description="Flip text upside down for bios and posts.",
+    seo_keywords=['Upside Down Text', 'Flip Text', 'Reverse Text Generator'],
+    how_to_use=['Type your text', 'Copy the flipped result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("reverse", "Reverse the order too", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="ASCII Art Generator", slug="ascii-art-generator", category="text-tools",
+    description="Draw short words as large block letters.",
+    seo_keywords=['ASCII Art Generator', 'Text To ASCII Art', 'Block Letter Generator'],
+    how_to_use=['Type a short word', 'Pick the fill character', 'Copy the art'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("character", "Fill character", OptionType.text, default="#"),
+        _opt("spacing", "Space between letters", OptionType.number, default=1, min=0, max=5),
+    ],
+))
+define(ToolConfig(
+    name="Markdown to HTML Converter", slug="markdown-to-html", category="text-tools",
+    description="Turn Markdown into clean, safe HTML.",
+    seo_keywords=['Markdown To HTML', 'MD To HTML Converter', 'Markdown Converter'],
+    how_to_use=['Paste your Markdown', 'Copy the HTML'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="HTML to Markdown Converter", slug="html-to-markdown", category="text-tools",
+    description="Turn HTML back into readable Markdown.",
+    seo_keywords=['HTML To Markdown', 'HTML To MD Converter', 'Markdown From HTML'],
+    how_to_use=['Paste your HTML', 'Copy the Markdown'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Hashtag Generator", slug="hashtag-generator", category="text-tools",
+    description="Turn a topic or caption into ready-to-post hashtags.",
+    seo_keywords=['Hashtag Generator', 'Social Tag Generator', 'Instagram Hashtags'],
+    how_to_use=['Enter a topic or paste a caption', 'Choose how many', 'Copy the hashtags'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("count", "How many", OptionType.number, default=20, min=1, max=60),
+        _opt("style", "Style", OptionType.select, default="lowercase", choices=["lowercase", "camel"]),
+        _opt("combine", "Include two-word tags", OptionType.boolean, default=True),
+        _opt("separator", "Separated by", OptionType.select, default="space", choices=["space", "newline"]),
+    ],
+))
+define(ToolConfig(
+    name="JSON Viewer", slug="json-viewer", category="developer-tools",
+    description="Flatten JSON into one searchable path per value.",
+    seo_keywords=['JSON Viewer', 'JSON Tree Explorer', 'JSON Path Viewer'],
+    how_to_use=['Paste your JSON', 'Read the paths'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("limit", "Rows to show", OptionType.number, default=500, min=1, max=5000),
+    ],
+))
+define(ToolConfig(
+    name="JSON Diff", slug="json-diff", category="developer-tools",
+    description="Compare two JSON documents by value, not by text.",
+    seo_keywords=['JSON Diff', 'Compare JSON', 'JSON Comparison Tool'],
+    how_to_use=['Paste the first JSON', 'Paste the second', 'Read the differences'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("compare_with", "Second JSON", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="JSONPath Tester", slug="jsonpath-tester", category="developer-tools",
+    description="Query JSON with a dotted path and see what it returns.",
+    seo_keywords=['JSONPath Tester', 'JSON Query Tool', 'JSON Path Evaluator'],
+    how_to_use=['Paste your JSON', 'Enter a path like users[0].email', 'Read the matches'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("query", "Path", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="JSON to YAML Converter", slug="json-yaml-converter", category="developer-tools",
+    description="Convert JSON to YAML and YAML back to JSON.",
+    seo_keywords=['JSON To YAML', 'YAML To JSON', 'YAML Converter'],
+    how_to_use=['Paste JSON or YAML', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="json_to_yaml", choices=["json_to_yaml", "yaml_to_json"]),
+        _opt("indent", "JSON indent", OptionType.number, default=2, min=0, max=8),
+        _opt("sort_keys", "Sort keys", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="JSON to XML Converter", slug="json-xml-converter", category="developer-tools",
+    description="Convert JSON to XML and XML back to JSON.",
+    seo_keywords=['JSON To XML', 'XML To JSON', 'XML Converter'],
+    how_to_use=['Paste JSON or XML', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="json_to_xml", choices=["json_to_xml", "xml_to_json"]),
+        _opt("root", "Root element name", OptionType.text, default="root"),
+        _opt("indent", "Indent", OptionType.number, default=2, min=0, max=8),
+    ],
+))
+define(ToolConfig(
+    name="JSON to CSV Converter", slug="json-csv-converter", category="developer-tools",
+    description="Convert JSON to CSV or TSV, and CSV back to JSON.",
+    seo_keywords=['JSON To CSV', 'CSV To JSON', 'JSON CSV Converter'],
+    how_to_use=['Paste JSON or CSV', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="json_to_csv", choices=["json_to_csv", "csv_to_json"]),
+        _opt("delimiter", "Delimiter", OptionType.select, default="comma", choices=["comma", "tab", "semicolon", "pipe"]),
+        _opt("parse_numbers", "Read numbers as numbers", OptionType.boolean, default=True),
+        _opt("indent", "JSON indent", OptionType.number, default=2, min=0, max=8),
+    ],
+))
+define(ToolConfig(
+    name="TOML and INI Converter", slug="toml-ini-converter", category="developer-tools",
+    description="Convert between TOML, INI and JSON.",
+    seo_keywords=['TOML To JSON', 'INI To JSON', 'TOML Converter'],
+    how_to_use=['Paste your config', 'Choose the direction', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="toml_to_json", choices=["toml_to_json", "ini_to_json", "json_to_toml", "json_to_ini"]),
+    ],
+))
+define(ToolConfig(
+    name="JSON to TypeScript Types", slug="json-to-types", category="developer-tools",
+    description="Turn a JSON sample into TypeScript, Python or Go models.",
+    seo_keywords=['JSON To TypeScript', 'JSON To Types', 'JSON To Struct'],
+    how_to_use=['Paste a JSON sample', 'Pick the language', 'Copy the types'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("language", "Language", OptionType.select, default="typescript", choices=["typescript", "python", "go"]),
+        _opt("name", "Root type name", OptionType.text, default="Root"),
+    ],
+))
+define(ToolConfig(
+    name="cURL to Code Converter", slug="curl-to-code", category="developer-tools",
+    description="Turn a cURL command into JavaScript, Python, Go or PHP.",
+    seo_keywords=['cURL To Code', 'cURL Converter', 'cURL To Python'],
+    how_to_use=['Paste your cURL command', 'Pick the language', 'Copy the code'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("language", "Language", OptionType.select, default="javascript", choices=["javascript", "python", "go", "php"]),
+    ],
+))
+define(ToolConfig(
+    name="CSS Beautifier", slug="css-beautifier", category="developer-tools",
+    description="Re-indent minified CSS into something readable.",
+    seo_keywords=['CSS Beautifier', 'CSS Formatter', 'Unminify CSS'],
+    how_to_use=['Paste your CSS', 'Copy the formatted result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("indent", "Indent size", OptionType.number, default=2, min=0, max=8),
+        _opt("remove_comments", "Remove comments", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="JavaScript Beautifier", slug="js-beautifier", category="developer-tools",
+    description="Re-indent minified JavaScript or TypeScript.",
+    seo_keywords=['JavaScript Beautifier', 'JS Formatter', 'Unminify JavaScript'],
+    how_to_use=['Paste your code', 'Copy the formatted result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("indent", "Indent size", OptionType.number, default=2, min=0, max=8),
+        _opt("keep_blank_lines", "Keep blank lines", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="SQL Formatter", slug="sql-formatter", category="developer-tools",
+    description="Break a long SQL statement onto readable lines.",
+    seo_keywords=['SQL Formatter', 'SQL Beautifier', 'Format SQL Query'],
+    how_to_use=['Paste your query', 'Copy the formatted SQL'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("uppercase_keywords", "Uppercase keywords", OptionType.boolean, default=True),
+        _opt("commas_on_new_lines", "One column per line", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="SQL Minifier", slug="sql-minifier", category="developer-tools",
+    description="Strip comments and whitespace from an SQL statement.",
+    seo_keywords=['SQL Minifier', 'Minify SQL', 'Compress SQL Query'],
+    how_to_use=['Paste your query', 'Copy the minified SQL'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="XML Formatter", slug="xml-formatter", category="developer-tools",
+    description="Pretty-print or minify XML, and catch syntax errors.",
+    seo_keywords=['XML Formatter', 'XML Beautifier', 'XML Validator'],
+    how_to_use=['Paste your XML', 'Copy the formatted result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("indent", "Indent size", OptionType.number, default=2, min=0, max=8),
+        _opt("minify", "Minify instead", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="HTML Minifier", slug="html-minifier", category="developer-tools",
+    description="Shrink HTML without breaking pre or textarea content.",
+    seo_keywords=['HTML Minifier', 'Minify HTML', 'Compress HTML'],
+    how_to_use=['Paste your HTML', 'Copy the minified result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("remove_comments", "Remove comments", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="JavaScript Obfuscator", slug="js-obfuscator", category="developer-tools",
+    description="Hide string literals and strip comments from JavaScript.",
+    seo_keywords=['JavaScript Obfuscator', 'JS Obfuscator', 'Obfuscate Code'],
+    how_to_use=['Paste your JavaScript', 'Copy the obfuscated result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("minify", "Collapse blank lines", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="HTML Validator", slug="html-validator", category="developer-tools",
+    description="Find unclosed tags, bad nesting and missing alt text.",
+    seo_keywords=['HTML Validator', 'HTML Checker', 'Validate HTML'],
+    how_to_use=['Paste your HTML', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="CSS Validator", slug="css-validator", category="developer-tools",
+    description="Catch unbalanced braces and broken declarations.",
+    seo_keywords=['CSS Validator', 'CSS Checker', 'Validate CSS'],
+    how_to_use=['Paste your CSS', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="JavaScript Syntax Checker", slug="js-validator", category="developer-tools",
+    description="Check brackets, quotes and comments before you debug.",
+    seo_keywords=['JavaScript Validator', 'JS Syntax Checker', 'JavaScript Linter'],
+    how_to_use=['Paste your JavaScript', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Hash Generator", slug="hash-generator", category="developer-tools",
+    description="MD5, SHA-1, SHA-256, SHA-512 and more, from any text.",
+    seo_keywords=['Hash Generator', 'MD5 Generator', 'SHA256 Generator'],
+    how_to_use=['Paste your text', 'Pick an algorithm', 'Copy the hash'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("algorithm", "Algorithm", OptionType.select, default="all", choices=["all", "md5", "sha1", "sha224", "sha256", "sha384", "sha512", "sha3_256", "sha3_512", "blake2b"]),
+        _opt("uppercase", "Uppercase output", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="File Hash Checker", slug="file-hash-checker", category="developer-tools",
+    description="Hash a file and compare it against a published checksum.",
+    seo_keywords=['File Hash Checker', 'Checksum Verifier', 'File SHA256'],
+    how_to_use=['Upload the file', 'Paste the expected checksum', 'Compare'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_download=False,
+    accepted_extensions=['*'], max_upload_mb=50,
+    options=[
+        _opt("algorithm", "Algorithm", OptionType.select, default="sha256", choices=["md5", "sha1", "sha256", "sha512"]),
+        _opt("expected", "Expected checksum", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="HMAC Generator", slug="hmac-generator", category="developer-tools",
+    description="Sign a message with a secret key using HMAC.",
+    seo_keywords=['HMAC Generator', 'HMAC SHA256', 'Message Authentication Code'],
+    how_to_use=['Paste your message', 'Enter the secret key', 'Copy the signature'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("key", "Secret key", OptionType.text, default=""),
+        _opt("algorithm", "Algorithm", OptionType.select, default="sha256", choices=["md5", "sha1", "sha256", "sha384", "sha512"]),
+    ],
+))
+define(ToolConfig(
+    name="CRC32 Checksum Calculator", slug="crc32-checksum", category="developer-tools",
+    description="CRC32 and Adler-32 checksums for text or a file.",
+    seo_keywords=['CRC32 Calculator', 'Checksum Calculator', 'Adler32'],
+    how_to_use=['Paste your text', 'Copy the checksum'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Base32 and Base58 Converter", slug="base32-base58-converter", category="developer-tools",
+    description="Encode and decode Base32 and Base58.",
+    seo_keywords=['Base32 Encode', 'Base58 Encode', 'Base58 Decoder'],
+    how_to_use=['Paste your text', 'Pick the scheme', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("scheme", "Scheme", OptionType.select, default="base32", choices=["base32", "base58"]),
+        _opt("mode", "Mode", OptionType.select, default="encode", choices=["encode", "decode"]),
+    ],
+))
+define(ToolConfig(
+    name="JWT Decoder", slug="jwt-decoder", category="developer-tools",
+    description="Read a JWT's header, payload and expiry.",
+    seo_keywords=['JWT Decoder', 'JWT Debugger', 'Decode JSON Web Token'],
+    how_to_use=['Paste your token', 'Read the claims'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="JWT Encoder", slug="jwt-encoder", category="developer-tools",
+    description="Sign a JSON payload into a JWT with HMAC.",
+    seo_keywords=['JWT Encoder', 'JWT Generator', 'Create JSON Web Token'],
+    how_to_use=['Paste the payload as JSON', 'Enter a secret', 'Copy the token'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("secret", "Secret", OptionType.text, default=""),
+        _opt("algorithm", "Algorithm", OptionType.select, default="HS256", choices=["HS256", "HS384", "HS512"]),
+        _opt("expires_minutes", "Expires in (minutes, 0 = never)", OptionType.number, default=0, min=0, max=525600),
+    ],
+))
+define(ToolConfig(
+    name="AES Encrypt and Decrypt", slug="aes-encrypt-decrypt", category="developer-tools",
+    description="AES-256-GCM encryption with a passphrase.",
+    seo_keywords=['AES Encryption', 'Encrypt Text Online', 'AES Decrypt'],
+    how_to_use=['Paste your text', 'Enter a passphrase', 'Encrypt or decrypt'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="encrypt", choices=["encrypt", "decrypt"]),
+        _opt("password", "Passphrase", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="GZIP Compressor", slug="gzip-compressor", category="developer-tools",
+    description="Compress or expand text with GZIP or Deflate.",
+    seo_keywords=['GZIP Compressor', 'Deflate Compress', 'Text Compression Tool'],
+    how_to_use=['Paste your text', 'Choose compress or expand', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="compress", choices=["compress", "decompress"]),
+        _opt("algorithm", "Algorithm", OptionType.select, default="gzip", choices=["gzip", "deflate"]),
+        _opt("level", "Compression level", OptionType.number, default=9, min=1, max=9),
+    ],
+))
+define(ToolConfig(
+    name="Escape and Unescape String", slug="escape-unescape-string", category="developer-tools",
+    description="Escape text for JavaScript, JSON, SQL, HTML, shell and more.",
+    seo_keywords=['Escape String', 'Unescape String', 'String Escape Tool'],
+    how_to_use=['Paste your text', 'Pick the language', 'Copy the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("language", "Language", OptionType.select, default="javascript", choices=["javascript", "python", "json", "html", "sql", "csv", "regex", "shell"]),
+        _opt("mode", "Mode", OptionType.select, default="escape", choices=["escape", "unescape"]),
+    ],
+))
+define(ToolConfig(
+    name="htpasswd Generator", slug="htpasswd-generator", category="developer-tools",
+    description="Generate an Apache or nginx .htpasswd line.",
+    seo_keywords=['htpasswd Generator', 'Apache Password Generator', 'Basic Auth Password'],
+    how_to_use=['Enter a username and password', 'Pick a scheme', 'Copy the line'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("username", "Username", OptionType.text, default=""),
+        _opt("password", "Password", OptionType.text, default=""),
+        _opt("scheme", "Scheme", OptionType.select, default="bcrypt", choices=["bcrypt", "md5", "sha1"]),
+        _opt("rounds", "bcrypt cost", OptionType.number, default=12, min=4, max=15),
+    ],
+))
+define(ToolConfig(
+    name="Credit Card Validator", slug="credit-card-validator", category="developer-tools",
+    description="Check a card number's Luhn checksum and identify the issuer.",
+    seo_keywords=['Credit Card Validator', 'Luhn Checker', 'Card Number Validator'],
+    how_to_use=['Enter the card number', 'Read the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Regex Tester", slug="regex-tester", category="developer-tools",
+    description="Test a regular expression and see every match and group.",
+    seo_keywords=['Regex Tester', 'Regular Expression Tester', 'Regex Match Tool'],
+    how_to_use=['Paste your text', 'Enter the pattern', 'Read the matches'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("pattern", "Pattern", OptionType.text, default=""),
+        _opt("replace_with", "Replace with (optional)", OptionType.text, default=""),
+        _opt("ignore_case", "Ignore case", OptionType.boolean, default=False),
+        _opt("multiline", "Multiline (^ and $ per line)", OptionType.boolean, default=False),
+        _opt("dot_all", "Dot matches newlines", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Regex Cheat Sheet", slug="regex-cheat-sheet", category="developer-tools",
+    description="Every regex token explained, with ready-made patterns.",
+    seo_keywords=['Regex Cheat Sheet', 'Regex Reference', 'Regular Expression Guide'],
+    how_to_use=['Search for a token, or leave it blank', 'Read the reference'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Color Converter", slug="color-converter", category="developer-tools",
+    description="Convert a colour between HEX, RGB, HSL, HSV and CMYK.",
+    seo_keywords=['Color Converter', 'HEX To RGB', 'RGB To HSL'],
+    how_to_use=['Enter a colour', 'Read every format'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("color", "Colour", OptionType.color, default="#4f46e5"),
+    ],
+))
+define(ToolConfig(
+    name="Contrast Checker", slug="contrast-checker", category="developer-tools",
+    description="Check colour contrast against the WCAG thresholds.",
+    seo_keywords=['Contrast Checker', 'WCAG Contrast', 'Color Accessibility Checker'],
+    how_to_use=['Enter the text colour', 'Enter the background', 'Read the ratio'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("foreground", "Text colour", OptionType.color, default="#111827"),
+        _opt("background", "Background", OptionType.color, default="#ffffff"),
+    ],
+))
+define(ToolConfig(
+    name="CSS Gradient Generator", slug="css-gradient-generator", category="developer-tools",
+    description="Build linear, radial and conic CSS gradients.",
+    seo_keywords=['CSS Gradient Generator', 'Gradient Maker', 'Linear Gradient CSS'],
+    how_to_use=['Pick your colours', 'Choose the type', 'Copy the CSS'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("color_1", "First colour", OptionType.color, default="#4f46e5"),
+        _opt("color_2", "Second colour", OptionType.color, default="#ec4899"),
+        _opt("type", "Type", OptionType.select, default="linear", choices=["linear", "radial", "conic"]),
+        _opt("angle", "Angle", OptionType.number, default=90, min=0, max=360),
+    ],
+))
+define(ToolConfig(
+    name="Box Shadow Generator", slug="box-shadow-generator", category="developer-tools",
+    description="Build a CSS box-shadow with live values.",
+    seo_keywords=['Box Shadow Generator', 'CSS Shadow Maker', 'Border Radius Generator'],
+    how_to_use=['Set the offsets and blur', 'Pick a colour', 'Copy the CSS'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("x", "Horizontal offset", OptionType.number, default=0, min=-100, max=100),
+        _opt("y", "Vertical offset", OptionType.number, default=4, min=-100, max=100),
+        _opt("blur", "Blur", OptionType.number, default=12, min=0, max=200),
+        _opt("spread", "Spread", OptionType.number, default=0, min=-100, max=100),
+        _opt("border_radius", "Border radius", OptionType.number, default=12, min=0, max=200),
+        _opt("color", "Shadow colour", OptionType.color, default="#000000"),
+        _opt("opacity", "Opacity", OptionType.number, default=0.25, min=0, max=1),
+        _opt("inset", "Inset", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Flexbox and Grid Generator", slug="flexbox-grid-generator", category="developer-tools",
+    description="Generate CSS Flexbox or Grid layout rules.",
+    seo_keywords=['Flexbox Generator', 'CSS Grid Generator', 'Flexbox Playground'],
+    how_to_use=['Choose flex or grid', 'Set the options', 'Copy the CSS'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("layout", "Layout", OptionType.select, default="flex", choices=["flex", "grid"]),
+        _opt("direction", "Flex direction", OptionType.select, default="row", choices=["row", "row-reverse", "column", "column-reverse"]),
+        _opt("justify", "Justify content", OptionType.select, default="flex-start", choices=["flex-start", "center", "flex-end", "space-between", "space-around", "space-evenly"]),
+        _opt("align", "Align items", OptionType.select, default="stretch", choices=["stretch", "flex-start", "center", "flex-end", "baseline"]),
+        _opt("wrap", "Wrap", OptionType.boolean, default=True),
+        _opt("columns", "Grid columns", OptionType.number, default=3, min=1, max=12),
+        _opt("column_mode", "Grid sizing", OptionType.select, default="equal", choices=["equal", "responsive"]),
+        _opt("gap", "Gap (px)", OptionType.number, default=16, min=0, max=200),
+    ],
+))
+define(ToolConfig(
+    name="Cubic Bezier Generator", slug="cubic-bezier-generator", category="developer-tools",
+    description="Build CSS easing curves, or start from a preset.",
+    seo_keywords=['Cubic Bezier Generator', 'CSS Easing Editor', 'Animation Timing Function'],
+    how_to_use=['Pick a preset or set the points', 'Copy the CSS'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("preset", "Preset", OptionType.select, default="ease", choices=["custom", "linear", "ease", "ease-in", "ease-out", "ease-in-out", "ease-in-quad", "ease-out-quad", "ease-in-out-quad", "ease-in-cubic", "ease-out-cubic", "ease-in-out-cubic", "ease-out-back", "ease-in-out-back"]),
+        _opt("x1", "x1", OptionType.number, default=0.25, min=0, max=1),
+        _opt("y1", "y1", OptionType.number, default=0.1, min=-3, max=3),
+        _opt("x2", "x2", OptionType.number, default=0.25, min=0, max=1),
+        _opt("y2", "y2", OptionType.number, default=1, min=-3, max=3),
+        _opt("duration_ms", "Duration (ms)", OptionType.number, default=300, min=0, max=10000),
+    ],
+))
+define(ToolConfig(
+    name="CSS Unit Converter", slug="css-unit-converter", category="developer-tools",
+    description="Convert between px, rem, em, %, pt and physical units.",
+    seo_keywords=['CSS Unit Converter', 'PX To REM', 'REM Converter'],
+    how_to_use=['Enter a value', 'Pick the unit', 'Read every other unit'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=16),
+        _opt("from", "Unit", OptionType.select, default="px", choices=["px", "rem", "em", "%", "pt", "pc", "in", "cm", "mm"]),
+        _opt("root_font_size", "Root font size (px)", OptionType.number, default=16, min=1, max=100),
+        _opt("parent_font_size", "Parent font size (px)", OptionType.number, default=16, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Unix Timestamp Converter", slug="unix-timestamp-converter", category="developer-tools",
+    description="Convert Unix timestamps to dates and back.",
+    seo_keywords=['Unix Timestamp Converter', 'Epoch Converter', 'Timestamp To Date'],
+    how_to_use=['Paste a timestamp or a date', 'Pick a time zone', 'Read the result'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("timezone", "Time zone", OptionType.text, default="UTC"),
+    ],
+))
+define(ToolConfig(
+    name="Byte Size Converter", slug="byte-size-converter", category="developer-tools",
+    description="Convert between KB, MB, GB, TB and their KiB counterparts.",
+    seo_keywords=['Byte Converter', 'MB To GB', 'Data Size Converter'],
+    how_to_use=['Enter a size', 'Pick the unit', 'Read every other unit'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("value", "Value", OptionType.number, default=1),
+        _opt("from", "Unit", OptionType.select, default="MB", choices=["B", "KB", "MB", "GB", "TB", "KiB", "MiB", "GiB", "TiB"]),
+    ],
+))
+define(ToolConfig(
+    name="IEEE 754 Float Converter", slug="ieee754-converter", category="developer-tools",
+    description="See the exact bits behind a floating-point number.",
+    seo_keywords=['IEEE 754 Converter', 'Float To Binary', 'Floating Point Converter'],
+    how_to_use=['Enter a number or a hex pattern', 'Read the bit layout'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("precision", "Precision", OptionType.select, default="64", choices=["32", "64"]),
+    ],
+))
+define(ToolConfig(
+    name="Cron Expression Tool", slug="cron-expression-tool", category="developer-tools",
+    description="Explain a cron expression and list its next runs.",
+    seo_keywords=['Cron Expression Generator', 'Crontab Parser', 'Cron Schedule Explainer'],
+    how_to_use=['Enter a cron expression', 'Read the explanation and next runs'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Subnet Calculator", slug="subnet-calculator", category="developer-tools",
+    description="CIDR maths for IPv4 and IPv6 networks.",
+    seo_keywords=['Subnet Calculator', 'CIDR Calculator', 'IP Range Calculator'],
+    how_to_use=['Enter a network like 192.168.1.0/24', 'Read the range'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("cidr", "Network", OptionType.text, default="192.168.1.0/24"),
+    ],
+))
+define(ToolConfig(
+    name="User Agent Parser", slug="user-agent-parser", category="developer-tools",
+    description="Read the browser, OS and device out of a User-Agent string.",
+    seo_keywords=['User Agent Parser', 'UA Parser', 'Browser Detection Tool'],
+    how_to_use=['Paste a User-Agent string', 'Read the breakdown'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Markdown Table Generator", slug="markdown-table-generator", category="developer-tools",
+    description="Turn CSV or TSV rows into an aligned Markdown table.",
+    seo_keywords=['Markdown Table Generator', 'CSV To Markdown Table', 'Markdown Table Maker'],
+    how_to_use=['Paste your rows', 'Pick the delimiter', 'Copy the table'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("delimiter", "Delimiter", OptionType.select, default="comma", choices=["comma", "tab", "semicolon", "pipe"]),
+        _opt("align", "Alignment", OptionType.select, default="left", choices=["left", "center", "right"]),
+        _opt("pad", "Line up the columns", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="README Generator", slug="readme-generator", category="developer-tools",
+    description="Generate a project README with the usual sections.",
+    seo_keywords=['README Generator', 'Readme Template', 'GitHub Readme Maker'],
+    how_to_use=['Enter the project name', 'Pick the language', 'Copy the Markdown'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("project", "Project name", OptionType.text, default=""),
+        _opt("description", "Description", OptionType.text, default=""),
+        _opt("language", "Language", OptionType.select, default="node", choices=["node", "python", "go", "rust", "php"]),
+        _opt("license", "Licence", OptionType.select, default="MIT", choices=["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "none"]),
+        _opt("include_features", "Include Features section", OptionType.boolean, default=True),
+        _opt("include_contributing", "Include Contributing section", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="gitignore Generator", slug="gitignore-generator", category="developer-tools",
+    description="Build a .gitignore for the stacks you actually use.",
+    seo_keywords=['gitignore Generator', 'Git Ignore Template', 'Create gitignore'],
+    how_to_use=['List your stacks', 'Copy the file'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("stacks", "Stacks (comma separated)", OptionType.text, default="node, macos, editors, secrets"),
+    ],
+))
+define(ToolConfig(
+    name="Mock SQL Generator", slug="mock-sql-generator", category="developer-tools",
+    description="Generate CREATE TABLE and INSERT statements from a JSON sample.",
+    seo_keywords=['Mock SQL Generator', 'JSON To SQL', 'SQL Insert Generator'],
+    how_to_use=['Paste a JSON array', 'Name the table', 'Copy the SQL'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("table", "Table name", OptionType.text, default="records"),
+    ],
+))
+define(ToolConfig(
+    name="Connection String Builder", slug="connection-string-builder", category="developer-tools",
+    description="Build a database URL with the password escaped correctly.",
+    seo_keywords=['Connection String Builder', 'Database URL Builder', 'Postgres Connection String'],
+    how_to_use=['Pick the engine', 'Fill in the details', 'Copy the URL'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("engine", "Engine", OptionType.select, default="postgresql", choices=["postgresql", "mysql", "mongodb", "redis", "mssql", "sqlite"]),
+        _opt("host", "Host", OptionType.text, default="localhost"),
+        _opt("port", "Port (0 = default)", OptionType.number, default=0, min=0, max=65535),
+        _opt("database", "Database", OptionType.text, default="mydb"),
+        _opt("username", "Username", OptionType.text, default=""),
+        _opt("password", "Password", OptionType.text, default=""),
+        _opt("parameters", "Extra parameters", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Responsive srcset Generator", slug="srcset-generator", category="developer-tools",
+    description="Build a responsive img tag with srcset and sizes.",
+    seo_keywords=['srcset Generator', 'Responsive Image Generator', 'Picture Tag Generator'],
+    how_to_use=['Enter the image path', 'Set the widths', 'Copy the HTML'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("path", "Image path", OptionType.text, default="/images/photo.jpg"),
+        _opt("widths", "Widths", OptionType.text, default="480, 768, 1024, 1440, 1920"),
+        _opt("pattern", "Filename pattern", OptionType.text, default="{stem}-{w}.{ext}"),
+        _opt("sizes", "sizes attribute", OptionType.text, default="(max-width: 768px) 100vw, 50vw"),
+        _opt("alt", "Alt text", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="SVG Optimizer", slug="svg-optimizer", category="developer-tools",
+    description="Strip the editor metadata that bloats an exported SVG.",
+    seo_keywords=['SVG Optimizer', 'SVG Minifier', 'Compress SVG'],
+    how_to_use=['Paste your SVG', 'Copy the optimized markup'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("remove_ids", "Remove id attributes", OptionType.boolean, default=True),
+        _opt("round_numbers", "Round long decimals", OptionType.boolean, default=True),
+        _opt("precision", "Decimal places", OptionType.number, default=2, min=0, max=6),
+    ],
+))
+define(ToolConfig(
+    name="HTTP Status Code Reference", slug="http-status-reference", category="developer-tools",
+    description="Every HTTP status code, with notes on when to use it.",
+    seo_keywords=['HTTP Status Codes', 'HTTP Response Codes', 'Status Code Reference'],
+    how_to_use=['Search for a code or name', 'Read the reference'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="MIME Type Lookup", slug="mime-type-lookup", category="developer-tools",
+    description="Find the MIME type for any file extension.",
+    seo_keywords=['MIME Type Lookup', 'Content Type Finder', 'File Extension MIME'],
+    how_to_use=['Enter an extension', 'Read the MIME type'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="ASCII and Unicode Table", slug="ascii-unicode-table", category="developer-tools",
+    description="The ASCII table, plus details for any character you paste.",
+    seo_keywords=['ASCII Table', 'Unicode Table', 'Character Code Lookup'],
+    how_to_use=['Paste characters, or leave it blank', 'Read the table'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("start", "From (decimal)", OptionType.number, default=32, min=0, max=127),
+        _opt("end", "To (decimal)", OptionType.number, default=126, min=0, max=127),
+    ],
+))
+define(ToolConfig(
+    name="HTML Entity Reference", slug="html-entity-reference", category="developer-tools",
+    description="Every common HTML entity with its character and code.",
+    seo_keywords=['HTML Entity Reference', 'HTML Symbols', 'HTML Character Codes'],
+    how_to_use=['Search for a symbol', 'Copy the entity'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Meta Tag Generator", slug="meta-tag-generator", category="seo-tools",
+    description="Generate title, description, robots and canonical tags.",
+    seo_keywords=['Meta Tag Generator', 'SEO Meta Tags', 'Meta Description Generator'],
+    how_to_use=['Enter your title and description', 'Copy the tags into your head'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("title", "Page title", OptionType.text, default=""),
+        _opt("description", "Meta description", OptionType.text, default=""),
+        _opt("keywords", "Keywords", OptionType.text, default=""),
+        _opt("author", "Author", OptionType.text, default=""),
+        _opt("canonical", "Canonical URL", OptionType.text, default=""),
+        _opt("robots", "Robots", OptionType.select, default="index, follow", choices=["index, follow", "noindex, follow", "index, nofollow", "noindex, nofollow"]),
+        _opt("include_viewport", "Include charset and viewport", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Open Graph Generator", slug="open-graph-generator", category="seo-tools",
+    description="Generate Open Graph and Twitter tags for link previews.",
+    seo_keywords=['Open Graph Generator', 'OG Tags Generator', 'Facebook Meta Tags'],
+    how_to_use=['Enter your title, URL and image', 'Copy the tags'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("title", "Title", OptionType.text, default=""),
+        _opt("description", "Description", OptionType.text, default=""),
+        _opt("url", "Page URL", OptionType.text, default=""),
+        _opt("image", "Image URL", OptionType.text, default=""),
+        _opt("site_name", "Site name", OptionType.text, default=""),
+        _opt("type", "Type", OptionType.select, default="website", choices=["website", "article", "product", "profile", "video.other"]),
+        _opt("twitter_handle", "Twitter handle", OptionType.text, default=""),
+        _opt("include_twitter", "Include Twitter tags", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Twitter Card Generator", slug="twitter-card-generator", category="seo-tools",
+    description="Generate Twitter Card tags for rich link previews.",
+    seo_keywords=['Twitter Card Generator', 'X Card Tags', 'Twitter Meta Tags'],
+    how_to_use=['Enter your title and image', 'Pick the card type', 'Copy the tags'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("title", "Title", OptionType.text, default=""),
+        _opt("description", "Description", OptionType.text, default=""),
+        _opt("image", "Image URL", OptionType.text, default=""),
+        _opt("image_alt", "Image alt text", OptionType.text, default=""),
+        _opt("card", "Card type", OptionType.select, default="summary_large_image", choices=["summary", "summary_large_image", "app", "player"]),
+        _opt("site", "Site handle", OptionType.text, default=""),
+        _opt("creator", "Creator handle", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Canonical Tag Generator", slug="canonical-tag-generator", category="seo-tools",
+    description="Build a clean canonical link and catch the URL mistakes.",
+    seo_keywords=['Canonical Tag Generator', 'Canonical URL', 'rel canonical'],
+    how_to_use=['Paste the page URL', 'Copy the tag'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+        _opt("strip_parameters", "Remove tracking parameters", OptionType.boolean, default=True),
+        _opt("lowercase", "Lowercase the host", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Hreflang Generator", slug="hreflang-generator", category="seo-tools",
+    description="Generate hreflang tags for a multi-language site.",
+    seo_keywords=['Hreflang Generator', 'Hreflang Tags', 'Multilingual SEO Tags'],
+    how_to_use=['List each language and URL', 'Copy the tags onto every listed page'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Robots Meta Tag Generator", slug="robots-meta-generator", category="seo-tools",
+    description="Control indexing and snippets with a robots meta tag.",
+    seo_keywords=['Robots Meta Tag', 'Noindex Tag Generator', 'Meta Robots'],
+    how_to_use=['Choose the directives', 'Copy the tag'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("noindex", "noindex", OptionType.boolean, default=False),
+        _opt("nofollow", "nofollow", OptionType.boolean, default=False),
+        _opt("noarchive", "noarchive", OptionType.boolean, default=False),
+        _opt("nosnippet", "nosnippet", OptionType.boolean, default=False),
+        _opt("noimageindex", "noimageindex", OptionType.boolean, default=False),
+        _opt("notranslate", "notranslate", OptionType.boolean, default=False),
+        _opt("max_snippet", "max-snippet (-1 = no limit)", OptionType.number, default=-1, min=-1, max=1000),
+        _opt("max_image_preview", "max-image-preview", OptionType.select, default="large", choices=["large", "standard", "none"]),
+        _opt("google_only", "Add a googlebot tag too", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="SERP Snippet Preview", slug="serp-preview", category="seo-tools",
+    description="See how your title and description will read in Google.",
+    seo_keywords=['SERP Preview', 'Google Snippet Preview', 'SERP Simulator'],
+    how_to_use=['Enter your title, description and URL', 'Check where it cuts off'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("title", "Title", OptionType.text, default=""),
+        _opt("description", "Meta description", OptionType.text, default=""),
+        _opt("url", "URL", OptionType.text, default="https://example.com/page"),
+        _opt("device", "Device", OptionType.select, default="desktop", choices=["desktop", "mobile"]),
+    ],
+))
+define(ToolConfig(
+    name="Schema Markup Generator", slug="schema-generator", category="seo-tools",
+    description="Generate JSON-LD for articles, products, events and more.",
+    seo_keywords=['Schema Markup Generator', 'JSON-LD Generator', 'Structured Data Generator'],
+    how_to_use=['Pick the type', 'Fill in the fields', 'Copy the JSON-LD'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("type", "Schema type", OptionType.select, default="Article", choices=["Article", "BlogPosting", "NewsArticle", "Product", "Organization", "Person", "Event", "Recipe", "VideoObject", "WebSite"]),
+        _opt("name", "Name or headline", OptionType.text, default=""),
+        _opt("url", "URL", OptionType.text, default=""),
+        _opt("description", "Description", OptionType.text, default=""),
+        _opt("image", "Image URL", OptionType.text, default=""),
+        _opt("author", "Author or job title", OptionType.text, default=""),
+        _opt("publisher", "Publisher or venue", OptionType.text, default=""),
+        _opt("date", "Date", OptionType.text, default=""),
+        _opt("price", "Price", OptionType.text, default=""),
+        _opt("currency", "Currency", OptionType.text, default="USD"),
+        _opt("rating", "Rating", OptionType.text, default=""),
+        _opt("review_count", "Review count", OptionType.text, default=""),
+        _opt("same_as", "Social profiles (comma separated)", OptionType.text, default=""),
+        _opt("search_box", "Include site search action", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="FAQ Schema Generator", slug="faq-schema-generator", category="seo-tools",
+    description="Turn questions and answers into FAQPage JSON-LD.",
+    seo_keywords=['FAQ Schema Generator', 'FAQPage JSON-LD', 'FAQ Rich Results'],
+    how_to_use=['Enter each question and answer', 'Copy the JSON-LD'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Breadcrumb Schema Generator", slug="breadcrumb-schema-generator", category="seo-tools",
+    description="Generate BreadcrumbList JSON-LD for your navigation path.",
+    seo_keywords=['Breadcrumb Schema', 'BreadcrumbList JSON-LD', 'Breadcrumb Markup'],
+    how_to_use=['List each crumb and URL', 'Copy the JSON-LD'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Local Business Schema Generator", slug="local-business-schema", category="seo-tools",
+    description="Generate LocalBusiness JSON-LD with address, hours and location.",
+    seo_keywords=['Local Business Schema', 'LocalBusiness JSON-LD', 'Local SEO Schema'],
+    how_to_use=['Fill in your business details', 'Copy the JSON-LD'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("name", "Business name", OptionType.text, default=""),
+        _opt("business_type", "Type", OptionType.select, default="LocalBusiness", choices=["LocalBusiness", "Restaurant", "Store", "ProfessionalService", "MedicalBusiness", "AutoRepair", "Dentist", "LegalService", "RealEstateAgent", "HealthAndBeautyBusiness"]),
+        _opt("street", "Street address", OptionType.text, default=""),
+        _opt("city", "City", OptionType.text, default=""),
+        _opt("region", "Region or state", OptionType.text, default=""),
+        _opt("postal_code", "Postal code", OptionType.text, default=""),
+        _opt("country", "Country code", OptionType.text, default="US"),
+        _opt("phone", "Phone", OptionType.text, default=""),
+        _opt("url", "Website", OptionType.text, default=""),
+        _opt("image", "Image URL", OptionType.text, default=""),
+        _opt("price_range", "Price range", OptionType.text, default=""),
+        _opt("hours", "Opening hours", OptionType.text, default="Mo-Fr 09:00-17:00"),
+        _opt("latitude", "Latitude", OptionType.text, default=""),
+        _opt("longitude", "Longitude", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Review Schema Generator", slug="review-schema-generator", category="seo-tools",
+    description="Generate Review or AggregateRating JSON-LD.",
+    seo_keywords=['Review Schema Generator', 'AggregateRating Markup', 'Star Rating Schema'],
+    how_to_use=['Enter what is reviewed', 'Set the rating', 'Copy the JSON-LD'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("item_name", "Item reviewed", OptionType.text, default=""),
+        _opt("item_type", "Item type", OptionType.select, default="Product", choices=["Product", "Service", "Book", "Movie", "Course", "SoftwareApplication", "LocalBusiness"]),
+        _opt("mode", "Markup", OptionType.select, default="aggregate", choices=["aggregate", "single"]),
+        _opt("rating", "Rating", OptionType.text, default="4.5"),
+        _opt("best_rating", "Best possible", OptionType.text, default="5"),
+        _opt("review_count", "Review count", OptionType.text, default="10"),
+        _opt("author", "Reviewer name", OptionType.text, default=""),
+        _opt("review_body", "Review text", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Structured Data Validator", slug="structured-data-validator", category="seo-tools",
+    description="Check JSON-LD for the fields Google actually requires.",
+    seo_keywords=['Structured Data Validator', 'JSON-LD Validator', 'Rich Results Checker'],
+    how_to_use=['Paste your JSON-LD or page HTML', 'Review what is missing'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Google Review Link Generator", slug="google-review-link", category="seo-tools",
+    description="Build a direct link that opens the Google review box.",
+    seo_keywords=['Google Review Link', 'Review Link Generator', 'Place ID Review URL'],
+    how_to_use=['Paste your Google Place ID', 'Copy and share the link'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("place_id", "Place ID", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Heading Structure Analyzer", slug="heading-analyzer", category="seo-tools",
+    description="Check your H1-H6 order and catch skipped levels.",
+    seo_keywords=['Heading Analyzer', 'H1 Checker', 'Heading Structure SEO'],
+    how_to_use=['Paste your page HTML', 'Review the outline'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Image Alt Text Checker", slug="alt-text-checker", category="seo-tools",
+    description="Find images with missing or unhelpful alt text.",
+    seo_keywords=['Alt Text Checker', 'Image Alt Checker', 'Missing Alt Text'],
+    how_to_use=['Paste your page HTML', 'Review the coverage'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Internal Link Analyzer", slug="internal-link-analyzer", category="seo-tools",
+    description="Break down internal, external and broken-anchor links.",
+    seo_keywords=['Internal Link Analyzer', 'Link Checker', 'Internal Linking SEO'],
+    how_to_use=['Paste your page HTML', 'Set your domain', 'Review the links'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("domain", "Your domain", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Nofollow Link Checker", slug="nofollow-link-checker", category="seo-tools",
+    description="See which outbound links pass ranking signal.",
+    seo_keywords=['Nofollow Checker', 'Outbound Link Checker', 'rel nofollow Checker'],
+    how_to_use=['Paste your page HTML', 'Set your domain', 'Review the links'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("domain", "Your domain", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Anchor Text Analyzer", slug="anchor-text-analyzer", category="seo-tools",
+    description="Check your anchor text spread for over-optimisation.",
+    seo_keywords=['Anchor Text Analyzer', 'Anchor Text Distribution', 'Anchor Text SEO'],
+    how_to_use=['Paste your page HTML', 'Set your brand name', 'Review the spread'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("brand", "Brand name", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Meta Tags Analyzer", slug="meta-tags-analyzer", category="seo-tools",
+    description="Pull every SEO tag out of a page and grade it.",
+    seo_keywords=['Meta Tags Analyzer', 'Meta Tag Extractor', 'SEO Tag Checker'],
+    how_to_use=['Paste your page HTML', 'Review the tags and issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Canonical Checker", slug="canonical-checker", category="seo-tools",
+    description="Check a page's canonical link for the usual mistakes.",
+    seo_keywords=['Canonical Checker', 'Canonical Tag Checker', 'rel canonical Validator'],
+    how_to_use=['Paste your page HTML', 'Enter the page URL', 'Review the findings'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("page_url", "Page URL", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Hreflang Checker", slug="hreflang-checker", category="seo-tools",
+    description="Validate the hreflang tags on a page.",
+    seo_keywords=['Hreflang Checker', 'Hreflang Validator', 'Hreflang Tester'],
+    how_to_use=['Paste your page HTML', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="AMP Validator", slug="amp-validator", category="seo-tools",
+    description="Check the AMP rules that break a page outright.",
+    seo_keywords=['AMP Validator', 'AMP Checker', 'Validate AMP HTML'],
+    how_to_use=['Paste your AMP HTML', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Code to Text Ratio Checker", slug="code-to-text-ratio", category="seo-tools",
+    description="Measure how much of a page is content versus markup.",
+    seo_keywords=['Code To Text Ratio', 'Text To HTML Ratio', 'Content Ratio Checker'],
+    how_to_use=['Paste your page HTML', 'Read the ratio'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="SEO Report Generator", slug="seo-report-generator", category="seo-tools",
+    description="Run every on-page check at once and get a score.",
+    seo_keywords=['SEO Report Generator', 'On Page SEO Checker', 'SEO Audit Tool'],
+    how_to_use=['Paste your page HTML', 'Read the report'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Keyword Combiner", slug="keyword-combiner", category="seo-tools",
+    description="Mix keyword lists into every combination.",
+    seo_keywords=['Keyword Combiner', 'Keyword Mixer', 'Keyword Permutation Tool'],
+    how_to_use=['Paste each list, separated by a blank line', 'Copy the combinations'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("second_list", "Second list", OptionType.text, default=""),
+        _opt("joiner", "Join with", OptionType.select, default="space", choices=["space", "hyphen", "plus", "none"]),
+        _opt("match_type", "Match type", OptionType.select, default="broad", choices=["broad", "phrase", "exact"]),
+        _opt("include_reversed", "Include reversed order", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Keyword Prominence Checker", slug="keyword-prominence", category="seo-tools",
+    description="See where your keyword sits, not just how often it appears.",
+    seo_keywords=['Keyword Prominence', 'Keyword Placement Checker', 'Keyword Position SEO'],
+    how_to_use=['Paste your content or HTML', 'Enter the keyword', 'Read the placement'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("keyword", "Keyword", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="URL Slug Generator", slug="seo-slug-generator", category="seo-tools",
+    description="Turn any title into a clean, SEO-friendly slug.",
+    seo_keywords=['URL Slug Generator', 'SEO Slug Generator', 'Permalink Generator'],
+    how_to_use=['Paste one title per line', 'Copy the slugs'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("remove_stop_words", "Remove stop words", OptionType.boolean, default=False),
+        _opt("separator", "Separator", OptionType.text, default="-"),
+        _opt("max_length", "Max length (0 = no limit)", OptionType.number, default=60, min=0, max=200),
+    ],
+))
+define(ToolConfig(
+    name="Near Me Keyword Tool", slug="near-me-keyword-tool", category="seo-tools",
+    description="Build local keyword variations for every location you serve.",
+    seo_keywords=['Near Me Keywords', 'Local Keyword Generator', 'Local SEO Keywords'],
+    how_to_use=['List your services', 'List your locations', 'Copy the keywords'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("locations", "Locations (comma separated)", OptionType.text, default=""),
+        _opt("variations", "Patterns per location", OptionType.number, default=6, min=1, max=10),
+        _opt("include_near_me", "Add plain near me terms", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Keyword Value Calculator", slug="keyword-value-calculator", category="seo-tools",
+    description="Work out what ranking for a keyword is worth per month.",
+    seo_keywords=['Keyword Value Calculator', 'Keyword CPC Calculator', 'Traffic Value Estimator'],
+    how_to_use=['Enter the search volume and CPC', 'Set your conversion rate', 'Read the value'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("monthly_searches", "Monthly searches", OptionType.number, default=1000, min=0),
+        _opt("cpc", "Cost per click", OptionType.number, default=2, min=0),
+        _opt("position", "Target position", OptionType.number, default=1, min=1, max=10),
+        _opt("conversion_rate", "Conversion rate (%)", OptionType.number, default=2, min=0, max=100),
+        _opt("order_value", "Average order value", OptionType.number, default=100, min=0),
+    ],
+))
+define(ToolConfig(
+    name="Content Brief Generator", slug="content-brief-generator", category="seo-tools",
+    description="Generate a structured brief and outline for a writer.",
+    seo_keywords=['Content Brief Generator', 'SEO Content Outline', 'Article Brief Template'],
+    how_to_use=['Enter the target keyword', 'Pick the intent', 'Copy the brief'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("keyword", "Target keyword", OptionType.text, default=""),
+        _opt("intent", "Search intent", OptionType.select, default="informational", choices=["informational", "commercial", "transactional", "navigational"]),
+        _opt("word_count", "Target word count", OptionType.number, default=1500, min=200, max=10000),
+        _opt("audience", "Audience", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Featured Snippet Optimizer", slug="featured-snippet-optimizer", category="seo-tools",
+    description="Check whether your content is shaped to win a snippet.",
+    seo_keywords=['Featured Snippet Optimizer', 'Position Zero Checker', 'Snippet Optimization'],
+    how_to_use=['Paste your content', 'Enter the keyword', 'Read the checks'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("keyword", "Target keyword", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="NAP Consistency Checker", slug="nap-consistency-checker", category="seo-tools",
+    description="Compare your name, address and phone across listings.",
+    seo_keywords=['NAP Consistency Checker', 'Citation Checker', 'Local Listing Checker'],
+    how_to_use=['Paste each listing, separated by a blank line', 'Review the differences'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Disavow File Generator", slug="disavow-file-generator", category="seo-tools",
+    description="Format a Google disavow file from a list of bad links.",
+    seo_keywords=['Disavow File Generator', 'Google Disavow Tool', 'Backlink Disavow'],
+    how_to_use=['Paste the domains or URLs', 'Copy the file'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("domain_level", "Disavow whole domains", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Domain Name Generator", slug="domain-name-generator", category="seo-tools",
+    description="Generate domain ideas from your keywords.",
+    seo_keywords=['Domain Name Generator', 'Domain Ideas', 'Business Name Generator'],
+    how_to_use=['Enter your keywords', 'Copy the shortlist'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("prefixes", "Prefixes", OptionType.text, default="get,try,my,the,go"),
+        _opt("suffixes", "Suffixes", OptionType.text, default="hub,ly,app,hq,lab,ify,zone"),
+        _opt("tlds", "Extensions", OptionType.text, default="com,io,co,net,app"),
+        _opt("limit", "How many names", OptionType.number, default=60, min=1, max=500),
+    ],
+))
+define(ToolConfig(
+    name="UTM Campaign URL Builder", slug="utm-builder", category="seo-tools",
+    description="Build tagged campaign URLs that track correctly.",
+    seo_keywords=['UTM Builder', 'Campaign URL Builder', 'UTM Parameter Generator'],
+    how_to_use=['Enter the destination URL', 'Fill in source, medium and campaign', 'Copy the URL'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("url", "Destination URL", OptionType.text, default=""),
+        _opt("source", "Campaign source", OptionType.text, default=""),
+        _opt("medium", "Campaign medium", OptionType.text, default=""),
+        _opt("campaign", "Campaign name", OptionType.text, default=""),
+        _opt("term", "Campaign term", OptionType.text, default=""),
+        _opt("content", "Campaign content", OptionType.text, default=""),
+        _opt("id", "Campaign ID", OptionType.text, default=""),
+        _opt("lowercase", "Lowercase the values", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Robots.txt Generator", slug="robots-txt-generator", category="seo-tools",
+    description="Build a robots.txt with the right rules and a sitemap line.",
+    seo_keywords=['Robots.txt Generator', 'Create Robots File', 'Robots txt Maker'],
+    how_to_use=['List the paths to block', 'Add your sitemap', 'Copy the file'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("allow", "Paths to allow", OptionType.text, default=""),
+        _opt("sitemap", "Sitemap URL", OptionType.text, default=""),
+        _opt("block_ai_crawlers", "Block AI crawlers", OptionType.boolean, default=False),
+        _opt("block_everything", "Block the whole site", OptionType.boolean, default=False),
+        _opt("crawl_delay", "Crawl delay (0 = none)", OptionType.number, default=0, min=0, max=120),
+    ],
+))
+define(ToolConfig(
+    name="Robots.txt Tester", slug="robots-txt-tester", category="seo-tools",
+    description="Test whether a URL is blocked before you deploy.",
+    seo_keywords=['Robots.txt Tester', 'Robots txt Validator', 'Crawl Rule Tester'],
+    how_to_use=['Paste your robots.txt', 'Enter the path to test', 'Read the verdict'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[
+        _opt("path", "Path to test", OptionType.text, default="/"),
+        _opt("user_agent", "User agent", OptionType.text, default="*"),
+    ],
+))
+define(ToolConfig(
+    name="XML Sitemap Generator", slug="xml-sitemap-generator", category="seo-tools",
+    description="Turn a list of URLs into a valid XML sitemap.",
+    seo_keywords=['XML Sitemap Generator', 'Sitemap Maker', 'Create Sitemap XML'],
+    how_to_use=['Paste one URL per line', 'Set the options', 'Copy the sitemap'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("changefreq", "Change frequency", OptionType.select, default="weekly", choices=["always", "hourly", "daily", "weekly", "monthly", "yearly", "never", "none"]),
+        _opt("priority", "Priority", OptionType.select, default="0.8", choices=["1.0", "0.9", "0.8", "0.7", "0.6", "0.5", "none"]),
+        _opt("lastmod", "Last modified (YYYY-MM-DD)", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Sitemap Validator", slug="sitemap-validator", category="seo-tools",
+    description="Check a sitemap for duplicates, bad URLs and size limits.",
+    seo_keywords=['Sitemap Validator', 'XML Sitemap Checker', 'Validate Sitemap'],
+    how_to_use=['Paste your sitemap XML', 'Review the issues'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Redirect Generator", slug="htaccess-redirect-generator", category="seo-tools",
+    description="Generate .htaccess or nginx redirect rules from a list.",
+    seo_keywords=['htaccess Redirect Generator', '301 Redirect Generator', 'Nginx Redirect Rules'],
+    how_to_use=['List old and new paths', 'Pick the server', 'Copy the rules'],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("server", "Server", OptionType.select, default="apache", choices=["apache", "nginx"]),
+        _opt("status", "Status code", OptionType.select, default="301", choices=["301", "302", "307", "308"]),
     ],
 ))

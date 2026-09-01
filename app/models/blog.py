@@ -74,7 +74,15 @@ class Blog(Base):
     is_featured: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
     is_popular: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
 
+    # The byline. `author` above is the denormalized display name, kept so every
+    # existing card, serializer and JSON-LD builder keeps working; `author_id`
+    # points at the staff account behind it, which is what makes the name a link.
+    # Eagerly joined: the name is wanted on every list, and lazy loading fired one
+    # query per row.
     author_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+    author_user: Mapped[Optional["User"]] = relationship(
+        "User", foreign_keys=[author_id], lazy="joined"
+    )
 
     # Audit trail: which staff user created and last edited this post.
     created_by_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
