@@ -8,18 +8,29 @@ Nothing is destroyed: the original free-text name is printed before it is
 replaced, and only rows with no `author_id` are touched — so this is safe to run
 twice, and safe to run on a live database.
 
-Usage (from backend/):
-    python3 scripts/backfill_blog_authors.py            # show what would change
-    python3 scripts/backfill_blog_authors.py --apply    # write it
-    python3 scripts/backfill_blog_authors.py --apply --author-email you@site.com
+Usage — with the virtualenv's Python, not the system one, which has none of the
+app's dependencies:
+
+    .venv/bin/python scripts/backfill_blog_authors.py            # show the plan
+    .venv/bin/python scripts/backfill_blog_authors.py --apply    # write it
+    .venv/bin/python scripts/backfill_blog_authors.py --apply --author-email you@site.com
+
+It prints the database it is connected to before doing anything, so a wrong
+DATABASE_URL is visible rather than silent.
 """
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+BACKEND = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BACKEND))
+# Settings read `.env` relative to the working directory, so running this from
+# anywhere else silently fell back to the default SQLite URL — it would report
+# "0 posts" against an empty file while the real database sat untouched.
+os.chdir(BACKEND)
 
 from sqlalchemy import select  # noqa: E402
 
@@ -59,6 +70,17 @@ def main() -> None:
     ap.add_argument("--apply", action="store_true", help="write changes (default: dry run)")
     ap.add_argument("--author-email", help="credit this account instead of the super admin")
     args = ap.parse_args()
+
+    # Print the target before touching anything. This script writes to live data,
+    # and a wrong DATABASE_URL is the one mistake that would not be obvious.
+    from app.config import settings
+
+    url = settings.database_url
+    print(f"Database: {url.split('@')[-1] if '@' in url else url}")
+    if url.startswith("sqlite"):
+        print("  ^ that is SQLite. If you expected Postgres, check .env before continuing.\n")
+    else:
+        print()
 
     db = SessionLocal()
     try:
