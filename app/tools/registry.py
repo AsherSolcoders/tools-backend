@@ -3717,3 +3717,1056 @@ define(ToolConfig(
         _opt("status", "Status code", OptionType.select, default="301", choices=["301", "302", "307", "308"]),
     ],
 ))
+define(ToolConfig(
+    name="Circle Crop", slug="circle-crop", category="image-tools",
+    description="Crop any photo into a circle with a transparent background.",
+    seo_keywords=['Circle Crop', 'Round Image Cropper', 'Crop Photo To Circle'],
+    how_to_use=['Upload your image', 'Set the size', 'Download the PNG'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("size", "Output size (0 = keep)", OptionType.number, default=0, min=0, max=4000),
+    ],
+))
+define(ToolConfig(
+    name="Round Corners", slug="round-corners", category="image-tools",
+    description="Round the corners of an image, with a transparent outside.",
+    seo_keywords=['Round Corners Image', 'Rounded Corner Maker', 'Round Image Corners'],
+    how_to_use=['Upload your image', 'Set the radius', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("radius_percent", "Corner radius (%)", OptionType.number, default=15, min=0, max=50),
+    ],
+))
+define(ToolConfig(
+    name="Shape Crop", slug="shape-crop", category="image-tools",
+    description="Crop to a fixed ratio, or to a circle, hexagon, triangle or star.",
+    seo_keywords=['Shape Crop', 'Aspect Ratio Cropper', 'Crop Image To Shape'],
+    how_to_use=['Upload your image', 'Pick a ratio or shape', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("shape", "Shape", OptionType.select, default="square", choices=["square", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3", "circle", "hexagon", "triangle", "star"]),
+    ],
+))
+define(ToolConfig(
+    name="Bulk Image Resizer", slug="bulk-image-resizer", category="image-tools",
+    description="Resize many images at once, by size or percentage.",
+    seo_keywords=['Bulk Image Resizer', 'Batch Resize Images', 'Resize Multiple Photos'],
+    how_to_use=['Upload your images', 'Choose a size or percentage', 'Download them all'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("mode", "Resize by", OptionType.select, default="fit", choices=["fit", "exact", "percent"]),
+        _opt("width", "Width (px)", OptionType.number, default=1200, min=0, max=8000),
+        _opt("height", "Height (px, 0 = auto)", OptionType.number, default=0, min=0, max=8000),
+        _opt("percent", "Percentage", OptionType.number, default=50, min=1, max=400),
+        _opt("format", "Output format", OptionType.select, default="keep", choices=["keep", "jpg", "png", "webp", "avif"]),
+        _opt("quality", "Quality", OptionType.number, default=88, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Universal Image Converter", slug="universal-image-converter", category="image-tools",
+    description="Convert between PNG, JPG, WebP, AVIF, BMP, TIFF, GIF and ICO.",
+    seo_keywords=['Image Converter', 'Convert Image Format', 'PNG To WebP'],
+    how_to_use=['Upload your images', 'Pick the output format', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("format", "Convert to", OptionType.select, default="png", choices=["png", "jpg", "webp", "avif", "bmp", "tiff", "gif", "ico"]),
+        _opt("quality", "Quality", OptionType.number, default=90, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="PNG Compressor", slug="png-compressor", category="image-tools",
+    description="Shrink PNG files by reducing the palette, losslessly encoded.",
+    seo_keywords=['PNG Compressor', 'Compress PNG', 'Reduce PNG Size'],
+    how_to_use=['Upload your PNGs', 'Set the colour count', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['png'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("reduce_colors", "Reduce the palette", OptionType.boolean, default=True),
+        _opt("colors", "Maximum colours", OptionType.number, default=256, min=2, max=256),
+    ],
+))
+define(ToolConfig(
+    name="WebP and AVIF Compressor", slug="webp-avif-compressor", category="image-tools",
+    description="Re-encode images to WebP or AVIF for much smaller files.",
+    seo_keywords=['WebP Compressor', 'AVIF Converter', 'Compress Image WebP'],
+    how_to_use=['Upload your images', 'Pick WebP or AVIF', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("format", "Format", OptionType.select, default="webp", choices=["webp", "avif"]),
+        _opt("quality", "Quality", OptionType.number, default=80, min=1, max=100),
+        _opt("lossless", "Lossless (WebP only)", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="SVG to PNG Converter", slug="svg-to-png", category="image-tools",
+    description="Rasterise SVG at any scale, or wrap an image as SVG.",
+    seo_keywords=['SVG To PNG', 'Convert SVG', 'SVG Rasterizer'],
+    how_to_use=['Upload an SVG or paste the markup', 'Set the scale', 'Download the PNG'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['svg', 'png', 'jpg', 'jpeg'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="svg_to_png", choices=["svg_to_png", "png_to_svg"]),
+        _opt("scale", "Scale", OptionType.number, default=2, min=0.1, max=10),
+    ],
+))
+define(ToolConfig(
+    name="Image Adjuster", slug="image-adjuster", category="image-tools",
+    description="Brightness, contrast, saturation, sharpness and gamma.",
+    seo_keywords=['Image Adjuster', 'Brightness Contrast Tool', 'Adjust Photo Online'],
+    how_to_use=['Upload your image', 'Move the sliders', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("brightness", "Brightness", OptionType.number, default=100, min=0, max=300),
+        _opt("contrast", "Contrast", OptionType.number, default=100, min=0, max=300),
+        _opt("saturation", "Saturation", OptionType.number, default=100, min=0, max=300),
+        _opt("sharpness", "Sharpness", OptionType.number, default=100, min=0, max=300),
+        _opt("gamma", "Gamma", OptionType.number, default=1, min=0.1, max=3),
+    ],
+))
+define(ToolConfig(
+    name="Image Filters", slug="image-filters", category="image-tools",
+    description="Sepia, vintage, duotone, posterize and more.",
+    seo_keywords=['Image Filters', 'Photo Effects Online', 'Sepia Filter'],
+    how_to_use=['Upload your image', 'Choose an effect', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("effect", "Effect", OptionType.select, default="grayscale", choices=["grayscale", "sepia", "invert", "posterize", "solarize", "vintage", "cool", "warm", "high contrast", "duotone"]),
+        _opt("levels", "Posterize levels", OptionType.number, default=4, min=1, max=8),
+        _opt("threshold", "Solarize threshold", OptionType.number, default=128, min=0, max=255),
+        _opt("dark", "Duotone dark", OptionType.color, default="#1e1b4b"),
+        _opt("light", "Duotone light", OptionType.color, default="#a5b4fc"),
+    ],
+))
+define(ToolConfig(
+    name="Black and White Converter", slug="black-and-white-converter", category="image-tools",
+    description="Greyscale, dithered, or a hard two-tone threshold.",
+    seo_keywords=['Black And White Converter', 'Grayscale Image', 'Convert Photo To BW'],
+    how_to_use=['Upload your image', 'Pick a mode', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("mode", "Mode", OptionType.select, default="grayscale", choices=["grayscale", "threshold", "dithered"]),
+        _opt("threshold", "Threshold", OptionType.number, default=128, min=1, max=254),
+        _opt("auto_contrast", "Auto contrast", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Sharpen Image", slug="sharpen-image", category="image-tools",
+    description="Bring back detail with unsharp masking.",
+    seo_keywords=['Sharpen Image', 'Unsharp Mask', 'Make Photo Sharper'],
+    how_to_use=['Upload your image', 'Set the amount', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("amount", "Amount (%)", OptionType.number, default=150, min=1, max=500),
+        _opt("radius", "Radius", OptionType.number, default=2, min=0.1, max=20),
+        _opt("threshold", "Threshold", OptionType.number, default=3, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Blur and Pixelate", slug="blur-pixelate", category="image-tools",
+    description="Blur or pixelate a whole image, or just one area.",
+    seo_keywords=['Blur Image', 'Pixelate Image', 'Blur Face In Photo'],
+    how_to_use=['Upload your image', 'Set the area to hide', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="blur", choices=["blur", "pixelate"]),
+        _opt("radius", "Blur radius", OptionType.number, default=8, min=0.5, max=60),
+        _opt("block_size", "Pixel size", OptionType.number, default=16, min=2, max=100),
+        _opt("x", "Area x", OptionType.number, default=0, min=0, max=10000),
+        _opt("y", "Area y", OptionType.number, default=0, min=0, max=10000),
+        _opt("width", "Area width (0 = all)", OptionType.number, default=0, min=0, max=10000),
+        _opt("height", "Area height (0 = all)", OptionType.number, default=0, min=0, max=10000),
+    ],
+))
+define(ToolConfig(
+    name="Motion Blur", slug="motion-blur", category="image-tools",
+    description="Add a directional streak, like a panning camera.",
+    seo_keywords=['Motion Blur', 'Directional Blur', 'Speed Effect Photo'],
+    how_to_use=['Upload your image', 'Pick the direction', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("direction", "Direction", OptionType.select, default="horizontal", choices=["horizontal", "vertical", "diagonal", "anti-diagonal"]),
+        _opt("length", "Streak length", OptionType.number, default=15, min=3, max=60),
+    ],
+))
+define(ToolConfig(
+    name="Pixel Art Converter", slug="pixel-art-converter", category="image-tools",
+    description="Turn a photo into blocky, limited-palette pixel art.",
+    seo_keywords=['Pixel Art Converter', 'Photo To Pixel Art', '8 Bit Image Maker'],
+    how_to_use=['Upload your image', 'Set the pixel width', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("pixel_width", "Pixels across", OptionType.number, default=64, min=8, max=512),
+        _opt("colors", "Palette size", OptionType.number, default=16, min=2, max=256),
+        _opt("scale_back", "Scale back up", OptionType.boolean, default=True),
+        _opt("scale", "Scale factor", OptionType.number, default=8, min=1, max=32),
+    ],
+))
+define(ToolConfig(
+    name="Glitch Effect", slug="glitch-effect", category="image-tools",
+    description="RGB split and scanline glitch, with an optional deep fry.",
+    seo_keywords=['Glitch Effect', 'Deep Fry Image', 'RGB Split Effect'],
+    how_to_use=['Upload your image', 'Set the strength', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("strength", "Strength", OptionType.number, default=10, min=1, max=100),
+        _opt("rgb_split", "RGB split", OptionType.boolean, default=True),
+        _opt("deep_fry", "Deep fry", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Cartoon Effect", slug="cartoon-effect", category="image-tools",
+    description="Flat colour plus ink outlines, for a drawn look.",
+    seo_keywords=['Cartoon Effect', 'Photo To Cartoon', 'Comic Filter'],
+    how_to_use=['Upload your image', 'Tune the outline', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("levels", "Colour levels", OptionType.number, default=4, min=2, max=8),
+        _opt("smoothing", "Smoothing", OptionType.number, default=5, min=3, max=9),
+        _opt("edge_strength", "Edge sensitivity", OptionType.number, default=40, min=1, max=200),
+        _opt("outline", "Draw outlines", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Scan Cleanup", slug="scan-cleanup", category="image-tools",
+    description="Straighten and whiten a photographed document.",
+    seo_keywords=['Scan Cleanup', 'Deskew Document', 'Whiten Scanned Page'],
+    how_to_use=['Upload the photo', 'Leave the defaults on', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("deskew", "Straighten", OptionType.boolean, default=True),
+        _opt("whiten", "Whiten the paper", OptionType.boolean, default=True),
+        _opt("sharpen", "Sharpen the text", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Image Color Picker", slug="image-color-picker", category="image-tools",
+    description="Read the exact colour at any pixel.",
+    seo_keywords=['Image Color Picker', 'Eyedropper Tool', 'Get Color From Image'],
+    how_to_use=['Upload your image', 'Enter the coordinates', 'Read the colour'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=False, supports_zip_download=False,
+    options=[
+        _opt("x", "X", OptionType.number, default=0, min=0, max=20000),
+        _opt("y", "Y", OptionType.number, default=0, min=0, max=20000),
+        _opt("sample_radius", "Average over", OptionType.number, default=2, min=0, max=50),
+    ],
+))
+define(ToolConfig(
+    name="Color Palette Extractor", slug="color-palette-extractor", category="image-tools",
+    description="Pull a colour palette out of any image, with CSS.",
+    seo_keywords=['Color Palette Extractor', 'Image Color Palette', 'Extract Colors From Image'],
+    how_to_use=['Upload your image', 'Choose how many colours', 'Copy the palette'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("colors", "How many colours", OptionType.number, default=8, min=2, max=24),
+    ],
+))
+define(ToolConfig(
+    name="Dominant Color Finder", slug="dominant-color-finder", category="image-tools",
+    description="Find the one colour an image reads as.",
+    seo_keywords=['Dominant Color Finder', 'Main Color Of Image', 'Average Image Color'],
+    how_to_use=['Upload your image', 'Read the dominant colour'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("ignore_neutrals", "Skip greys and white", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Color Histogram Viewer", slug="color-histogram", category="image-tools",
+    description="See the tonal spread and check the exposure.",
+    seo_keywords=['Color Histogram', 'Image Histogram Viewer', 'Photo Exposure Check'],
+    how_to_use=['Upload your image', 'Read the histogram'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="EXIF Remover", slug="exif-remover", category="image-tools",
+    description="Strip metadata, including the GPS location in phone photos.",
+    seo_keywords=['EXIF Remover', 'Remove Photo Metadata', 'Strip GPS From Image'],
+    how_to_use=['Upload your images', 'Download the cleaned copies'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("quality", "JPEG quality", OptionType.number, default=92, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Image Dimension Checker", slug="image-dimension-checker", category="image-tools",
+    description="Size, ratio, megapixels and file weight at a glance.",
+    seo_keywords=['Image Size Checker', 'Image Dimensions', 'Check Photo Resolution'],
+    how_to_use=['Upload your images', 'Read the details'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=False, supports_zip_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="DPI Checker and Changer", slug="dpi-checker", category="image-tools",
+    description="Check the DPI and see the real printed size.",
+    seo_keywords=['DPI Checker', 'Change Image DPI', '300 DPI Converter'],
+    how_to_use=['Upload your image', 'Set a new DPI if you need one', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("set_dpi", "Set DPI (0 = just check)", OptionType.number, default=0, min=0, max=1200),
+    ],
+))
+define(ToolConfig(
+    name="Reverse Image Search Helper", slug="reverse-image-search", category="image-tools",
+    description="Build the search links for an image on every major engine.",
+    seo_keywords=['Reverse Image Search', 'Find Image Source', 'Search By Image URL'],
+    how_to_use=['Paste the image URL', 'Open the search links'],
+    input_kind=InputKind.options, supports_single_upload=False,
+    supports_download=False, supports_zip_download=False,
+    options=[
+        _opt("image_url", "Image URL", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Add Text to Image", slug="add-text-to-image", category="image-tools",
+    description="Put a caption on a photo, with an outline that stays readable.",
+    seo_keywords=['Add Text To Image', 'Write On Photo', 'Text Over Image'],
+    how_to_use=['Upload your image', 'Type the text', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("message", "Text", OptionType.text, default=""),
+        _opt("position", "Position", OptionType.select, default="bottom", choices=["top", "middle", "bottom"]),
+        _opt("font_size", "Font size (0 = auto)", OptionType.number, default=0, min=0, max=400),
+        _opt("color", "Text colour", OptionType.color, default="#ffffff"),
+        _opt("outline", "Outline the text", OptionType.boolean, default=True),
+        _opt("outline_color", "Outline colour", OptionType.color, default="#000000"),
+        _opt("opacity", "Opacity (%)", OptionType.number, default=100, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Add Border to Image", slug="add-border", category="image-tools",
+    description="Add a solid, double or polaroid frame.",
+    seo_keywords=['Add Border To Image', 'Photo Frame Online', 'Image Border Maker'],
+    how_to_use=['Upload your image', 'Pick a style', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("style", "Style", OptionType.select, default="solid", choices=["solid", "double", "polaroid"]),
+        _opt("width", "Border width", OptionType.number, default=0, min=1, max=400),
+        _opt("color", "Border colour", OptionType.color, default="#ffffff"),
+        _opt("inner_color", "Inner colour", OptionType.color, default="#111827"),
+    ],
+))
+define(ToolConfig(
+    name="Meme Generator", slug="meme-generator", category="image-tools",
+    description="Top and bottom captions in the classic meme style.",
+    seo_keywords=['Meme Generator', 'Make A Meme', 'Meme Maker Online'],
+    how_to_use=['Upload the image', 'Type the captions', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("top", "Top text", OptionType.text, default=""),
+        _opt("bottom", "Bottom text", OptionType.text, default=""),
+        _opt("font_size", "Font size (0 = auto)", OptionType.number, default=0, min=0, max=400),
+        _opt("uppercase", "Uppercase", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Collage Maker", slug="collage-maker", category="image-tools",
+    description="Arrange several photos into a clean grid.",
+    seo_keywords=['Collage Maker', 'Photo Grid Maker', 'Picture Collage Online'],
+    how_to_use=['Upload your photos', 'Set the columns', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("columns", "Columns (0 = auto)", OptionType.number, default=0, min=0, max=10),
+        _opt("cell_size", "Cell size (px)", OptionType.number, default=400, min=80, max=1600),
+        _opt("gap", "Gap (px)", OptionType.number, default=10, min=0, max=100),
+        _opt("background", "Background", OptionType.color, default="#ffffff"),
+    ],
+))
+define(ToolConfig(
+    name="Image Splitter", slug="image-splitter", category="image-tools",
+    description="Cut an image into a grid for a carousel post.",
+    seo_keywords=['Image Splitter', 'Split Image Into Grid', 'Instagram Carousel Cutter'],
+    how_to_use=['Upload your image', 'Set the grid', 'Download the pieces'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("columns", "Columns", OptionType.number, default=3, min=1, max=10),
+        _opt("rows", "Rows", OptionType.number, default=1, min=1, max=10),
+    ],
+))
+define(ToolConfig(
+    name="Favicon Generator", slug="favicon-generator", category="image-tools",
+    description="Every favicon size a site needs, plus the HTML.",
+    seo_keywords=['Favicon Generator', 'Make A Favicon', 'ICO Generator'],
+    how_to_use=['Upload a square logo', 'Download the set', 'Paste the HTML into your head'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("apple_background", "Apple icon background", OptionType.color, default="#ffffff"),
+    ],
+))
+define(ToolConfig(
+    name="Placeholder Image Generator", slug="placeholder-image-generator", category="image-tools",
+    description="Generate sized placeholder images for mockups.",
+    seo_keywords=['Placeholder Image Generator', 'Dummy Image Maker', 'Mockup Placeholder'],
+    how_to_use=['Set the size', 'Add a label', 'Download'],
+    input_kind=InputKind.options, supports_single_upload=False,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("width", "Width", OptionType.number, default=800, min=16, max=4000),
+        _opt("height", "Height", OptionType.number, default=600, min=16, max=4000),
+        _opt("label", "Label (blank = the size)", OptionType.text, default=""),
+        _opt("background", "Background", OptionType.color, default="#e2e8f0"),
+        _opt("color", "Text colour", OptionType.color, default="#475569"),
+        _opt("diagonals", "Draw diagonals", OptionType.boolean, default=False),
+        _opt("format", "Format", OptionType.select, default="png", choices=["png", "jpg"]),
+    ],
+))
+define(ToolConfig(
+    name="Gradient Generator", slug="gradient-generator", category="image-tools",
+    description="Make a gradient image and get the matching CSS.",
+    seo_keywords=['Gradient Generator', 'CSS Gradient Image', 'Background Gradient Maker'],
+    how_to_use=['Pick two colours', 'Choose the style', 'Download'],
+    input_kind=InputKind.options, supports_single_upload=False,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("start_color", "Start colour", OptionType.color, default="#4f46e5"),
+        _opt("end_color", "End colour", OptionType.color, default="#ec4899"),
+        _opt("style", "Style", OptionType.select, default="linear", choices=["linear", "radial"]),
+        _opt("angle", "Angle", OptionType.number, default=90, min=0, max=360),
+        _opt("width", "Width", OptionType.number, default=1200, min=16, max=4000),
+        _opt("height", "Height", OptionType.number, default=600, min=16, max=4000),
+    ],
+))
+define(ToolConfig(
+    name="Signature Maker", slug="signature-maker", category="image-tools",
+    description="Turn a photo of your signature into a transparent PNG.",
+    seo_keywords=['Signature Maker', 'Transparent Signature', 'Signature Background Remover'],
+    how_to_use=['Photograph your signature on white paper', 'Upload it', 'Download the PNG'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("threshold", "Ink threshold", OptionType.number, default=160, min=1, max=254),
+        _opt("ink_color", "Ink colour", OptionType.color, default="#000000"),
+        _opt("trim", "Trim the empty edges", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Passport Photo Maker", slug="passport-photo-maker", category="image-tools",
+    description="Crop to an official size and lay out a print sheet.",
+    seo_keywords=['Passport Photo Maker', 'ID Photo Tool', 'Visa Photo Size'],
+    how_to_use=['Upload your photo', 'Pick the country size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("size", "Photo size", OptionType.select, default="US passport (2x2 in)", choices=["US passport (2x2 in)", "UK / EU passport (35x45 mm)", "India passport (35x45 mm)", "Schengen visa (35x45 mm)", "China visa (33x48 mm)", "Canada passport (50x70 mm)", "Australia passport (35x45 mm)"]),
+        _opt("dpi", "DPI", OptionType.number, default=300, min=150, max=1200),
+        _opt("print_sheet", "Also make a 6x4 print sheet", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Image to ASCII Art", slug="image-to-ascii", category="image-tools",
+    description="Turn a picture into text art.",
+    seo_keywords=['Image To ASCII', 'ASCII Art From Photo', 'Picture To Text Art'],
+    how_to_use=['Upload your image', 'Set the width', 'Copy the art'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("width", "Columns", OptionType.number, default=100, min=20, max=400),
+        _opt("invert", "Invert", OptionType.boolean, default=False),
+        _opt("enhance_contrast", "Boost contrast", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Sprite Sheet Generator", slug="sprite-sheet-generator", category="image-tools",
+    description="Pack frames into one sheet, with the CSS positions.",
+    seo_keywords=['Sprite Sheet Generator', 'CSS Sprite Maker', 'Combine Images Sprite'],
+    how_to_use=['Upload your frames', 'Pick the layout', 'Download the sheet and CSS'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("layout", "Layout", OptionType.select, default="horizontal", choices=["horizontal", "vertical", "grid"]),
+        _opt("columns", "Grid columns (0 = auto)", OptionType.number, default=0, min=0, max=20),
+    ],
+))
+define(ToolConfig(
+    name="CSS Image Snippet", slug="css-image-snippet", category="image-tools",
+    description="Embed an image in CSS as a data URI.",
+    seo_keywords=['CSS Background Image', 'Image To Data URI', 'Base64 CSS Background'],
+    how_to_use=['Upload a small image', 'Copy the CSS'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("selector", "CSS selector", OptionType.text, default=".hero"),
+        _opt("size", "background-size", OptionType.select, default="cover", choices=["cover", "contain", "auto", "100% 100%"]),
+        _opt("position", "background-position", OptionType.select, default="center", choices=["center", "top", "bottom", "left", "right"]),
+    ],
+))
+define(ToolConfig(
+    name="Social Media Image Resizer", slug="social-media-resizer", category="image-tools",
+    description="Export one image at the right size for every platform.",
+    seo_keywords=['Social Media Image Resizer', 'Instagram Size Resizer', 'Social Post Dimensions'],
+    how_to_use=['Upload your image', 'Tick the placements', 'Download the set'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("platforms", "Placements (comma separated)", OptionType.text, default="Instagram post (square), Facebook post, X / Twitter post, YouTube thumbnail, Open Graph / link preview"),
+        _opt("mode", "Fit", OptionType.select, default="crop", choices=["crop", "pad"]),
+        _opt("background", "Pad colour", OptionType.color, default="#ffffff"),
+    ],
+))
+define(ToolConfig(
+    name="Profile Picture Maker", slug="profile-picture-maker", category="image-tools",
+    description="A clean square or circular avatar, ready to upload.",
+    seo_keywords=['Profile Picture Maker', 'Avatar Maker', 'Circular Profile Photo'],
+    how_to_use=['Upload your photo', 'Pick the size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("size", "Size (px)", OptionType.number, default=512, min=64, max=2048),
+        _opt("circle", "Circular", OptionType.boolean, default=True),
+        _opt("border_width", "Ring width", OptionType.number, default=0, min=0, max=200),
+        _opt("border_color", "Ring colour", OptionType.color, default="#ffffff"),
+    ],
+))
+define(ToolConfig(
+    name="Thumbnail Maker", slug="thumbnail-maker", category="image-tools",
+    description="Small, right-sized copies, with an optional caption.",
+    seo_keywords=['Thumbnail Maker', 'Create Thumbnails', 'Image Thumbnail Generator'],
+    how_to_use=['Upload your images', 'Set the size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("width", "Width", OptionType.number, default=400, min=32, max=2000),
+        _opt("height", "Height", OptionType.number, default=300, min=32, max=2000),
+        _opt("crop_to_fit", "Crop to fit", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Background Changer", slug="background-changer", category="image-tools",
+    description="Swap a plain background for a colour, a blur or another image.",
+    seo_keywords=['Background Changer', 'Replace Photo Background', 'Change Image Background'],
+    how_to_use=['Upload the subject', 'Pick a new background', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("background", "New background", OptionType.select, default="color", choices=["color", "blur", "transparent", "image"]),
+        _opt("color", "Colour", OptionType.color, default="#ffffff"),
+        _opt("blur_radius", "Blur radius", OptionType.number, default=12, min=2, max=60),
+        _opt("tolerance", "Removal tolerance", OptionType.number, default=60, min=5, max=200),
+    ],
+))
+define(ToolConfig(
+    name="GIF Converter", slug="gif-converter", category="image-tools",
+    description="Build an animated GIF from images, or split one into frames.",
+    seo_keywords=['GIF Maker', 'Images To GIF', 'GIF To Frames'],
+    how_to_use=['Upload your images or a GIF', 'Pick the direction', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("direction", "Convert", OptionType.select, default="images_to_gif", choices=["images_to_gif", "gif_to_frames"]),
+        _opt("fps", "Frames per second", OptionType.number, default=5, min=1, max=50),
+        _opt("width", "Width (0 = keep)", OptionType.number, default=0, min=0, max=1200),
+        _opt("loop", "Loop forever", OptionType.boolean, default=True),
+        _opt("max_frames", "Max frames to extract", OptionType.number, default=60, min=1, max=300),
+    ],
+))
+define(ToolConfig(
+    name="Remove PDF Pages", slug="pdf-remove-pages", category="pdf-tools",
+    description="Delete pages from a PDF and keep the rest.",
+    seo_keywords=['Remove PDF Pages', 'Delete Pages From PDF', 'PDF Page Remover'],
+    how_to_use=['Upload your PDF', 'List the pages to remove', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("pages", "Pages to remove", OptionType.text, default=""),
+    ],
+))
+define(ToolConfig(
+    name="Insert Pages into PDF", slug="pdf-insert-pages", category="pdf-tools",
+    description="Insert one PDF into another at any point.",
+    seo_keywords=['Insert Pages Into PDF', 'Add Pages To PDF', 'Merge PDF At Page'],
+    how_to_use=['Upload the original, then the PDF to insert', 'Choose where it goes', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("after_page", "Insert after page (0 = start)", OptionType.number, default=0, min=0, max=5000),
+    ],
+))
+define(ToolConfig(
+    name="Alternate PDF Pages", slug="pdf-alternate-pages", category="pdf-tools",
+    description="Interleave two PDFs — for odd and even scanner passes.",
+    seo_keywords=['Alternate PDF Pages', 'Merge Odd And Even Pages', 'Interleave PDF'],
+    how_to_use=['Upload the odd pages, then the even', 'Reverse the second if needed', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("reverse_second", "Second file is in reverse order", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Resize PDF Pages", slug="pdf-resize-pages", category="pdf-tools",
+    description="Scale every page onto A4, Letter or another size.",
+    seo_keywords=['Resize PDF Pages', 'Scale PDF', 'Change PDF Page Size'],
+    how_to_use=['Upload your PDF', 'Pick the paper size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("size", "Paper size", OptionType.select, default="a4", choices=["a4", "letter", "legal", "a3", "a5"]),
+        _opt("landscape", "Landscape", OptionType.boolean, default=False),
+        _opt("margin", "Margin (pt)", OptionType.number, default=0, min=0, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Crop PDF", slug="pdf-crop", category="pdf-tools",
+    description="Trim the margins off every page.",
+    seo_keywords=['Crop PDF', 'Trim PDF Margins', 'PDF Margin Cutter'],
+    how_to_use=['Upload your PDF', 'Set the trim or use auto', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("auto", "Crop to content automatically", OptionType.boolean, default=False),
+        _opt("auto_margin", "Auto margin (pt)", OptionType.number, default=6, min=0, max=60),
+        _opt("top", "Top (%)", OptionType.number, default=0, min=0, max=45),
+        _opt("bottom", "Bottom (%)", OptionType.number, default=0, min=0, max=45),
+        _opt("left", "Left (%)", OptionType.number, default=0, min=0, max=45),
+        _opt("right", "Right (%)", OptionType.number, default=0, min=0, max=45),
+    ],
+))
+define(ToolConfig(
+    name="Grayscale PDF", slug="pdf-grayscale", category="pdf-tools",
+    description="Convert a PDF to greyscale for cheaper printing.",
+    seo_keywords=['Grayscale PDF', 'Black And White PDF', 'Remove Color From PDF'],
+    how_to_use=['Upload your PDF', 'Set the quality', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("dpi", "Render DPI", OptionType.number, default=150, min=72, max=400),
+    ],
+))
+define(ToolConfig(
+    name="Flatten PDF", slug="pdf-flatten", category="pdf-tools",
+    description="Bake annotations and form fields so nothing stays editable.",
+    seo_keywords=['Flatten PDF', 'Make PDF Uneditable', 'Flatten PDF Forms'],
+    how_to_use=['Upload your PDF', 'Choose the method', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("rasterize", "Rasterise the pages", OptionType.boolean, default=False),
+        _opt("dpi", "Raster DPI", OptionType.number, default=150, min=72, max=400),
+    ],
+))
+define(ToolConfig(
+    name="Repair PDF", slug="pdf-repair", category="pdf-tools",
+    description="Rebuild a damaged PDF so it opens again.",
+    seo_keywords=['Repair PDF', 'Fix Corrupt PDF', 'PDF Recovery Tool'],
+    how_to_use=['Upload the damaged PDF', 'Download the rebuilt copy'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Optimize PDF for Web", slug="pdf-optimize-web", category="pdf-tools",
+    description="Linearise so page one shows before the rest downloads.",
+    seo_keywords=['Optimize PDF For Web', 'Linearize PDF', 'Fast Web View PDF'],
+    how_to_use=['Upload your PDF', 'Choose the image quality', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("downsample_images", "Downsample images", OptionType.boolean, default=True),
+        _opt("image_dpi", "Image DPI", OptionType.number, default=150, min=72, max=400),
+        _opt("quality", "Image quality", OptionType.number, default=80, min=10, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Enhance Scanned PDF", slug="pdf-enhance-scan", category="pdf-tools",
+    description="Whiten and sharpen a scanned or photographed document.",
+    seo_keywords=['Enhance Scanned PDF', 'Clean Up Scan', 'Whiten PDF Scan'],
+    how_to_use=['Upload the scan', 'Leave the defaults on', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("dpi", "Render DPI", OptionType.number, default=200, min=100, max=400),
+        _opt("whiten", "Whiten the paper", OptionType.boolean, default=True),
+        _opt("sharpen", "Sharpen the text", OptionType.boolean, default=True),
+        _opt("quality", "JPEG quality", OptionType.number, default=80, min=30, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Add Text to PDF", slug="pdf-add-text", category="pdf-tools",
+    description="Stamp text onto any page of a PDF.",
+    seo_keywords=['Add Text To PDF', 'Write On PDF', 'PDF Text Stamp'],
+    how_to_use=['Upload your PDF', 'Type the text', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("message", "Text", OptionType.text, default=""),
+        _opt("pages", "Pages (blank = all)", OptionType.text, default=""),
+        _opt("position", "Position", OptionType.select, default="top-left", choices=["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]),
+        _opt("font_size", "Font size", OptionType.number, default=14, min=6, max=96),
+        _opt("color", "Colour", OptionType.color, default="#000000"),
+        _opt("offset_x", "Nudge across", OptionType.number, default=0, min=-500, max=500),
+        _opt("offset_y", "Nudge down", OptionType.number, default=0, min=-500, max=500),
+    ],
+))
+define(ToolConfig(
+    name="Add Image to PDF", slug="pdf-add-image", category="pdf-tools",
+    description="Place a logo or picture on chosen pages.",
+    seo_keywords=['Add Image To PDF', 'Add Logo To PDF', 'Insert Picture Into PDF'],
+    how_to_use=['Upload the PDF, then the image', 'Pick the position', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf', 'png', 'jpg', 'jpeg', 'webp'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("pages", "Pages (blank = all)", OptionType.text, default=""),
+        _opt("position", "Position", OptionType.select, default="top-right", choices=["top-left", "top-center", "top-right", "middle-center", "bottom-left", "bottom-center", "bottom-right"]),
+        _opt("width_percent", "Width (% of page)", OptionType.number, default=25, min=1, max=100),
+        _opt("margin", "Margin (pt)", OptionType.number, default=24, min=0, max=200),
+        _opt("behind_text", "Place behind the text", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Add Header and Footer", slug="pdf-header-footer", category="pdf-tools",
+    description="Running header and footer with page numbers.",
+    seo_keywords=['PDF Header Footer', 'Add Header To PDF', 'PDF Footer Text'],
+    how_to_use=['Upload your PDF', 'Write the header and footer', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("header", "Header text", OptionType.text, default=""),
+        _opt("footer", "Footer text", OptionType.text, default="Page {page} of {total}"),
+        _opt("align", "Alignment", OptionType.select, default="center", choices=["left", "center", "right"]),
+        _opt("font_size", "Font size", OptionType.number, default=9, min=6, max=24),
+        _opt("margin", "Margin (pt)", OptionType.number, default=28, min=8, max=100),
+        _opt("skip_first_page", "Skip the first page", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Redact PDF", slug="pdf-redact", category="pdf-tools",
+    description="Permanently remove words from a PDF, not just cover them.",
+    seo_keywords=['Redact PDF', 'Black Out Text In PDF', 'PDF Redaction Tool'],
+    how_to_use=['Upload your PDF', 'List the words to remove', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("ignore_case", "Ignore case", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Sign PDF", slug="pdf-sign", category="pdf-tools",
+    description="Place a signature image on a page and lock it in.",
+    seo_keywords=['Sign PDF', 'Add Signature To PDF', 'E Sign PDF Online'],
+    how_to_use=['Upload the PDF, then your signature image', 'Choose the page', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf', 'png', 'jpg', 'jpeg'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("page", "Page (0 = last)", OptionType.number, default=0, min=0, max=5000),
+        _opt("width", "Signature width (pt)", OptionType.number, default=160, min=40, max=600),
+        _opt("x", "X (0 = auto)", OptionType.number, default=0, min=0, max=2000),
+        _opt("y", "Y (0 = auto)", OptionType.number, default=0, min=0, max=2000),
+        _opt("add_date", "Add the date", OptionType.boolean, default=True),
+        _opt("lock", "Flatten so it cannot be moved", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Create Blank PDF", slug="pdf-create-blank", category="pdf-tools",
+    description="Blank, lined, gridded or dotted pages.",
+    seo_keywords=['Create Blank PDF', 'Blank PDF Generator', 'Lined Paper PDF'],
+    how_to_use=['Pick a style and size', 'Set the page count', 'Download'],
+    input_kind=InputKind.text, supports_single_upload=False,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("pages", "Pages", OptionType.number, default=1, min=1, max=200),
+        _opt("size", "Paper size", OptionType.select, default="a4", choices=["a4", "letter", "legal", "a3", "a5"]),
+        _opt("landscape", "Landscape", OptionType.boolean, default=False),
+        _opt("style", "Style", OptionType.select, default="blank", choices=["blank", "lined", "grid", "dotted"]),
+        _opt("spacing", "Line spacing (pt)", OptionType.number, default=24, min=6, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Bates Numbering", slug="pdf-bates-numbering", category="pdf-tools",
+    description="Sequential legal numbering across a whole production.",
+    seo_keywords=['Bates Numbering', 'Bates Stamp PDF', 'Legal Page Numbering'],
+    how_to_use=['Upload your PDFs in order', 'Set the prefix and start', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("prefix", "Prefix", OptionType.text, default=""),
+        _opt("suffix", "Suffix", OptionType.text, default=""),
+        _opt("start", "Start at", OptionType.number, default=1, min=0, max=999999),
+        _opt("digits", "Digits", OptionType.number, default=6, min=1, max=12),
+        _opt("position", "Position", OptionType.select, default="bottom-right", choices=["bottom-right", "bottom-left", "top-right", "top-left"]),
+        _opt("font_size", "Font size", OptionType.number, default=10, min=6, max=24),
+    ],
+))
+define(ToolConfig(
+    name="Remove PDF Metadata", slug="pdf-remove-metadata", category="pdf-tools",
+    description="Strip author, software and timestamps from a PDF.",
+    seo_keywords=['Remove PDF Metadata', 'PDF Metadata Cleaner', 'Strip PDF Author'],
+    how_to_use=['Upload your PDFs', 'Download the cleaned copies'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Compare PDFs", slug="pdf-compare", category="pdf-tools",
+    description="See exactly what changed between two PDFs.",
+    seo_keywords=['Compare PDFs', 'PDF Diff Tool', 'PDF Comparison'],
+    how_to_use=['Upload both PDFs', 'Read the differences'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=False, supports_zip_download=True,
+    options=[
+        _opt("ignore_whitespace", "Ignore spacing", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="PDF to Base64", slug="pdf-to-base64", category="pdf-tools",
+    description="Encode a PDF as Base64 or a data URI.",
+    seo_keywords=['PDF To Base64', 'Encode PDF Base64', 'PDF Data URI'],
+    how_to_use=['Upload your PDF', 'Copy the string'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("data_uri", "Include the data: prefix", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="Extract Text from PDF", slug="pdf-extract-text", category="pdf-tools",
+    description="Pull the text out as TXT, Markdown or JSON.",
+    seo_keywords=['Extract Text From PDF', 'PDF To Text', 'PDF Text Extractor'],
+    how_to_use=['Upload your PDF', 'Pick the format', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("format", "Format", OptionType.select, default="txt", choices=["txt", "markdown", "json"]),
+        _opt("keep_layout", "Keep the column order", OptionType.boolean, default=False),
+        _opt("page_breaks", "Mark page breaks", OptionType.boolean, default=True),
+    ],
+))
+define(ToolConfig(
+    name="PDF to HTML", slug="pdf-to-html", category="pdf-tools",
+    description="Convert a PDF into a readable HTML page.",
+    seo_keywords=['PDF To HTML', 'Convert PDF To Web Page', 'PDF HTML Converter'],
+    how_to_use=['Upload your PDF', 'Choose the style', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("preserve_layout", "Keep the exact layout", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Extract Images from PDF", slug="pdf-extract-images", category="pdf-tools",
+    description="Pull out embedded images at full resolution.",
+    seo_keywords=['Extract Images From PDF', 'PDF Image Extractor', 'Get Pictures From PDF'],
+    how_to_use=['Upload your PDF', 'Set a minimum size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[
+        _opt("min_size", "Skip images under (px)", OptionType.number, default=100, min=0, max=2000),
+        _opt("max_images", "Maximum to extract", OptionType.number, default=100, min=1, max=500),
+    ],
+))
+define(ToolConfig(
+    name="Extract Tables from PDF", slug="pdf-extract-tables", category="pdf-tools",
+    description="Find tables and export them as CSV.",
+    seo_keywords=['Extract Tables From PDF', 'PDF Table To CSV', 'PDF Table Extractor'],
+    how_to_use=['Upload your PDF', 'Download the CSV files'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Extract PDF Attachments", slug="pdf-extract-attachments", category="pdf-tools",
+    description="Pull out files embedded inside a PDF.",
+    seo_keywords=['Extract PDF Attachments', 'PDF Embedded Files', 'Get Attachments From PDF'],
+    how_to_use=['Upload your PDF', 'Download the attachments'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=True,
+    options=[],
+))
+define(ToolConfig(
+    name="Summarize PDF", slug="pdf-summarize", category="pdf-tools",
+    description="Shorten a PDF to its most important sentences.",
+    seo_keywords=['Summarize PDF', 'PDF Summary Tool', 'Shorten PDF'],
+    how_to_use=['Upload your PDF', 'Choose the length', 'Read the summary'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("sentences", "Sentences to keep", OptionType.number, default=5, min=1, max=30),
+    ],
+))
+define(ToolConfig(
+    name="HTML to PDF", slug="html-to-pdf", category="pdf-tools",
+    description="Turn pasted HTML into a paginated PDF.",
+    seo_keywords=['HTML To PDF', 'Convert HTML To PDF', 'Web Page To PDF'],
+    how_to_use=['Paste your HTML', 'Add CSS if you want', 'Download'],
+    input_kind=InputKind.text, supports_single_upload=False,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("css", "Extra CSS", OptionType.text, default=""),
+        _opt("size", "Paper size", OptionType.select, default="a4", choices=["a4", "letter", "legal", "a3", "a5"]),
+        _opt("margin", "Margin (pt)", OptionType.number, default=50, min=0, max=200),
+    ],
+))
+define(ToolConfig(
+    name="Text to PDF", slug="text-to-pdf", category="pdf-tools",
+    description="Turn plain text or Markdown into a formatted PDF.",
+    seo_keywords=['Text To PDF', 'Markdown To PDF', 'TXT To PDF Converter'],
+    how_to_use=['Paste your text', 'Pick the font size', 'Download'],
+    input_kind=InputKind.text, supports_single_upload=False,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("markdown", "Read it as Markdown", OptionType.boolean, default=True),
+        _opt("font", "Font", OptionType.select, default="sans-serif", choices=["sans-serif", "serif", "monospace"]),
+        _opt("font_size", "Font size", OptionType.number, default=11, min=8, max=24),
+        _opt("size", "Paper size", OptionType.select, default="a4", choices=["a4", "letter", "legal", "a3", "a5"]),
+        _opt("margin", "Margin (pt)", OptionType.number, default=56, min=0, max=200),
+    ],
+))
+define(ToolConfig(
+    name="EPUB to PDF", slug="epub-to-pdf", category="pdf-tools",
+    description="Convert an ebook into a PDF you can print.",
+    seo_keywords=['EPUB To PDF', 'Ebook To PDF', 'Convert EPUB'],
+    how_to_use=['Upload your .epub', 'Pick the paper size', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['epub'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("size", "Paper size", OptionType.select, default="a5", choices=["a4", "letter", "legal", "a3", "a5"]),
+        _opt("margin", "Margin (pt)", OptionType.number, default=40, min=0, max=200),
+    ],
+))
+define(ToolConfig(
+    name="PDF to EPUB", slug="pdf-to-epub", category="pdf-tools",
+    description="Build a reflowable ebook from a PDF.",
+    seo_keywords=['PDF To EPUB', 'Convert PDF To Ebook', 'PDF EPUB Converter'],
+    how_to_use=['Upload your PDF', 'Set the title', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("title", "Book title", OptionType.text, default=""),
+        _opt("author", "Author", OptionType.text, default=""),
+        _opt("pages_per_chapter", "Pages per chapter", OptionType.number, default=10, min=1, max=100),
+    ],
+))
+define(ToolConfig(
+    name="Extract PDF Form Data", slug="pdf-extract-form-data", category="pdf-tools",
+    description="Read every filled field out of a PDF form.",
+    seo_keywords=['Extract PDF Form Data', 'Read PDF Form Fields', 'PDF Form To JSON'],
+    how_to_use=['Upload the form', 'Read the values'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[],
+))
+define(ToolConfig(
+    name="Fill PDF Form", slug="pdf-fill-form", category="pdf-tools",
+    description="Fill a PDF form from JSON or name=value lines.",
+    seo_keywords=['Fill PDF Form', 'PDF Form Filler', 'Complete PDF Form'],
+    how_to_use=['Upload the form', 'Enter the values', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("flatten", "Lock the answers in", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
+    name="Create Fillable PDF Form", slug="pdf-create-form", category="pdf-tools",
+    description="Add text boxes and checkboxes to a PDF.",
+    seo_keywords=['Create Fillable PDF', 'PDF Form Builder', 'Make PDF Form'],
+    how_to_use=['Upload your PDF', 'List the fields', 'Download'],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=['pdf'], max_upload_mb=50,
+    supports_download=True, supports_zip_download=False,
+    options=[
+        _opt("page", "Page", OptionType.number, default=1, min=1, max=5000),
+        _opt("start_y", "Start from (pt)", OptionType.number, default=100, min=20, max=700),
+        _opt("spacing", "Row spacing (pt)", OptionType.number, default=44, min=28, max=120),
+        _opt("label_width", "Label width (pt)", OptionType.number, default=150, min=60, max=300),
+        _opt("field_width", "Field width (pt)", OptionType.number, default=240, min=60, max=400),
+    ],
+))
