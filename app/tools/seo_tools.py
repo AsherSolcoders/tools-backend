@@ -891,7 +891,9 @@ def canonical_checker(files, text: str, options: dict) -> ToolResult:
     links = [l for l in re.findall(r"<link\b[^>]*>", text, re.IGNORECASE)
              if (_attr(l, "rel") or "").lower() == "canonical"]
     hrefs = [_attr(l, "href") for l in links]
-    page_url = _opt_str(options, "page_url")
+    # When the page was fetched we already know its address, so the self-reference
+    # check needs no second box for the visitor to retype it into.
+    page_url = _opt_str(options, "page_url") or (_source.get("fetched_url") or "")
     issues = []
     if not hrefs:
         issues.append("No canonical link found on this page.")

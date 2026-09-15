@@ -3532,7 +3532,6 @@ define(ToolConfig(
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
         _opt("url", "Page URL", OptionType.text, default=""),
-        _opt("page_url", "Page URL", OptionType.text, default=""),
     ],
 ))
 define(ToolConfig(
