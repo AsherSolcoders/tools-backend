@@ -617,22 +617,37 @@ def google_review_link(files, text: str, options: dict) -> ToolResult:
 # On-page analysis (works on pasted HTML)
 # ===========================================================================
 
-def _need_html(text: str) -> str | None:
-    if not (text or "").strip():
-        return "Paste the page's HTML. View source in your browser and copy it in."
-    return None
+def _load_page(text: str, options: dict) -> tuple[str, dict]:
+    """The page to analyse, from a URL the visitor entered or HTML they pasted.
+
+    Every comparable tool elsewhere takes a URL and fetches the page. Asking for
+    pasted HTML instead is the single reason these read as broken: someone types
+    an address, and gets told no headings were found in it.
+
+    Raises FetchError with a message worth showing.
+    """
+    from app.core.page_fetch import resolve_html
+
+    return resolve_html(text, options)
 
 
 @register("heading-analyzer")
 def heading_analyzer(files, text: str, options: dict) -> ToolResult:
     """Heading order, and the mistakes that break a document outline."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     found = [(int(m.group(1)), _visible_text(m.group(2)))
              for m in re.finditer(r"<h([1-6])[^>]*>(.*?)</h\1>", text, re.DOTALL | re.IGNORECASE)]
     if not found:
-        return ToolResult(meta={"error": "No headings found in that HTML."})
+        return ToolResult(meta={
+            **_source, "total": 0,
+            "verdict": "No headings on this page. Every page needs at least an H1 — without "
+                       "one, search engines have nothing to read as the page's subject.",
+        })
     issues, previous = [], 0
     for level, content in found:
         if previous and level > previous + 1:
@@ -647,19 +662,28 @@ def heading_analyzer(files, text: str, options: dict) -> ToolResult:
         issues.append(f"{counts[1]} H1s. Use one, and let H2s carry the sections.")
     return ToolResult(
         text="\n".join(f"{'  ' * (level - 1)}H{level}: {content[:80]}" for level, content in found),
-        meta={"total": len(found),
+        meta={
+        **_source,"total": len(found),
               "by_level": {f"h{i}": counts.get(i, 0) for i in range(1, 7)},
               "issues": issues or ["Heading structure looks correct."]})
 
 
 @register("alt-text-checker")
 def alt_text_checker(files, text: str, options: dict) -> ToolResult:
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     images = re.findall(r"<img\b[^>]*>", text, re.IGNORECASE)
     if not images:
-        return ToolResult(meta={"error": "No <img> tags found in that HTML."})
+        return ToolResult(meta={
+            **_source, "images": 0,
+            "verdict": "This page has no <img> tags. Nothing to check — but note that "
+                       "CSS backgrounds and inline SVG are invisible to alt-text rules "
+                       "either way, so a decorative-only page is fine.",
+        })
     missing, empty, generic, good = [], [], [], []
     filler = {"image", "img", "photo", "picture", "graphic", "icon", "logo", "banner",
               "untitled", "screenshot", "dsc", "img_"}
@@ -677,6 +701,7 @@ def alt_text_checker(files, text: str, options: dict) -> ToolResult:
         else:
             good.append({"src": src, "alt": alt})
     return ToolResult(meta={
+        **_source,
         "images": len(images), "with_good_alt": len(good),
         "missing_alt": missing, "decorative_empty_alt": empty, "generic_alt": generic,
         "coverage_percent": round(len(good) / len(images) * 100, 1),
@@ -686,9 +711,12 @@ def alt_text_checker(files, text: str, options: dict) -> ToolResult:
 
 @register("internal-link-analyzer")
 def internal_link_analyzer(files, text: str, options: dict) -> ToolResult:
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     domain = _opt_str(options, "domain").replace("https://", "").replace("http://", "").strip("/")
     internal, external, other = [], [], []
     for m in re.finditer(r"<a\b([^>]*)>(.*?)</a>", text, re.DOTALL | re.IGNORECASE):
@@ -706,6 +734,7 @@ def internal_link_analyzer(files, text: str, options: dict) -> ToolResult:
             internal.append(entry)
     empty_anchors = [e for e in internal + external if e["anchor"] == "(no text)"]
     return ToolResult(meta={
+        **_source,
         "internal_links": len(internal), "external_links": len(external),
         "other_links": len(other),
         "nofollow_internal": sum(1 for e in internal if e["nofollow"]),
@@ -718,9 +747,12 @@ def internal_link_analyzer(files, text: str, options: dict) -> ToolResult:
 @register("nofollow-link-checker")
 def nofollow_link_checker(files, text: str, options: dict) -> ToolResult:
     """Which outbound links pass ranking signal, and which do not."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     domain = _opt_str(options, "domain").replace("https://", "").replace("http://", "").strip("/")
     rows = []
     for m in re.finditer(r"<a\b([^>]*)>(.*?)</a>", text, re.DOTALL | re.IGNORECASE):
@@ -738,10 +770,16 @@ def nofollow_link_checker(files, text: str, options: dict) -> ToolResult:
             "missing_noopener": (_attr(m.group(1), "target") or "") == "_blank" and "noopener" not in rel,
         })
     if not rows:
-        return ToolResult(meta={"error": "No outbound links found."})
+        return ToolResult(meta={
+            **_source, "outbound_links": 0,
+            "verdict": "No outbound links on this page. Nothing to check.",
+            "note": "Set your domain in the options if links to your own site were counted "
+                    "as outbound.",
+        })
     followed = [r for r in rows if r["passes_link_equity"]]
     risky = [r["href"] for r in rows if r["missing_noopener"]]
     return ToolResult(meta={
+        **_source,
         "outbound_links": len(rows), "followed": len(followed),
         "nofollow_or_tagged": len(rows) - len(followed),
         "links": rows[:150],
@@ -753,14 +791,18 @@ def nofollow_link_checker(files, text: str, options: dict) -> ToolResult:
 @register("anchor-text-analyzer")
 def anchor_text_analyzer(files, text: str, options: dict) -> ToolResult:
     """Anchor text spread — an over-optimised profile is a recognisable pattern."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     anchors = [_visible_text(m.group(1)).strip()
                for m in re.finditer(r"<a\b[^>]*>(.*?)</a>", text, re.DOTALL | re.IGNORECASE)]
     anchors = [a for a in anchors if a]
     if not anchors:
-        return ToolResult(meta={"error": "No links with anchor text found."})
+        return ToolResult(meta={**_source, "total_anchors": 0,
+                                "verdict": "No links with anchor text on this page."})
     generic = {"click here", "here", "read more", "more", "link", "this", "learn more",
                "find out more", "see more", "download"}
     brand = _opt_str(options, "brand").lower()
@@ -784,6 +826,7 @@ def anchor_text_analyzer(files, text: str, options: dict) -> ToolResult:
     if buckets["keyword rich"] / total > 0.6:
         notes.append("Over 60% keyword-rich anchors reads as over-optimisation.")
     return ToolResult(meta={
+        **_source,
         "total_anchors": total,
         "distribution": {k: {"count": v, "percent": round(v / total * 100, 1)}
                          for k, v in buckets.most_common()},
@@ -795,9 +838,12 @@ def anchor_text_analyzer(files, text: str, options: dict) -> ToolResult:
 @register("meta-tags-analyzer")
 def meta_tags_analyzer(files, text: str, options: dict) -> ToolResult:
     """Pulls every SEO-relevant tag out of pasted HTML and grades it."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     title_match = re.search(r"<title[^>]*>(.*?)</title>", text, re.DOTALL | re.IGNORECASE)
     title = _visible_text(title_match.group(1)) if title_match else ""
     found: dict = {"title": title, "title_length": len(title)}
@@ -829,15 +875,19 @@ def meta_tags_analyzer(files, text: str, options: dict) -> ToolResult:
         issues.append("No viewport meta — the page will not be mobile-friendly.")
     if "noindex" in str(found.get("robots", "")).lower():
         issues.append("This page is set to noindex.")
-    return ToolResult(meta={"tags": found, "issues": issues or ["Nothing missing."],
+    return ToolResult(meta={
+        **_source,"tags": found, "issues": issues or ["Nothing missing."],
                             "description_length": len(description)})
 
 
 @register("canonical-checker")
 def canonical_checker(files, text: str, options: dict) -> ToolResult:
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     links = [l for l in re.findall(r"<link\b[^>]*>", text, re.IGNORECASE)
              if (_attr(l, "rel") or "").lower() == "canonical"]
     hrefs = [_attr(l, "href") for l in links]
@@ -862,15 +912,19 @@ def canonical_checker(files, text: str, options: dict) -> ToolResult:
             robots = (_attr(tag, "content") or "").lower()
     if "noindex" in robots and hrefs:
         issues.append("noindex together with a canonical sends mixed signals — pick one.")
-    return ToolResult(meta={"canonical_urls": hrefs, "robots": robots or None,
+    return ToolResult(meta={
+        **_source,"canonical_urls": hrefs, "robots": robots or None,
                             "findings": issues or ["Canonical looks correct."]})
 
 
 @register("hreflang-checker")
 def hreflang_checker(files, text: str, options: dict) -> ToolResult:
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     entries = []
     for link in re.findall(r"<link\b[^>]*>", text, re.IGNORECASE):
         if (_attr(link, "rel") or "").lower() != "alternate":
@@ -879,7 +933,11 @@ def hreflang_checker(files, text: str, options: dict) -> ToolResult:
         if code:
             entries.append({"hreflang": code, "href": _attr(link, "href") or ""})
     if not entries:
-        return ToolResult(meta={"error": "No hreflang tags found."})
+        return ToolResult(meta={
+            **_source, "entries": 0,
+            "verdict": "No hreflang tags on this page. That is correct for a single-language "
+                       "site — add them only when the same content exists in another language.",
+        })
     issues, seen = [], set()
     for e in entries:
         code = e["hreflang"]
@@ -893,6 +951,7 @@ def hreflang_checker(files, text: str, options: dict) -> ToolResult:
     if "x-default" not in seen:
         issues.append("No x-default entry.")
     return ToolResult(meta={
+        **_source,
         "entries": entries, "languages": sorted(seen),
         "issues": issues or ["Tags look valid."],
         "reminder": "Every listed page must carry this same set, pointing back — otherwise it is ignored.",
@@ -902,9 +961,12 @@ def hreflang_checker(files, text: str, options: dict) -> ToolResult:
 @register("amp-validator")
 def amp_validator(files, text: str, options: dict) -> ToolResult:
     """Checks the AMP rules that are simple, absolute and easy to break."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     issues = []
     if not re.search(r"<html[^>]*\s(amp|⚡)(\s|=|>)", text, re.IGNORECASE):
         issues.append("The <html> tag is missing the amp (or ⚡) attribute.")
@@ -927,6 +989,7 @@ def amp_validator(files, text: str, options: dict) -> ToolResult:
         if "amp-custom" not in tag and "amp-boilerplate" not in tag:
             issues.append("A <style> block is neither amp-custom nor amp-boilerplate.")
     return ToolResult(meta={
+        **_source,
         "valid": not issues, "issues_found": len(issues), "issues": issues,
         "note": "The common AMP rules — not the official validator.",
     })
@@ -935,9 +998,12 @@ def amp_validator(files, text: str, options: dict) -> ToolResult:
 @register("code-to-text-ratio")
 def code_to_text_ratio(files, text: str, options: dict) -> ToolResult:
     """How much of a page is content versus markup."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     total = len(text)
     body = _visible_text(text)
     scripts = sum(len(m) for m in re.findall(r"<script\b.*?</script>", text, re.DOTALL | re.IGNORECASE))
@@ -950,6 +1016,7 @@ def code_to_text_ratio(files, text: str, options: dict) -> ToolResult:
     else:
         verdict = "Very low. The page is mostly code — check the content is not rendered by JavaScript."
     return ToolResult(meta={
+        **_source,
         "total_characters": total, "text_characters": len(body),
         "script_characters": scripts, "style_characters": styles,
         "code_to_text_ratio_percent": round(ratio, 2),
@@ -962,9 +1029,12 @@ def code_to_text_ratio(files, text: str, options: dict) -> ToolResult:
 @register("seo-report-generator")
 def seo_report_generator(files, text: str, options: dict) -> ToolResult:
     """One pass over a page: titles, headings, images, links and content."""
-    error = _need_html(text)
-    if error:
-        return ToolResult(meta={"error": error})
+    from app.core.page_fetch import FetchError
+
+    try:
+        text, _source = _load_page(text, options)
+    except FetchError as exc:
+        return ToolResult(meta={"error": str(exc)})
     title_match = re.search(r"<title[^>]*>(.*?)</title>", text, re.DOTALL | re.IGNORECASE)
     title = _visible_text(title_match.group(1)) if title_match else ""
     description = ""
@@ -999,6 +1069,7 @@ def seo_report_generator(files, text: str, options: dict) -> ToolResult:
         text="\n".join(f"{'PASS' if ok else 'FAIL'}  {name}" + (f"  ({detail})" if detail else "")
                        for name, ok, detail in checks),
         meta={
+        **_source,
             "score_out_of_100": score,
             "passed": passed, "total_checks": len(checks),
             "failed": [name for name, ok, _ in checks if not ok],

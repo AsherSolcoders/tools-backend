@@ -165,6 +165,12 @@ class ToolConfig:
     supports_background_edit: bool = False  # post-result background color/image editor
     client_side: bool = False  # processed entirely in the browser (no backend call)
 
+    # What the main input box asks for. Without these it said "Paste or type your
+    # text here" on every tool, so a page checker gave no hint that it wanted a
+    # URL and a schema builder gave no hint that it wanted nothing at all.
+    input_label: str = ""
+    input_placeholder: str = ""
+
     accepted_extensions: list[str] = field(default_factory=list)  # empty = any
     max_upload_mb: int | None = None  # per-tool size cap; None = global default
     options: list[Option] = field(default_factory=list)
@@ -3241,7 +3247,7 @@ define(ToolConfig(
     description="Generate title, description, robots and canonical tags.",
     seo_keywords=['Meta Tag Generator', 'SEO Meta Tags', 'Meta Description Generator'],
     how_to_use=['Enter your title and description', 'Copy the tags into your head'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("title", "Page title", OptionType.text, default=""),
         _opt("description", "Meta description", OptionType.text, default=""),
@@ -3257,7 +3263,7 @@ define(ToolConfig(
     description="Generate Open Graph and Twitter tags for link previews.",
     seo_keywords=['Open Graph Generator', 'OG Tags Generator', 'Facebook Meta Tags'],
     how_to_use=['Enter your title, URL and image', 'Copy the tags'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("title", "Title", OptionType.text, default=""),
         _opt("description", "Description", OptionType.text, default=""),
@@ -3274,7 +3280,7 @@ define(ToolConfig(
     description="Generate Twitter Card tags for rich link previews.",
     seo_keywords=['Twitter Card Generator', 'X Card Tags', 'Twitter Meta Tags'],
     how_to_use=['Enter your title and image', 'Pick the card type', 'Copy the tags'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("title", "Title", OptionType.text, default=""),
         _opt("description", "Description", OptionType.text, default=""),
@@ -3290,7 +3296,7 @@ define(ToolConfig(
     description="Build a clean canonical link and catch the URL mistakes.",
     seo_keywords=['Canonical Tag Generator', 'Canonical URL', 'rel canonical'],
     how_to_use=['Paste the page URL', 'Copy the tag'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("url", "Page URL", OptionType.text, default=""),
         _opt("strip_parameters", "Remove tracking parameters", OptionType.boolean, default=True),
@@ -3301,6 +3307,8 @@ define(ToolConfig(
     name="Hreflang Generator", slug="hreflang-generator", category="seo-tools",
     description="Generate hreflang tags for a multi-language site.",
     seo_keywords=['Hreflang Generator', 'Hreflang Tags', 'Multilingual SEO Tags'],
+    input_label="Languages and URLs",
+    input_placeholder="One per line as  en-us: https://example.com/",
     how_to_use=['List each language and URL', 'Copy the tags onto every listed page'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[],
@@ -3310,7 +3318,7 @@ define(ToolConfig(
     description="Control indexing and snippets with a robots meta tag.",
     seo_keywords=['Robots Meta Tag', 'Noindex Tag Generator', 'Meta Robots'],
     how_to_use=['Choose the directives', 'Copy the tag'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("noindex", "noindex", OptionType.boolean, default=False),
         _opt("nofollow", "nofollow", OptionType.boolean, default=False),
@@ -3328,7 +3336,7 @@ define(ToolConfig(
     description="See how your title and description will read in Google.",
     seo_keywords=['SERP Preview', 'Google Snippet Preview', 'SERP Simulator'],
     how_to_use=['Enter your title, description and URL', 'Check where it cuts off'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
     options=[
         _opt("title", "Title", OptionType.text, default=""),
         _opt("description", "Meta description", OptionType.text, default=""),
@@ -3341,7 +3349,7 @@ define(ToolConfig(
     description="Generate JSON-LD for articles, products, events and more.",
     seo_keywords=['Schema Markup Generator', 'JSON-LD Generator', 'Structured Data Generator'],
     how_to_use=['Pick the type', 'Fill in the fields', 'Copy the JSON-LD'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("type", "Schema type", OptionType.select, default="Article", choices=["Article", "BlogPosting", "NewsArticle", "Product", "Organization", "Person", "Event", "Recipe", "VideoObject", "WebSite"]),
         _opt("name", "Name or headline", OptionType.text, default=""),
@@ -3363,6 +3371,8 @@ define(ToolConfig(
     name="FAQ Schema Generator", slug="faq-schema-generator", category="seo-tools",
     description="Turn questions and answers into FAQPage JSON-LD.",
     seo_keywords=['FAQ Schema Generator', 'FAQPage JSON-LD', 'FAQ Rich Results'],
+    input_label="Questions and answers",
+    input_placeholder="One per line as  Question | Answer",
     how_to_use=['Enter each question and answer', 'Copy the JSON-LD'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[],
@@ -3371,6 +3381,8 @@ define(ToolConfig(
     name="Breadcrumb Schema Generator", slug="breadcrumb-schema-generator", category="seo-tools",
     description="Generate BreadcrumbList JSON-LD for your navigation path.",
     seo_keywords=['Breadcrumb Schema', 'BreadcrumbList JSON-LD', 'Breadcrumb Markup'],
+    input_label="Breadcrumb trail",
+    input_placeholder="One crumb per line as  Name | https://url",
     how_to_use=['List each crumb and URL', 'Copy the JSON-LD'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[],
@@ -3380,7 +3392,7 @@ define(ToolConfig(
     description="Generate LocalBusiness JSON-LD with address, hours and location.",
     seo_keywords=['Local Business Schema', 'LocalBusiness JSON-LD', 'Local SEO Schema'],
     how_to_use=['Fill in your business details', 'Copy the JSON-LD'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("name", "Business name", OptionType.text, default=""),
         _opt("business_type", "Type", OptionType.select, default="LocalBusiness", choices=["LocalBusiness", "Restaurant", "Store", "ProfessionalService", "MedicalBusiness", "AutoRepair", "Dentist", "LegalService", "RealEstateAgent", "HealthAndBeautyBusiness"]),
@@ -3403,7 +3415,7 @@ define(ToolConfig(
     description="Generate Review or AggregateRating JSON-LD.",
     seo_keywords=['Review Schema Generator', 'AggregateRating Markup', 'Star Rating Schema'],
     how_to_use=['Enter what is reviewed', 'Set the rating', 'Copy the JSON-LD'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("item_name", "Item reviewed", OptionType.text, default=""),
         _opt("item_type", "Item type", OptionType.select, default="Product", choices=["Product", "Service", "Book", "Movie", "Course", "SoftwareApplication", "LocalBusiness"]),
@@ -3419,6 +3431,8 @@ define(ToolConfig(
     name="Structured Data Validator", slug="structured-data-validator", category="seo-tools",
     description="Check JSON-LD for the fields Google actually requires.",
     seo_keywords=['Structured Data Validator', 'JSON-LD Validator', 'Rich Results Checker'],
+    input_label="JSON-LD or page HTML",
+    input_placeholder="Paste your <script type=\"application/ld+json\"> block",
     how_to_use=['Paste your JSON-LD or page HTML', 'Review what is missing'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[],
@@ -3428,7 +3442,7 @@ define(ToolConfig(
     description="Build a direct link that opens the Google review box.",
     seo_keywords=['Google Review Link', 'Review Link Generator', 'Place ID Review URL'],
     how_to_use=['Paste your Google Place ID', 'Copy and share the link'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
     options=[
         _opt("place_id", "Place ID", OptionType.text, default=""),
     ],
@@ -3437,25 +3451,36 @@ define(ToolConfig(
     name="Heading Structure Analyzer", slug="heading-analyzer", category="seo-tools",
     description="Check your H1-H6 order and catch skipped levels.",
     seo_keywords=['Heading Analyzer', 'H1 Checker', 'Heading Structure SEO'],
-    how_to_use=['Paste your page HTML', 'Review the outline'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="Image Alt Text Checker", slug="alt-text-checker", category="seo-tools",
     description="Find images with missing or unhelpful alt text.",
     seo_keywords=['Alt Text Checker', 'Image Alt Checker', 'Missing Alt Text'],
-    how_to_use=['Paste your page HTML', 'Review the coverage'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="Internal Link Analyzer", slug="internal-link-analyzer", category="seo-tools",
     description="Break down internal, external and broken-anchor links.",
     seo_keywords=['Internal Link Analyzer', 'Link Checker', 'Internal Linking SEO'],
-    how_to_use=['Paste your page HTML', 'Set your domain', 'Review the links'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
         _opt("domain", "Your domain", OptionType.text, default=""),
     ],
 ))
@@ -3463,9 +3488,12 @@ define(ToolConfig(
     name="Nofollow Link Checker", slug="nofollow-link-checker", category="seo-tools",
     description="See which outbound links pass ranking signal.",
     seo_keywords=['Nofollow Checker', 'Outbound Link Checker', 'rel nofollow Checker'],
-    how_to_use=['Paste your page HTML', 'Set your domain', 'Review the links'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
         _opt("domain", "Your domain", OptionType.text, default=""),
     ],
 ))
@@ -3473,9 +3501,12 @@ define(ToolConfig(
     name="Anchor Text Analyzer", slug="anchor-text-analyzer", category="seo-tools",
     description="Check your anchor text spread for over-optimisation.",
     seo_keywords=['Anchor Text Analyzer', 'Anchor Text Distribution', 'Anchor Text SEO'],
-    how_to_use=['Paste your page HTML', 'Set your brand name', 'Review the spread'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
         _opt("brand", "Brand name", OptionType.text, default=""),
     ],
 ))
@@ -3483,17 +3514,24 @@ define(ToolConfig(
     name="Meta Tags Analyzer", slug="meta-tags-analyzer", category="seo-tools",
     description="Pull every SEO tag out of a page and grade it.",
     seo_keywords=['Meta Tags Analyzer', 'Meta Tag Extractor', 'SEO Tag Checker'],
-    how_to_use=['Paste your page HTML', 'Review the tags and issues'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="Canonical Checker", slug="canonical-checker", category="seo-tools",
     description="Check a page's canonical link for the usual mistakes.",
     seo_keywords=['Canonical Checker', 'Canonical Tag Checker', 'rel canonical Validator'],
-    how_to_use=['Paste your page HTML', 'Enter the page URL', 'Review the findings'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
         _opt("page_url", "Page URL", OptionType.text, default=""),
     ],
 ))
@@ -3501,38 +3539,56 @@ define(ToolConfig(
     name="Hreflang Checker", slug="hreflang-checker", category="seo-tools",
     description="Validate the hreflang tags on a page.",
     seo_keywords=['Hreflang Checker', 'Hreflang Validator', 'Hreflang Tester'],
-    how_to_use=['Paste your page HTML', 'Review the issues'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="AMP Validator", slug="amp-validator", category="seo-tools",
     description="Check the AMP rules that break a page outright.",
     seo_keywords=['AMP Validator', 'AMP Checker', 'Validate AMP HTML'],
-    how_to_use=['Paste your AMP HTML', 'Review the issues'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the AMP page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="Code to Text Ratio Checker", slug="code-to-text-ratio", category="seo-tools",
     description="Measure how much of a page is content versus markup.",
     seo_keywords=['Code To Text Ratio', 'Text To HTML Ratio', 'Content Ratio Checker'],
-    how_to_use=['Paste your page HTML', 'Read the ratio'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="SEO Report Generator", slug="seo-report-generator", category="seo-tools",
     description="Run every on-page check at once and get a score.",
     seo_keywords=['SEO Report Generator', 'On Page SEO Checker', 'SEO Audit Tool'],
-    how_to_use=['Paste your page HTML', 'Read the report'],
+    input_label="Page URL or HTML",
+    input_placeholder="Enter the page URL, or paste its HTML — e.g. https://example.com/page",
+    how_to_use=["Enter the page URL", "Or paste the HTML instead", "Read the findings"],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
-    options=[],
+    options=[
+        _opt("url", "Page URL", OptionType.text, default=""),
+    ],
 ))
 define(ToolConfig(
     name="Keyword Combiner", slug="keyword-combiner", category="seo-tools",
     description="Mix keyword lists into every combination.",
     seo_keywords=['Keyword Combiner', 'Keyword Mixer', 'Keyword Permutation Tool'],
+    input_label="Keyword lists",
+    input_placeholder="One keyword per line. Separate each list with a blank line.",
     how_to_use=['Paste each list, separated by a blank line', 'Copy the combinations'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3546,6 +3602,8 @@ define(ToolConfig(
     name="Keyword Prominence Checker", slug="keyword-prominence", category="seo-tools",
     description="See where your keyword sits, not just how often it appears.",
     seo_keywords=['Keyword Prominence', 'Keyword Placement Checker', 'Keyword Position SEO'],
+    input_label="Your content",
+    input_placeholder="Paste the page text or HTML you want checked",
     how_to_use=['Paste your content or HTML', 'Enter the keyword', 'Read the placement'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
@@ -3556,6 +3614,8 @@ define(ToolConfig(
     name="URL Slug Generator", slug="seo-slug-generator", category="seo-tools",
     description="Turn any title into a clean, SEO-friendly slug.",
     seo_keywords=['URL Slug Generator', 'SEO Slug Generator', 'Permalink Generator'],
+    input_label="Titles",
+    input_placeholder="One title per line",
     how_to_use=['Paste one title per line', 'Copy the slugs'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3568,6 +3628,8 @@ define(ToolConfig(
     name="Near Me Keyword Tool", slug="near-me-keyword-tool", category="seo-tools",
     description="Build local keyword variations for every location you serve.",
     seo_keywords=['Near Me Keywords', 'Local Keyword Generator', 'Local SEO Keywords'],
+    input_label="Services",
+    input_placeholder="One service per line, e.g. plumber",
     how_to_use=['List your services', 'List your locations', 'Copy the keywords'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3581,7 +3643,7 @@ define(ToolConfig(
     description="Work out what ranking for a keyword is worth per month.",
     seo_keywords=['Keyword Value Calculator', 'Keyword CPC Calculator', 'Traffic Value Estimator'],
     how_to_use=['Enter the search volume and CPC', 'Set your conversion rate', 'Read the value'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=False,
     options=[
         _opt("monthly_searches", "Monthly searches", OptionType.number, default=1000, min=0),
         _opt("cpc", "Cost per click", OptionType.number, default=2, min=0),
@@ -3595,7 +3657,7 @@ define(ToolConfig(
     description="Generate a structured brief and outline for a writer.",
     seo_keywords=['Content Brief Generator', 'SEO Content Outline', 'Article Brief Template'],
     how_to_use=['Enter the target keyword', 'Pick the intent', 'Copy the brief'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("keyword", "Target keyword", OptionType.text, default=""),
         _opt("intent", "Search intent", OptionType.select, default="informational", choices=["informational", "commercial", "transactional", "navigational"]),
@@ -3607,6 +3669,8 @@ define(ToolConfig(
     name="Featured Snippet Optimizer", slug="featured-snippet-optimizer", category="seo-tools",
     description="Check whether your content is shaped to win a snippet.",
     seo_keywords=['Featured Snippet Optimizer', 'Position Zero Checker', 'Snippet Optimization'],
+    input_label="Your content",
+    input_placeholder="Paste the section you want to win a snippet with",
     how_to_use=['Paste your content', 'Enter the keyword', 'Read the checks'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
@@ -3617,6 +3681,8 @@ define(ToolConfig(
     name="NAP Consistency Checker", slug="nap-consistency-checker", category="seo-tools",
     description="Compare your name, address and phone across listings.",
     seo_keywords=['NAP Consistency Checker', 'Citation Checker', 'Local Listing Checker'],
+    input_label="Your listings",
+    input_placeholder="Each listing as three lines — name, address, phone — separated by a blank line",
     how_to_use=['Paste each listing, separated by a blank line', 'Review the differences'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[],
@@ -3625,6 +3691,8 @@ define(ToolConfig(
     name="Disavow File Generator", slug="disavow-file-generator", category="seo-tools",
     description="Format a Google disavow file from a list of bad links.",
     seo_keywords=['Disavow File Generator', 'Google Disavow Tool', 'Backlink Disavow'],
+    input_label="Domains or URLs to disavow",
+    input_placeholder="One per line, e.g. spammy-site.com",
     how_to_use=['Paste the domains or URLs', 'Copy the file'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3635,6 +3703,8 @@ define(ToolConfig(
     name="Domain Name Generator", slug="domain-name-generator", category="seo-tools",
     description="Generate domain ideas from your keywords.",
     seo_keywords=['Domain Name Generator', 'Domain Ideas', 'Business Name Generator'],
+    input_label="Your keywords",
+    input_placeholder="Separate keywords with spaces or commas",
     how_to_use=['Enter your keywords', 'Copy the shortlist'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3649,7 +3719,7 @@ define(ToolConfig(
     description="Build tagged campaign URLs that track correctly.",
     seo_keywords=['UTM Builder', 'Campaign URL Builder', 'UTM Parameter Generator'],
     how_to_use=['Enter the destination URL', 'Fill in source, medium and campaign', 'Copy the URL'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    input_kind=InputKind.options, supports_single_upload=False, supports_download=True,
     options=[
         _opt("url", "Destination URL", OptionType.text, default=""),
         _opt("source", "Campaign source", OptionType.text, default=""),
@@ -3665,6 +3735,8 @@ define(ToolConfig(
     name="Robots.txt Generator", slug="robots-txt-generator", category="seo-tools",
     description="Build a robots.txt with the right rules and a sitemap line.",
     seo_keywords=['Robots.txt Generator', 'Create Robots File', 'Robots txt Maker'],
+    input_label="Paths to block",
+    input_placeholder="One path per line, e.g. /admin",
     how_to_use=['List the paths to block', 'Add your sitemap', 'Copy the file'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3679,6 +3751,8 @@ define(ToolConfig(
     name="Robots.txt Tester", slug="robots-txt-tester", category="seo-tools",
     description="Test whether a URL is blocked before you deploy.",
     seo_keywords=['Robots.txt Tester', 'Robots txt Validator', 'Crawl Rule Tester'],
+    input_label="Your robots.txt",
+    input_placeholder="Paste the contents of your robots.txt file",
     how_to_use=['Paste your robots.txt', 'Enter the path to test', 'Read the verdict'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[
@@ -3690,6 +3764,8 @@ define(ToolConfig(
     name="XML Sitemap Generator", slug="xml-sitemap-generator", category="seo-tools",
     description="Turn a list of URLs into a valid XML sitemap.",
     seo_keywords=['XML Sitemap Generator', 'Sitemap Maker', 'Create Sitemap XML'],
+    input_label="Your URLs",
+    input_placeholder="One absolute URL per line, e.g. https://example.com/page",
     how_to_use=['Paste one URL per line', 'Set the options', 'Copy the sitemap'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
@@ -3702,6 +3778,8 @@ define(ToolConfig(
     name="Sitemap Validator", slug="sitemap-validator", category="seo-tools",
     description="Check a sitemap for duplicates, bad URLs and size limits.",
     seo_keywords=['Sitemap Validator', 'XML Sitemap Checker', 'Validate Sitemap'],
+    input_label="Your sitemap XML",
+    input_placeholder="Paste the contents of sitemap.xml",
     how_to_use=['Paste your sitemap XML', 'Review the issues'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[],
@@ -3710,6 +3788,8 @@ define(ToolConfig(
     name="Redirect Generator", slug="htaccess-redirect-generator", category="seo-tools",
     description="Generate .htaccess or nginx redirect rules from a list.",
     seo_keywords=['htaccess Redirect Generator', '301 Redirect Generator', 'Nginx Redirect Rules'],
+    input_label="Your redirects",
+    input_placeholder="One per line as  /old-path | /new-path",
     how_to_use=['List old and new paths', 'Pick the server', 'Copy the rules'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
     options=[
