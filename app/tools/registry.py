@@ -740,6 +740,34 @@ define(ToolConfig(
     ],
     input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
 ))
+define(ToolConfig(
+    name="Email Signature Generator", slug="email-signature-generator", category="pro-tools",
+    description="Design a professional email signature from 15 templates, with your photo, logo and social links — then paste it straight into Gmail, Outlook or Apple Mail.",
+    seo_keywords=["email signature generator", "free email signature maker", "gmail signature generator",
+                  "outlook email signature", "html email signature", "professional email signature"],
+    how_to_use=[
+        "Pick one of the 15 templates.",
+        "Fill in your name, job title, company and contact details.",
+        "Upload a photo and a company logo, then choose their shape and size.",
+        "Add your social links and adjust the brand colours, width and font.",
+        "Click Copy signature and paste it into your email client's signature box.",
+    ],
+    input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="Video to GIF Converter", slug="video-to-gif-converter", category="pro-tools",
+    description="Turn any video clip into an animated GIF — trim it, pick the size and frame rate, and download. Runs entirely in your browser.",
+    seo_keywords=["video to gif", "video to gif converter", "mp4 to gif", "convert video to gif free",
+                  "make a gif from video", "online gif maker"],
+    how_to_use=[
+        "Choose a video, or drag one onto the page.",
+        "Drag the Start and End sliders to pick the part you want.",
+        "Set the resolution, frame rate and quality.",
+        "Click Create GIF, then download it.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["mp4", "webm", "mov", "m4v", "ogv", "avi", "mkv", "mpeg", "mpg", "3gp"],
+))
 
 
 # ---- CALCULATORS ----

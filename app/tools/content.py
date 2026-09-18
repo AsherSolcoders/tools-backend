@@ -44,6 +44,79 @@ RICH: dict[str, dict] = {
              "It works best on a desktop or laptop where you have room to edit, but it will also open in modern mobile browsers."),
         ],
     },
+    "video-to-gif-converter": {
+        "about": (
+            "Video to GIF Converter turns a clip from any video your browser can play into an "
+            "animated GIF. Trim the exact seconds you want, choose the size and frame rate, and "
+            "download the result. It works with MP4, WebM, MOV and more, with no sign up, no "
+            "watermark and no email required.\n\n"
+            "The colours are picked from your own footage rather than from a fixed set, which is "
+            "what keeps skies, skin tones and gradients looking smooth instead of banded. There is "
+            "also an option to store only the part of the picture that moves between frames, which "
+            "cuts the file size dramatically on clips with a still background.\n\n"
+            "Your video is decoded by your own browser and never uploaded, so even a private "
+            "recording stays on your device. Nothing is sent to a server and nothing is stored."
+        ),
+        "faqs": [
+            ("Is my video uploaded anywhere?",
+             "No. Your browser decodes the video and builds the GIF on your own device. The file "
+             "never reaches a server, so nothing is uploaded, stored or seen by anyone else."),
+            ("What video formats can I use?",
+             "Anything your browser can play, which normally covers MP4 (H.264), WebM and MOV. If a "
+             "file will not load, it is usually an unusual codec rather than the container, and "
+             "re-saving it as MP4 will fix it."),
+            ("Why is there a size limit?",
+             "Everything runs in your browser using your device's memory, so the limits keep the "
+             "page from running out of it. A GIF also grows with frames multiplied by width and "
+             "height, so the meter shows how close your settings are to a sensible file."),
+            ("How do I make the GIF smaller?",
+             "Lower the resolution first, then the frame rate, then shorten the clip. Leaving the "
+             "option to store only what moves switched on makes a big difference when the "
+             "background is still, and a lower quality setting uses fewer colours."),
+            ("Why does the frame rate change slightly?",
+             "GIF stores the delay between frames in hundredths of a second, so only certain frame "
+             "rates are exact. The tool shows the real frame rate you will get and captures the "
+             "frames to match, so the GIF plays at true speed."),
+        ],
+    },
+    "email-signature-generator": {
+        "about": (
+            "Email Signature Generator is a free online signature maker that builds a polished, "
+            "professional sign off for Gmail, Outlook, Apple Mail, Thunderbird and any other client "
+            "that accepts HTML. Choose from 15 templates, add your photo and company logo, set your "
+            "brand colours, and watch the signature update as you type.\n\n"
+            "The markup it produces is written the way email actually renders: tables instead of "
+            "flexbox, inline styles instead of a stylesheet, and a solid colour behind every gradient "
+            "so Outlook still looks right. Your photo and logo are embedded in the signature itself "
+            "and resized as they are added, so there is no image to host, no link that can break, and "
+            "no risk of Gmail clipping the message because the file was too heavy.\n\n"
+            "Everything runs on your device. Your name, contact details, photo and logo are never "
+            "uploaded, and there is no sign up, no watermark and no limit."
+        ),
+        "faqs": [
+            ("How do I add this signature to Gmail?",
+             "Click Copy signature, then open Gmail and go to Settings, See all settings, General, "
+             "Signature. Create a signature, paste into the box, and click Save changes at the bottom "
+             "of the page."),
+            ("How do I add it to Outlook?",
+             "Click Copy signature, then in desktop Outlook go to File, Options, Mail, Signatures, or "
+             "on the web go to Settings, Mail, Compose and reply. Paste it in and save. Outlook ignores "
+             "rounded corners and gradients, so a circular photo appears square there, but the layout "
+             "and colours stay intact."),
+            ("Will my photo and logo show for the people I email?",
+             "Yes. Both are embedded directly in the signature rather than linked from a website, so "
+             "there is nothing to host and no link that can expire. They are also resized as you upload "
+             "them, because Gmail clips any message over roughly 102 KB and an untouched phone photo "
+             "would pass that on its own."),
+            ("Is my information uploaded anywhere?",
+             "No. The whole tool runs in your browser, so your details, photo and logo never leave your "
+             "device. Nothing is uploaded or stored."),
+            ("Why does my signature look different in Outlook?",
+             "Outlook on Windows renders email with Microsoft Word, which ignores rounded corners, "
+             "gradients and flexbox. This tool avoids flexbox entirely and puts a solid colour behind "
+             "every gradient, so the worst you will see is square corners instead of round ones."),
+        ],
+    },
     "invoice-generator": {
         "about": (
             "Invoice Generator is a free online tool that helps freelancers, small businesses and "
