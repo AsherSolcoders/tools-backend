@@ -44,6 +44,222 @@ RICH: dict[str, dict] = {
              "It works best on a desktop or laptop where you have room to edit, but it will also open in modern mobile browsers."),
         ],
     },
+    "emoji-face-cover": {
+        "about": (
+            "Emoji Face Cover hides faces in a photo behind emoji, so you can share a picture of "
+            "friends, family or a crowd without showing who is in it. The tool can find the faces "
+            "for you, or you can place each cover by hand, then pick an emoji, resize and rotate it, "
+            "and download the finished photo.\n\n"
+            "Face finding uses MediaPipe, a face detection model that runs inside your browser. The "
+            "first time you use it, the model itself is downloaded from Google and jsDelivr; your "
+            "photo is never sent anywhere. If detection is unavailable, the manual tools still work."
+        ),
+        "faqs": [
+            ("Is my photo uploaded?",
+             "No. The photo stays in your browser. Only the face detection model is downloaded, the "
+             "first time you use automatic detection, and it never sees anything but your own device."),
+            ("What if it misses a face?",
+             "Add a cover by hand over any face the detector did not find, and remove any it placed "
+             "by mistake. Always check the result before you share it."),
+            ("Can someone remove the emoji afterwards?",
+             "No. The emoji is drawn into the pixels of the downloaded image, so the face underneath "
+             "is gone from that file."),
+        ],
+    },
+    "face-blur": {
+        "about": (
+            "Face Blur Tool blurs faces in a photo to protect people's privacy before you post or "
+            "share it. Mark each face with a box, choose how strong the blur is and whether it is an "
+            "oval or a rectangle, and download the result. The blurred area in the download is exactly "
+            "the area you see marked on screen.\n\n"
+            "Automatic detection uses the browser's built-in face detector, which only some browsers "
+            "provide, so on most desktop browsers you will mark faces by hand. Everything runs on "
+            "your device and the photo is never uploaded."
+        ),
+        "faqs": [
+            ("Why can't it find faces automatically?",
+             "Automatic detection relies on a face detector built into the browser, and most desktop "
+             "browsers do not include one yet. Marking faces by hand works everywhere."),
+            ("How strong should the blur be?",
+             "Strong enough that nobody could recognise the person. Raise the blur slider until the "
+             "face is unreadable, and check the preview — it matches the download exactly."),
+            ("Can a blur be undone?",
+             "Not from the downloaded file: the blur replaces the original pixels. Keep your original "
+             "photo if you might need it later."),
+        ],
+    },
+    "object-remover": {
+        "about": (
+            "Object Remover takes an unwanted object out of a photo and fills the gap from what "
+            "surrounds it — a stranger in the background, a bin, a wire, a blemish. Click the object "
+            "to select it, or brush over it, then remove it and download the result.\n\n"
+            "The fill is worked out from the pixels around the object, so it looks most natural on "
+            "simple backgrounds such as sky, grass, walls and water. Everything runs in your browser; "
+            "your photo is never uploaded."
+        ),
+        "faqs": [
+            ("How do I select the object?",
+             "Click the object with the smart selection tool and it is picked out for you. If it "
+             "grabs too much or too little, switch to the brush or rectangle and mark it by hand."),
+            ("Why does the filled area look smudged?",
+             "The fill is built from the surrounding pixels, so it works best on plain backgrounds. "
+             "On a busy area, remove the object in smaller pieces or use Retry."),
+            ("Is my photo uploaded?",
+             "No. The whole edit happens in your browser and nothing is sent to a server."),
+        ],
+    },
+    "remove-text-from-image": {
+        "about": (
+            "Remove Text from Image clears captions, dates, labels and other text from a picture and "
+            "fills the space from the background around it. Drag a box over the text, remove it, and "
+            "repeat on anything left over.\n\n"
+            "It works best where the text sits on a plain or gently changing background. Everything "
+            "happens in your browser, so the image is never uploaded."
+        ),
+        "faqs": [
+            ("How do I select the text?",
+             "Drag a box that covers the whole piece of text. A click without dragging selects only a "
+             "small square around the point you clicked."),
+            ("Can I use this to remove a watermark?",
+             "Only on images you own or have permission to edit. Removing a watermark from someone "
+             "else's work can breach their copyright."),
+            ("Is my image uploaded?",
+             "No. It is processed in your browser and never leaves your device."),
+        ],
+    },
+    "image-to-ppt": {
+        "about": (
+            "Image to PPT Converter turns a set of images into a PowerPoint presentation, one image per "
+            "slide. Arrange the order, choose the slide size, add a title or caption to any slide, and "
+            "download a .pptx file that opens in PowerPoint, Keynote and Google Slides.\n\n"
+            "The presentation is built entirely in your browser, so your images are never uploaded."
+        ),
+        "faqs": [
+            ("Will it open in PowerPoint?",
+             "Yes. The download is a standard .pptx file that opens in Microsoft PowerPoint, Apple "
+             "Keynote and Google Slides."),
+            ("Can I edit the slides afterwards?",
+             "Yes. Each image and caption is a normal slide object, so you can move, resize or "
+             "restyle it in PowerPoint."),
+            ("Are my images uploaded?",
+             "No. The presentation is assembled in your browser."),
+        ],
+    },
+    "image-to-video": {
+        "about": (
+            "Image to Video Maker turns your photos into a slideshow video. Set how long each photo "
+            "shows and the transition between them, preview it, then record and download the video.\n\n"
+            "The video is saved as WebM, which plays in Chrome, Edge, Firefox and most modern browsers "
+            "and apps. If you need MP4 for a particular platform, convert the WebM afterwards. "
+            "Everything runs in your browser and your photos are never uploaded."
+        ),
+        "faqs": [
+            ("What format is the video?",
+             "WebM. It plays in Chrome, Edge, Firefox and most modern apps. Some older phones and "
+             "editors prefer MP4, in which case convert the file after downloading."),
+            ("Why does recording take as long as the video?",
+             "The browser records the slideshow in real time as it plays, so a 30-second video takes "
+             "about 30 seconds to make."),
+            ("Are my photos uploaded?",
+             "No. The video is recorded in your browser."),
+        ],
+    },
+    "bulk-image-compressor": {
+        "about": (
+            "Bulk Image Compressor shrinks many images at once. Add a batch of JPG, PNG, WebP or AVIF "
+            "files, choose the output format and how hard to compress, and download them one by one or "
+            "together in a single ZIP. Each image keeps its original dimensions.\n\n"
+            "Compression runs in your browser, so a whole folder of photos can be made smaller without "
+            "any of them being uploaded."
+        ),
+        "faqs": [
+            ("Will my images lose quality?",
+             "The balanced setting keeps them visually the same while cutting the file size. Use the "
+             "compare view to check before and after side by side."),
+            ("Does it change the image size in pixels?",
+             "No. The width and height stay the same; only the file gets smaller."),
+            ("Are my images uploaded?",
+             "No. They are compressed on your device and never sent to a server."),
+        ],
+    },
+    "contact-extractor": {
+        "about": (
+            "Contact Extractor pulls names, email addresses, phone numbers and websites out of whatever "
+            "you give it — pasted text, a CSV or Excel sheet, a PDF, a Word or PowerPoint file, or a "
+            "photo of a page. Duplicates are merged, and you can copy the results or export them as "
+            "CSV, Excel or PDF.\n\n"
+            "Reading PDFs, spreadsheets and images needs extra libraries, which are downloaded the first "
+            "time you open one of those files, along with text-recognition data for images. Your files "
+            "themselves are processed in your browser and are not uploaded."
+        ),
+        "faqs": [
+            ("What files can it read?",
+             "Plain text, CSV, HTML, Markdown, Excel, PDF, Word, PowerPoint and images. Images and "
+             "scanned PDFs go through text recognition, which is slower and less exact than real text."),
+            ("Are my files uploaded?",
+             "No. They are read in your browser. Only the reading libraries themselves are downloaded, "
+             "the first time you need them."),
+            ("Can I use it to collect contacts for marketing?",
+             "Only where you have a lawful basis to contact those people. Data protection laws such as "
+             "GDPR, and anti-spam rules, still apply to contacts you extract."),
+        ],
+    },
+    "gif-converter": {
+        "about": (
+            "Image to GIF Converter turns a set of photos into an animated GIF. Add your JPG or PNG "
+            "images, drag them into order, set how long each frame shows, the size and whether the GIF "
+            "loops, and download it.\n\n"
+            "The GIF is built in your browser, so your photos are never uploaded. To take an existing "
+            "GIF apart into its frames, use GIF to Frames."
+        ),
+        "faqs": [
+            ("How many images can I use?",
+             "As many as you like, but every frame adds to the file size, so a short sequence of well "
+             "chosen images makes a smaller, smoother GIF."),
+            ("Can I split a GIF into frames here?",
+             "No — this tool builds GIFs. To split one into its frames, use the GIF to Frames tool."),
+            ("Are my photos uploaded?",
+             "No. The GIF is made in your browser."),
+        ],
+    },
+    "gif-to-frames": {
+        "about": (
+            "GIF to Frames splits an animated GIF into its individual frames and gives them back as "
+            "images you can download one at a time or together as a ZIP. Choose how many frames to "
+            "keep if you only need the first part of a long animation.\n\n"
+            "The GIF is sent to our server to be split and the result is deleted automatically after a "
+            "short time. To make a GIF from photos instead, use Image to GIF Converter."
+        ),
+        "faqs": [
+            ("Is my GIF stored?",
+             "Only while it is being processed. Uploaded files and results are deleted automatically "
+             "after a short time."),
+            ("Why does it say the GIF has only one frame?",
+             "The file is a still image saved as a GIF rather than an animation, so there is nothing "
+             "to split."),
+        ],
+    },
+    "seo-source-audit": {
+        "about": (
+            "SEO Source Audit checks a web page's on-page SEO straight from its HTML source. Paste the "
+            "source, or open a saved .html file, and it reviews the title and meta description, "
+            "headings, canonical and robots tags, Open Graph and Twitter tags, links, image alt text "
+            "and structured data, then lists every finding with the code it came from.\n\n"
+            "Because it reads the source you give it, it also works on pages that are not public yet, "
+            "such as a staging site or a draft. The audit runs in your browser and the source is never "
+            "uploaded. Reports can be exported as Excel, Word, CSV or PDF."
+        ),
+        "faqs": [
+            ("How do I get a page's HTML source?",
+             "Open the page in your browser, press Ctrl+U (Cmd+Option+U on a Mac) to view the source, "
+             "select all and copy it, then paste it here."),
+            ("Does it check the live page?",
+             "It checks exactly the source you paste. Content that a page builds with JavaScript after "
+             "loading will not appear in the source, so audit the rendered HTML if that matters."),
+            ("Is my source code uploaded?",
+             "No. The audit and every export are produced in your browser."),
+        ],
+    },
     "video-to-gif-converter": {
         "about": (
             "Video to GIF Converter turns a clip from any video your browser can play into an "

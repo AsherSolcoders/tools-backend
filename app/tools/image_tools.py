@@ -2115,3 +2115,14 @@ def gif_converter(files: list[Path], text: str, options: dict) -> ToolResult:
     return ToolResult(files=[_save_result(data, "animation.gif")],
                       meta={"frames": len(normalised), "fps": fps,
                             "size": f"{width}x{canvas_h}", "bytes": len(data)})
+
+
+@register("gif-to-frames")
+def gif_to_frames(files: list[Path], text: str, options: dict) -> ToolResult:
+    """Split an animated GIF into its frames.
+
+    This was one half of the GIF Converter. That slug now belongs to an
+    in-browser GIF maker, which builds GIFs but cannot take one apart, so the
+    splitting half keeps working here instead of quietly disappearing.
+    """
+    return gif_converter(files, text, {**options, "direction": "gif_to_frames"})

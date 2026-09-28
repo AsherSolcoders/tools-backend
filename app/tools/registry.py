@@ -769,6 +769,122 @@ define(ToolConfig(
     accepted_extensions=["mp4", "webm", "mov", "m4v", "ogv", "avi", "mkv", "mpeg", "mpg", "3gp"],
 ))
 
+define(ToolConfig(
+    name="Emoji Face Cover", slug="emoji-face-cover", category="pro-tools",
+    description="Hide faces in a photo behind emoji — detected automatically or placed by hand. Runs entirely in your browser.",
+    seo_keywords=["emoji face cover", "cover face with emoji", "hide face in photo", "emoji over face", "face emoji sticker"],
+    how_to_use=[
+        "Upload a photo.",
+        "Let the tool find the faces, or place covers by hand.",
+        "Pick an emoji for each face and adjust its size.",
+        "Download the finished photo.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png", "webp"],
+))
+define(ToolConfig(
+    name="Face Blur Tool", slug="face-blur", category="pro-tools",
+    description="Blur or pixelate faces in a photo to protect privacy — mark them automatically or by hand. Nothing is uploaded.",
+    seo_keywords=["face blur", "blur faces in photo", "blur face online", "anonymize photo", "pixelate face"],
+    how_to_use=[
+        "Upload a photo.",
+        "Detect faces automatically, or mark them by hand.",
+        "Choose the blur strength and shape.",
+        "Download the blurred photo.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png", "webp"],
+))
+define(ToolConfig(
+    name="Object Remover", slug="object-remover", category="pro-tools",
+    description="Paint over an unwanted object in a photo and fill it in from its surroundings. Runs entirely in your browser.",
+    seo_keywords=["remove object from photo", "object remover", "erase object from image", "remove unwanted objects", "photo eraser"],
+    how_to_use=[
+        "Upload a photo.",
+        "Brush over the object you want gone.",
+        "Apply, and refine if needed.",
+        "Download the cleaned-up photo.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png", "webp"],
+))
+define(ToolConfig(
+    name="Remove Text from Image", slug="remove-text-from-image", category="pro-tools",
+    description="Brush over text, captions or watermarks in an image and fill the area from its surroundings. Runs entirely in your browser.",
+    seo_keywords=["remove text from image", "erase text from photo", "remove caption from image", "delete text in picture", "remove writing from photo"],
+    how_to_use=[
+        "Upload an image.",
+        "Brush over the text you want removed.",
+        "Apply, and repeat on anything left over.",
+        "Download the cleaned image.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png", "webp"],
+))
+define(ToolConfig(
+    name="Image to PPT Converter", slug="image-to-ppt", category="pro-tools",
+    description="Turn a set of images into a PowerPoint presentation, one slide per image, with optional titles and captions.",
+    seo_keywords=["image to ppt", "images to powerpoint", "photos to pptx", "jpg to ppt", "picture to slides"],
+    how_to_use=[
+        "Add your images.",
+        "Arrange the slide order and pick the slide size.",
+        "Add a title or caption to any slide.",
+        "Download the .pptx file.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png"],
+))
+define(ToolConfig(
+    name="Image to Video Maker", slug="image-to-video", category="pro-tools",
+    description="Turn your photos into a slideshow video with timing and transitions, and download it. Runs entirely in your browser.",
+    seo_keywords=["image to video", "photos to video", "slideshow maker", "picture to video", "make video from photos"],
+    how_to_use=[
+        "Add your photos.",
+        "Set how long each one shows and the transition.",
+        "Preview the slideshow.",
+        "Record and download the video.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png"],
+))
+define(ToolConfig(
+    name="Bulk Image Compressor", slug="bulk-image-compressor", category="pro-tools",
+    description="Compress many JPG, PNG, WebP and AVIF images at once and download them together as a ZIP. Nothing is uploaded.",
+    seo_keywords=["bulk image compressor", "compress multiple images", "batch image compression", "compress images to zip", "reduce image size in bulk"],
+    how_to_use=[
+        "Add all the images you want smaller.",
+        "Choose the output format and quality.",
+        "Compress them in one go.",
+        "Download them one by one or as a ZIP.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png", "webp", "avif"],
+))
+define(ToolConfig(
+    name="Contact Extractor", slug="contact-extractor", category="pro-tools",
+    description="Pull names, emails and phone numbers out of text, spreadsheets, PDFs, Word files and images, with duplicates merged.",
+    seo_keywords=["contact extractor", "extract emails and phone numbers", "extract contacts from pdf", "email and phone extractor", "contact list extractor"],
+    how_to_use=[
+        "Paste text, or open a file — text, CSV, Excel, PDF, Word, PowerPoint or an image.",
+        "Let the tool find the names, emails and phone numbers.",
+        "Review the merged list; duplicates are combined.",
+        "Export it as CSV, Excel or PDF.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["txt", "csv", "html", "htm", "md", "xlsx", "xls", "pdf", "pptx", "docx", "png", "jpg", "jpeg", "webp", "bmp", "gif"],
+))
+define(ToolConfig(
+    name="SEO Source Audit", slug="seo-source-audit", category="pro-tools",
+    description="Paste a page's HTML source and get a full on-page SEO audit — titles, meta tags, headings, links, images and structured data — with reports you can export.",
+    seo_keywords=["seo source audit", "html seo checker", "on-page seo audit", "seo audit from source code", "page source seo analyzer"],
+    how_to_use=[
+        "Paste a page's HTML source, or open a saved .html file.",
+        "Run the audit.",
+        "Filter and search the findings, and open any item to see the code behind it.",
+        "Export the report as Excel, Word, CSV or PDF.",
+    ],
+    input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
+))
 
 # ---- CALCULATORS ----
 define(ToolConfig(
@@ -4421,18 +4537,29 @@ define(ToolConfig(
     ],
 ))
 define(ToolConfig(
-    name="GIF Converter", slug="gif-converter", category="image-tools",
-    description="Build an animated GIF from images, or split one into frames.",
-    seo_keywords=['GIF Maker', 'Images To GIF', 'GIF To Frames'],
-    how_to_use=['Upload your images or a GIF', 'Pick the direction', 'Download'],
-    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=True,
-    accepted_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'avif'], max_upload_mb=25,
+    name="Image to GIF Converter", slug="gif-converter", category="pro-tools",
+    description="Turn a set of photos into an animated GIF — order the frames, set the timing and size, and download. Runs entirely in your browser.",
+    seo_keywords=["image to gif", "gif maker", "make a gif from photos", "photos to gif", "animated gif maker", "jpg to gif"],
+    how_to_use=[
+        "Add your photos (JPG or PNG).",
+        "Drag them into the order you want.",
+        "Set how long each frame shows, the size and whether it loops.",
+        "Create the GIF and download it.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["jpg", "jpeg", "png"],
+))
+# The old GIF Converter also split GIFs into frames. Its slug now belongs to the
+# in-browser maker above, which cannot, so the splitting half lives on here.
+define(ToolConfig(
+    name="GIF to Frames", slug="gif-to-frames", category="image-tools",
+    description="Split an animated GIF into its individual frames and download them as images.",
+    seo_keywords=["gif to frames", "split gif", "extract gif frames", "gif to png", "gif frame extractor"],
+    how_to_use=["Upload an animated GIF", "Choose how many frames to extract", "Download the frames"],
+    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
+    accepted_extensions=["gif"], max_upload_mb=25,
     supports_download=True, supports_zip_download=True,
     options=[
-        _opt("direction", "Convert", OptionType.select, default="images_to_gif", choices=["images_to_gif", "gif_to_frames"]),
-        _opt("fps", "Frames per second", OptionType.number, default=5, min=1, max=50),
-        _opt("width", "Width (0 = keep)", OptionType.number, default=0, min=0, max=1200),
-        _opt("loop", "Loop forever", OptionType.boolean, default=True),
         _opt("max_frames", "Max frames to extract", OptionType.number, default=60, min=1, max=300),
     ],
 ))
