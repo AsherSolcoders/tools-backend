@@ -75,7 +75,10 @@ def robots():
     # publish the admin URL to anyone reading robots.txt; the route is kept out
     # of search results with `noindex, nofollow` (see app/tool-admin/layout.tsx)
     # plus an X-Robots-Tag header, which robots.txt cannot do anyway.
-    groups = ["User-agent: *\nAllow: /"]
-    groups += [f"User-agent: {ua}\nAllow: /" for ua in AI_USER_AGENTS]
+    # React Server Component payloads (?_rsc=...) are not pages. A bot obeys
+    # only its most specific group, so every group carries these lines.
+    rules = "Allow: /\nDisallow: /*?_rsc=\nDisallow: /*&_rsc="
+    groups = [f"User-agent: *\n{rules}"]
+    groups += [f"User-agent: {ua}\n{rules}" for ua in AI_USER_AGENTS]
     body = "\n\n".join(groups) + f"\n\nSitemap: {base}/sitemap.xml\n"
     return Response(content=body, media_type="text/plain")
