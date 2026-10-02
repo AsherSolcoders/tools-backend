@@ -260,6 +260,100 @@ RICH: dict[str, dict] = {
              "No. The audit and every export are produced in your browser."),
         ],
     },
+    "video-editor": {
+        "about": (
+            "Video Editor is a timeline editor that runs in your browser. Import one or more videos, "
+            "cut them at the playhead, delete or reorder clips, and close the gaps. Add text in ready-made "
+            "styles such as lower thirds and captions, emoji, images and animated GIFs, and arrows or "
+            "highlight boxes, then drag each one on the timeline to set when it appears.\n\n"
+            "The Cover / Hide tool paints over anything you need to keep out of the video, such as a "
+            "number plate, a face or a screen, for exactly the seconds you choose. When you are done, "
+            "export the full video, a 5-second preview, or an animated GIF.\n\n"
+            "Your videos are never uploaded. Editing and exporting happen on your own device, so there "
+            "is no watermark and no sign up."
+        ),
+        "faqs": [
+            ("Are my videos uploaded?",
+             "No. The editor opens your files in the browser and builds the export on your device. "
+             "Nothing is sent to a server."),
+            ("Why does exporting take as long as the video?",
+             "The browser records the edited video as it plays, so a one-minute video takes about a "
+             "minute to export. Keep the tab open until it finishes."),
+            ("What format is the export?",
+             "Whatever your browser can record. Chrome and Edge usually offer WebM, and some versions "
+             "also offer MP4. The available formats are listed next to the Export button."),
+            ("Which videos can I import?",
+             "Anything your browser can play, usually MP4, WebM and MOV, up to 300 MB per video."),
+        ],
+    },
+    "robots-txt-generator": {
+        "about": (
+            "Robots.txt Generator builds a robots.txt file for your site without you having to learn "
+            "the syntax. Start from a template, such as Standard SEO, WordPress, E-commerce, Blog or "
+            "Block AI Training, then tick the paths you want crawlers to stay out of, like the cart, "
+            "the account area or internal search.\n\n"
+            "Each AI crawler and search bot, including GPTBot, ClaudeBot, PerplexityBot, "
+            "Google-Extended and Googlebot, can be set to Allow, Block or Ignore. The file is checked "
+            "as you go and can be copied or downloaded as robots.txt.\n\n"
+            "robots.txt only asks well-behaved crawlers to stay away. It does not protect private "
+            "pages, so keep anything sensitive behind a login."
+        ),
+        "faqs": [
+            ("Where do I put robots.txt?",
+             "In the root of your domain, so it opens at https://yourdomain.com/robots.txt."),
+            ("Can I block AI crawlers but stay in Google?",
+             "Yes. Use the Block AI Training template or set each AI bot to Block. Googlebot is left "
+             "alone, so your pages stay in search."),
+            ("Does blocking a page remove it from Google?",
+             "Not always. A blocked URL can still appear in results if other sites link to it. Use a "
+             "noindex tag on the page to keep it out of search."),
+        ],
+    },
+    "sitemap-url-extractor": {
+        "about": (
+            "Sitemap URL Extractor pulls every URL out of a sitemap. Paste the XML, or open a saved "
+            "sitemap.xml, sitemap index, text or Markdown export, and it lists each <loc> address.\n\n"
+            "The results show duplicates, HTTP and HTTPS URLs, URLs with parameters or tracking tags, "
+            "every host found and how deep each path goes. You can search, filter and sort the list, "
+            "remove duplicate rows, and download it as TXT, CSV or JSON. SEO Clean Copy also strips "
+            "tracking parameters and fragments for you.\n\n"
+            "The tool only reads the data you give it. It does not visit your site or the URLs it "
+            "finds, and nothing is uploaded."
+        ),
+        "faqs": [
+            ("How do I get my sitemap?",
+             "Open https://yourdomain.com/sitemap.xml in your browser, view the page source, and copy "
+             "it here. Many sites list the sitemap address in robots.txt."),
+            ("Does it read sitemap index files?",
+             "Yes. It lists the child sitemap addresses. Open each child sitemap and paste it in to "
+             "get its page URLs."),
+            ("Does it fetch the URLs?",
+             "No. It only reads the sitemap text you paste or open, so it never contacts any site."),
+        ],
+    },
+    "seo-content-analyzer": {
+        "about": (
+            "SEO Content & Keyword Analyzer checks an article against the keywords you are targeting "
+            "before you publish. Paste your content straight from Word or Google Docs, or open a "
+            "DOCX, PDF, TXT or Markdown file, then list your keywords.\n\n"
+            "For each keyword it shows whether it was found, how many times, and its density. It also "
+            "lists your H1, H2 and H3 headings, every link and its anchor text, and every image and "
+            "whether it has alt text. Word count, sentences, paragraphs and reading time are counted "
+            "too. Matching ignores case and treats hyphens and dashes as spaces.\n\n"
+            "Your content stays in your browser. Opening a Word or PDF file downloads a small reader "
+            "library, but the file itself is never uploaded."
+        ),
+        "faqs": [
+            ("What keyword density should I aim for?",
+             "There is no fixed target. Use the keyword where it reads naturally, especially in the "
+             "title, the first paragraph and a heading, and avoid repeating it just to raise the number."),
+            ("Does it count plurals and variations?",
+             "No. It matches the exact phrase, ignoring case and punctuation. Add each variation you "
+             "care about as its own keyword."),
+            ("Is my content uploaded?",
+             "No. The analysis happens in your browser and nothing is stored."),
+        ],
+    },
     "video-to-gif-converter": {
         "about": (
             "Video to GIF Converter turns a clip from any video your browser can play into an "

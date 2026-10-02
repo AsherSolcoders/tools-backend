@@ -885,6 +885,19 @@ define(ToolConfig(
     ],
     input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
 ))
+define(ToolConfig(
+    name="Video Editor", slug="video-editor", category="pro-tools",
+    description="Cut and join clips, add text, emoji, images and shapes, cover anything you need to hide, and export a video or GIF. Runs entirely in your browser.",
+    seo_keywords=["online video editor", "video editor no watermark", "cut video online", "add text to video", "blur or hide part of video"],
+    how_to_use=[
+        "Import one or more videos.",
+        "Move the playhead and cut, delete or reorder clips on the timeline.",
+        "Add text, emoji, images or shapes, or cover anything you want hidden, and set when each appears.",
+        "Export the full video, a 5-second preview, or a GIF.",
+    ],
+    input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
+    accepted_extensions=["mp4", "m4v", "webm", "mov", "ogv", "ogg", "mkv"],
+))
 
 # ---- CALCULATORS ----
 define(ToolConfig(
@@ -2864,6 +2877,20 @@ define(ToolConfig(
     ],
 ))
 define(ToolConfig(
+    name="URL Beautifier", slug="url-beautifier", category="developer-tools",
+    description="Turn long, encoded URLs into readable parts: host, path and every query parameter on its own line.",
+    seo_keywords=["URL Beautifier", "URL Parser", "Decode URL Parameters", "Query String Parser", "Clean URL"],
+    input_label="Your URLs",
+    input_placeholder="One URL per line, e.g. https://example.com/search?q=red%20shoes&utm_source=news",
+    how_to_use=["Paste one or more URLs, one per line", "Choose whether to decode, sort or remove tracking parameters", "Copy the readable result"],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("decode", "Decode %20-style characters", OptionType.boolean, default=True),
+        _opt("sort_params", "Sort query parameters A-Z", OptionType.boolean, default=False),
+        _opt("remove_tracking", "Remove tracking parameters (utm_, gclid, fbclid...)", OptionType.boolean, default=False),
+    ],
+))
+define(ToolConfig(
     name="CSS Beautifier", slug="css-beautifier", category="developer-tools",
     description="Re-indent minified CSS into something readable.",
     seo_keywords=['CSS Beautifier', 'CSS Formatter', 'Unminify CSS'],
@@ -3876,19 +3903,15 @@ define(ToolConfig(
 ))
 define(ToolConfig(
     name="Robots.txt Generator", slug="robots-txt-generator", category="seo-tools",
-    description="Build a robots.txt with the right rules and a sitemap line.",
-    seo_keywords=['Robots.txt Generator', 'Create Robots File', 'Robots txt Maker'],
-    input_label="Paths to block",
-    input_placeholder="One path per line, e.g. /admin",
-    how_to_use=['List the paths to block', 'Add your sitemap', 'Copy the file'],
-    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
-    options=[
-        _opt("allow", "Paths to allow", OptionType.text, default=""),
-        _opt("sitemap", "Sitemap URL", OptionType.text, default=""),
-        _opt("block_ai_crawlers", "Block AI crawlers", OptionType.boolean, default=False),
-        _opt("block_everything", "Block the whole site", OptionType.boolean, default=False),
-        _opt("crawl_delay", "Crawl delay (0 = none)", OptionType.number, default=0, min=0, max=120),
+    description="Build a robots.txt from ready-made templates, block or allow AI crawlers one by one, and download the file.",
+    seo_keywords=["robots.txt generator", "create robots.txt", "robots txt maker", "block ai crawlers robots.txt", "wordpress robots.txt"],
+    how_to_use=[
+        "Pick a template, such as Standard SEO, WordPress, E-commerce or Block AI Training.",
+        "Tick the paths to keep crawlers out of and add your sitemap URL.",
+        "Set each AI crawler and search bot to Allow, Block or Ignore.",
+        "Copy the file or download robots.txt.",
     ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="Robots.txt Tester", slug="robots-txt-tester", category="seo-tools",
@@ -3926,6 +3949,30 @@ define(ToolConfig(
     how_to_use=['Paste your sitemap XML', 'Review the issues'],
     input_kind=InputKind.text, supports_single_upload=False, supports_download=False,
     options=[],
+))
+define(ToolConfig(
+    name="Sitemap URL Extractor", slug="sitemap-url-extractor", category="seo-tools",
+    description="Pull every URL out of a sitemap.xml or sitemap index, spot duplicates and tracking parameters, and export the list.",
+    seo_keywords=["sitemap url extractor", "sitemap url scraper", "extract urls from sitemap", "sitemap to csv", "sitemap url list"],
+    how_to_use=[
+        "Paste your sitemap XML, or open a saved sitemap file.",
+        "Click Extract URLs.",
+        "Search, filter and sort the list, and remove duplicates.",
+        "Copy the URLs or download them as TXT, CSV or JSON.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="SEO Content & Keyword Analyzer", slug="seo-content-analyzer", category="seo-tools",
+    description="Check an article against your target keywords: usage count, density, headings, links, images and readability.",
+    seo_keywords=["seo content analyzer", "keyword checker", "keyword density in article", "content seo checker", "check keywords in content"],
+    how_to_use=[
+        "Paste your article, or open a Word, PDF, text or Markdown file.",
+        "Add the keywords you are targeting.",
+        "Click Analyze Content.",
+        "Review which keywords are found or missing, their density, and the heading, link and image checks.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="Redirect Generator", slug="htaccess-redirect-generator", category="seo-tools",

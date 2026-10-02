@@ -2448,3 +2448,102 @@ def curl_to_code(files, text: str, options: dict) -> ToolResult:
                 + "const data = await response.json();\nconsole.log(data);")
     return ToolResult(text=code, meta={"method": method, "url": url, "headers": len(headers),
                                        "language": language})
+
+
+_TRACKING_PARAM = re.compile(
+    r"^(utm_[a-z0-9_]+|gclid|gbraid|wbraid|dclid|fbclid|msclkid|yclid|twclid|ttclid|li_fat_id|mc_cid|mc_eid|_ga|_gl|igshid)$",
+    re.IGNORECASE)
+
+
+def _is_ipv6(host: str) -> bool:
+    import ipaddress
+    try:
+        return ipaddress.ip_address(host).version == 6
+    except ValueError:
+        return False
+
+
+@register("url-beautifier")
+def url_beautifier(files, text: str, options: dict) -> ToolResult:
+    """Break long, encoded URLs into readable parts, one block per URL."""
+    from urllib.parse import unquote, unquote_plus, urlsplit, urlunsplit
+
+    lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
+    if not lines:
+        return ToolResult(meta={"error": "Paste at least one URL."})
+    if len(lines) > 500:
+        return ToolResult(meta={"error": "Paste up to 500 URLs at a time."})
+    decode = _flag(options, "decode", True)
+    sort_params = _flag(options, "sort_params", False)
+    strip_tracking = _flag(options, "remove_tracking", False)
+    show = unquote if decode else (lambda s: s)
+    show_q = unquote_plus if decode else (lambda s: s)   # "+" is a space in a query string
+
+    removed = 0
+
+    def split_query(q: str) -> list[tuple[str, str]]:
+        # Kept raw (still encoded) so "Decode" really is optional and the
+        # rebuilt URL keeps its original encoding.
+        pairs = []
+        for piece in q.split("&"):
+            if piece:
+                k, _, v = piece.partition("=")
+                pairs.append((k, v))
+        return pairs
+
+    def tidy(pairs):
+        nonlocal removed
+        if strip_tracking:
+            kept = [(k, v) for k, v in pairs if not _TRACKING_PARAM.match(unquote_plus(k))]
+            removed += len(pairs) - len(kept)
+            pairs = kept
+        if sort_params:
+            pairs = sorted(pairs, key=lambda kv: unquote_plus(kv[0]).lower())
+        return pairs
+
+    def describe(label, pairs, indent="  "):
+        if not pairs:
+            return []
+        width = min(max(len(show_q(k)) for k, _ in pairs), 30)
+        lines_ = [f"{indent}{label}{len(pairs)} parameter{'s' if len(pairs) != 1 else ''}"]
+        return lines_ + [f"{indent}  {show_q(k).ljust(width)} = {show_q(v)}" for k, v in pairs]
+
+    blocks, invalid = [], 0
+    for raw in lines:
+        # Bare domains like "example.com/page" parse as a path; give them a scheme.
+        candidate = raw if re.match(r"^[a-z][a-z0-9+.-]*://", raw, re.I) else "https://" + raw
+        try:
+            parts = urlsplit(candidate)
+            port = parts.port
+        except ValueError:
+            parts = None
+        host = parts.hostname if parts else None
+        # A host needs a dot (or be localhost / an IPv6 address) and no spaces.
+        if not host or not (re.fullmatch(r"[\w-]+(\.[\w-]+)+|localhost", host) or _is_ipv6(host)):
+            invalid += 1
+            blocks.append(f"{raw}\n  Not a valid URL.")
+            continue
+
+        params = tidy(split_query(parts.query))
+        # Single-page apps (Angular, Vue, React hash routers) put the route and
+        # its query string after the "#": /#/login?returnUrl=...
+        route, _, frag_query = parts.fragment.partition("?")
+        frag_params = tidy(split_query(frag_query))
+        fragment = route + ("?" + "&".join(f"{k}={v}" for k, v in frag_params) if frag_params else "")
+        query = "&".join(f"{k}={v}" for k, v in params)
+        clean = urlunsplit((parts.scheme, parts.netloc, parts.path, query, fragment))
+
+        out = [show(clean), "", f"  Protocol:  {parts.scheme}", f"  Host:      {parts.hostname}"]
+        if port:
+            out.append(f"  Port:      {port}")
+        if parts.username:
+            out.append(f"  User:      {show(parts.username)}")
+        out.append(f"  Path:      {show(parts.path) or '/'}")
+        out += describe("Query:     ", params)
+        if route:
+            out.append(f"  Fragment:  {show(route)}" + ("  (app route)" if frag_query else ""))
+        out += describe("Route query: ", frag_params)
+        blocks.append("\n".join(out))
+
+    return ToolResult(text="\n\n".join(blocks),
+                      meta={"urls": len(lines), "invalid": invalid, "tracking_removed": removed})
