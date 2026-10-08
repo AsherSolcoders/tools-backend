@@ -331,6 +331,55 @@ RICH: dict[str, dict] = {
              "No. It only reads the sitemap text you paste or open, so it never contacts any site."),
         ],
     },
+    "content-link-checker": {
+        "about": (
+            "Content Link Checker audits every link in an article before you publish it. Paste your "
+            "content into the editor, or open a Word, PDF, HTML, Markdown or text file, and it lists each "
+            "hyperlink with its anchor text, whether it is internal or external, dofollow, nofollow, "
+            "sponsored or UGC, and whether it opens in a new tab. Plain URLs that were never linked and "
+            "image sources are listed too.\n\n"
+            "Format problems and links to #sections that do not exist are found straight away. Click "
+            "Check broken links and each address is tested online, so you can spot pages that return "
+            "404 or a server error. Links can be fixed one by one or in bulk, for example adding nofollow "
+            "or noopener, and the cleaned content can be downloaded.\n\n"
+            "Your content stays in your browser. Only the broken link check contacts the sites your "
+            "links point to, and only when you ask for it."
+        ),
+        "faqs": [
+            ("Why does a working page show as Reachable instead of OK?",
+             "Some sites refuse automated checks. Reachable means the server answered, so the page is "
+             "online, but it would not confirm the exact page. Open it to be sure."),
+            ("Do I need to enter my website?",
+             "No. Without it every link is shown in one list. With it, links are split into internal and "
+             "external, which is what most SEO reviews need."),
+            ("Is my content uploaded?",
+             "No. The editor and the audit run in your browser. Reports are created on your device."),
+        ],
+    },
+    "seo-content-grader": {
+        "about": (
+            "SEO Content Grader checks an article against the guidelines Google and Yoast use for "
+            "on-page SEO. Write or paste your content, set the focus keyphrase and the type of page, and "
+            "it grades the keyphrase in the title, introduction, headings, slug and meta description, "
+            "keyphrase density, text length for that page type, links, images and alt text.\n\n"
+            "Readability is graded too: sentence and paragraph length, passive voice, transition words "
+            "and subheading spacing. A built-in proofreader flags spelling and grammar, and a Google "
+            "preview shows how the title and description may appear on desktop and mobile.\n\n"
+            "The analysis runs in your browser and the article is never uploaded. Download the results "
+            "as a PDF report, or the finished content as HTML."
+        ),
+        "faqs": [
+            ("How is this different from the SEO Content & Keyword Analyzer?",
+             "The Keyword Analyzer counts how often several keywords appear. The Grader focuses on one "
+             "keyphrase and scores the whole article, including readability, meta tags and a Google "
+             "preview."),
+            ("Will Google show my title and description exactly as previewed?",
+             "Not always. Google may rewrite titles and descriptions that do not match the page, so the "
+             "preview is an approximation."),
+            ("Is my article uploaded?",
+             "No. Everything runs in your browser and nothing is stored."),
+        ],
+    },
     "seo-content-analyzer": {
         "about": (
             "SEO Content & Keyword Analyzer checks an article against the keywords you are targeting "

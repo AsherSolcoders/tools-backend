@@ -3975,6 +3975,32 @@ define(ToolConfig(
     input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
+    name="Content Link Checker", slug="content-link-checker", category="seo-tools",
+    description="Audit every link in an article: internal or external, dofollow or nofollow, new tab, and broken. Fix them in place and export a report.",
+    seo_keywords=["broken link checker", "link checker", "check links in article", "nofollow link checker", "internal and external link checker"],
+    how_to_use=[
+        "Paste your article into the editor, or upload a Word, PDF, HTML, Markdown or text file.",
+        "Enter your website so links are split into internal and external.",
+        "Review every link with its anchor text, follow type and target, and filter by issue.",
+        "Click Check broken links to test each address online.",
+        "Fix links in bulk, then download the content or a PDF, CSV or JSON link report.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="SEO Content Grader", slug="seo-content-grader", category="seo-tools",
+    description="Grade an article against Google and Yoast guidelines: focus keyphrase, readability, headings, meta title and description, with a Google preview.",
+    seo_keywords=["seo content grader", "seo content checker", "yoast seo checker online", "content seo score", "focus keyphrase checker"],
+    how_to_use=[
+        "Write or paste your article, or upload a document.",
+        "Enter the focus keyphrase, page type, SEO title and meta description.",
+        "Click Analyze content.",
+        "Work through the results, proofreading and readability suggestions.",
+        "Download a PDF report or the finished content.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
     name="Redirect Generator", slug="htaccess-redirect-generator", category="seo-tools",
     description="Generate .htaccess or nginx redirect rules from a list.",
     seo_keywords=['htaccess Redirect Generator', '301 Redirect Generator', 'Nginx Redirect Rules'],
