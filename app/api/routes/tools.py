@@ -37,6 +37,26 @@ def _ensure_free(text: str, *, subject: str) -> str:
     return f"Free {text}" if subject == "title" else f"Free tool. {text}"
 
 
+def _fallback_description(name: str, description: str) -> str:
+    """Meta description for a tool with no hand-written one.
+
+    The one-line card description alone is often under 70 characters ("Add a
+    solid, double or polaroid frame."), which search engines tend to replace
+    with text of their own. Lead with the tool's name and its real description,
+    then one claim that is true of every tool on the site.
+    """
+    desc = (description or "").strip().rstrip(".")
+    if not desc:
+        return ""
+    # Search results show roughly 155-160 characters; use the longest variant that fits.
+    for text in (f"{name}: {desc}. Free to use on ToolSimpli, with no sign-up or download.",
+                 f"{desc}. Free to use on ToolSimpli, with no sign-up or download.",
+                 f"{desc}. Free, no sign-up."):
+        if len(text) <= 160:
+            return text
+    return desc + "."
+
+
 def _tool_meta(slug: str, name: str, description: str) -> dict:
     """Meta title/description for a tool, always mentioning that it's free.
 
@@ -45,7 +65,7 @@ def _tool_meta(slug: str, name: str, description: str) -> dict:
     """
     m = PAGE_META.get(slug) or {}
     title = m.get("meta_title") or f"{name} – Online Tool | ToolSimpli"
-    desc = m.get("meta_description") or description
+    desc = m.get("meta_description") or _fallback_description(name, description)
     out = {
         "meta_title": _ensure_free(title, subject="title"),
         "meta_description": _ensure_free(desc, subject="description"),
