@@ -356,6 +356,84 @@ RICH: dict[str, dict] = {
              "No. The editor and the audit run in your browser. Reports are created on your device."),
         ],
     },
+    "extract-text-from-image": {
+        "about": (
+            "Extract Text from Image reads the words in a photo, screenshot or scanned page and turns "
+            "them into text you can edit and copy. It also works on PDFs, Word files and spreadsheets, "
+            "and keeps more than plain text: bold and italic words, text colours, alignment and tables "
+            "come through into an editable document.\n\n"
+            "Text in images and scans is recognised in 12 languages, including English, Urdu, Hindi, "
+            "Arabic, Persian, French, Spanish, German, Portuguese, Russian, Chinese and Japanese, and "
+            "up to three can be combined for a page that mixes them. Add up to 10 files at once, fix "
+            "anything that was misread, then copy the text or download it as Word, Excel, PowerPoint, "
+            "PDF, rich text, HTML, Markdown, CSV or plain text.\n\n"
+            "Recognition runs in your browser, so your files are never uploaded. The first time you "
+            "read an image, the browser downloads the recognition engine and the language data, which "
+            "can take a moment on a slow connection."
+        ),
+        "faqs": [
+            ("Are my images uploaded?",
+             "No. The text is recognised on your own device. Only the recognition engine and language "
+             "files are downloaded; your images and documents never leave your browser."),
+            ("How accurate is it?",
+             "Clear, straight, high-contrast text is read very accurately, including text on logos, "
+             "banners and posters. Handwriting, very small text, low-light photos and decorative fonts "
+             "are harder, so check the result and try the clean-up and layout options if needed."),
+            ("What are the limits?",
+             "Up to 10 files at a time, images up to 10 MB, documents up to 25 MB and PDFs up to 80 pages."),
+        ],
+    },
+    "duplicate-document-checker": {
+        "about": (
+            "Duplicate Document Checker finds files that contain the same content, even when they "
+            "have different names. Add a batch of PDFs, Word documents, spreadsheets and text files, "
+            "and it reads the text inside each one and compares every file with the others.\n\n"
+            "Each file is marked as an original, a duplicate or unique, with how similar it is to its "
+            "closest match. You choose how similar two files must be to count as duplicates, from 50% "
+            "to 100% (90% by default). Open any pair to review the matching passages side by side "
+            "before you delete anything, then download the results as an HTML report, a CSV table or "
+            "JSON.\n\n"
+            "Supported files include PDF, DOCX, DOC, RTF, TXT, Markdown, CSV, TSV, XLSX, XLS, ODS, HTML "
+            "and JSON, up to 100 MB in total. Everything is compared in your browser and nothing is "
+            "uploaded."
+        ),
+        "faqs": [
+            ("Does it compare file names?",
+             "No. Names are ignored. Two files with different names but the same text are reported as "
+             "duplicates, and two files with the same name but different text are not."),
+            ("Can it find near-duplicates?",
+             "Yes. Lower the similarity setting to catch files that were lightly edited, such as a "
+             "document saved twice with a few words changed."),
+            ("Does it compare images inside documents?",
+             "No. It compares the text. A scanned PDF that contains only images has no text to compare; "
+             "run it through Extract Text from Image first."),
+        ],
+    },
+    "html-beautifier": {
+        "about": (
+            "HTML Beautifier turns minified or messy HTML into neatly indented code that is easy to "
+            "read and edit. It reads the HTML with a real parser rather than splitting on angle "
+            "brackets, so it gets the hard cases right.\n\n"
+            "Content inside <pre> and <textarea> is left exactly as written, because spacing there is "
+            "visible on the page. Scripts and styles are kept intact and only re-indented as a block. "
+            "Inline tags such as links, bold and span stay inside their line of text, so the page "
+            "renders the same as before. Tags HTML lets you leave open, like <li>, <p> and <td>, are "
+            "closed in the right place, and attribute values are copied as written.\n\n"
+            "Choose the indent size or tabs, remove comments, or put long attribute lists on separate "
+            "lines, then copy or download the result."
+        ),
+        "faqs": [
+            ("Will beautifying change how my page looks?",
+             "No. Whitespace between block elements does not affect rendering, and the tool leaves "
+             "<pre>, <textarea> and inline text alone so their spacing is kept."),
+            ("What is the difference from the HTML Formatter?",
+             "The HTML Formatter puts every tag on its own line with a simple indent. The Beautifier "
+             "understands HTML structure, keeps inline text together and leaves scripts, styles and "
+             "preformatted text intact."),
+            ("Is my code uploaded or stored?",
+             "Your HTML is sent to our server only to format it and is not stored."),
+        ],
+    },
     "seo-content-grader": {
         "about": (
             "SEO Content Grader checks an article against the guidelines Google and Yoast use for "

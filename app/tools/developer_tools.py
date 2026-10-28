@@ -2547,3 +2547,210 @@ def url_beautifier(files, text: str, options: dict) -> ToolResult:
 
     return ToolResult(text="\n\n".join(blocks),
                       meta={"urls": len(lines), "invalid": invalid, "tracking_removed": removed})
+
+
+
+_HTML_VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
+              "param", "source", "track", "wbr"}
+_HTML_INLINE = {"a", "abbr", "b", "bdi", "bdo", "cite", "code", "data", "dfn", "em", "i", "kbd",
+                "label", "mark", "q", "s", "samp", "small", "span", "strong", "sub", "sup",
+                "time", "u", "var", "br", "img", "wbr", "button", "input"}
+_HTML_RAW = {"pre", "textarea", "script", "style"}
+# Tags HTML lets you leave open: a new sibling (or a block, for <p>) closes them.
+_HTML_BLOCK = {"address", "article", "aside", "blockquote", "details", "div", "dl", "fieldset",
+               "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hr",
+               "main", "nav", "ol", "p", "pre", "section", "table", "ul"}
+_HTML_IMPLIED = {"li": {"li"}, "dt": {"dt", "dd"}, "dd": {"dt", "dd"}, "tr": {"tr", "td", "th"},
+                 "td": {"td", "th"}, "th": {"td", "th"}, "option": {"option"},
+                 "tbody": {"thead", "tbody"}, "tfoot": {"thead", "tbody"}}
+_HTML_OPTIONAL_END = {"p", "li", "dt", "dd", "tr", "td", "th", "option", "thead", "tbody"}
+_HTML_MAX_DEPTH = 200
+_HTML_MAX_PAD = 20_000_000      # characters of indentation in one result
+_HTML_ATTR = re.compile(r"""([^\s=/>"']+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?""")
+
+
+@register("html-beautifier")
+def html_beautifier(files, text: str, options: dict) -> ToolResult:
+    """Re-indent HTML with a real parser.
+
+    Unlike splitting on "<" and ">", this keeps <pre>, <textarea>, <script> and
+    <style> exactly as written, keeps inline tags inside their line of text so
+    the page renders the same, copes with ">" inside attribute values, and
+    understands tags HTML lets you leave open (<li>, <p>, <td>...). Attribute
+    values are copied as written, so entities like &amp; are not decoded.
+    """
+    from html.parser import HTMLParser
+
+    src = text or ""
+    if not src.strip():
+        return ToolResult(meta={"error": "Paste some HTML."})
+    if len(src) > 2_000_000:
+        return ToolResult(meta={"error": "Paste up to 2 MB of HTML at a time."})
+    unit = "\t" if _flag(options, "use_tabs") else " " * max(0, min(_int(options, "indent", 2), 8))
+    keep_comments = not _flag(options, "remove_comments")
+    keep_inline = _flag(options, "inline_on_one_line", True)
+    wrap_at = max(0, min(_int(options, "wrap_attributes", 0), 400))
+
+    out: list[str] = []
+    line: list[str] = []          # text and inline tags waiting to be written as one line
+    stack: list[tuple[str, int]] = []   # open block tags and the index of their line in `out`
+    raw = {"tag": None, "buf": []}
+    open_count: dict[str, int] = {}     # open tags by name, so a stray end tag needs no scan
+
+    class TooDeep(Exception):
+        pass
+
+    pad = {"used": 0}
+
+    def ind(extra=0):
+        # Every output line starts here, so this is where the result's size is bounded.
+        s_ = unit * (len(stack) + extra)
+        pad["used"] += len(s_)
+        if pad["used"] > _HTML_MAX_PAD:
+            raise TooDeep
+        return s_
+
+    def flush():
+        joined = re.sub(r"[ \t\r\n]+", " ", "".join(line)).strip()
+        line.clear()
+        if joined:
+            out.append(ind() + joined)
+
+    def fmt_tag(raw_text, tag):
+        # Rebuild from the source text so attribute values keep their exact escaping.
+        inner = raw_text[1 + len(tag):].rstrip(">").rstrip()
+        closing = inner.endswith("/")
+        attrs = [m.group(1) + ("=" + m.group(2) if m.group(2) else "")
+                 for m in _HTML_ATTR.finditer(inner.rstrip("/"))]
+        end = " />" if closing else ">"
+        flat = f"<{tag}" + "".join(" " + a for a in attrs) + end
+        if wrap_at and len(flat) > wrap_at and len(attrs) > 1:
+            return (f"<{tag}\n" + "\n".join(ind(1) + a for a in attrs)
+                    + "\n" + ind() + end.strip())
+        return flat
+
+    def close_to(i):
+        """Close stack[i:] (an explicit end tag, or tags it implies)."""
+        flush()
+        while len(stack) > i:
+            tag, start = stack.pop()
+            open_count[tag] -= 1
+            body = out[start + 1:]
+            # A block holding only one short line of text stays on one line: <li>One</li>.
+            if len(body) == 1 and "\n" not in body[0] and len(out[start]) + len(body[0].strip()) < 120 \
+                    and not body[0].lstrip().startswith("<"):
+                out[start:] = [out[start] + body[0].strip() + f"</{tag}>"]
+            elif not body:
+                out[start] = out[start] + f"</{tag}>"
+            else:
+                out.append(ind() + f"</{tag}>")
+
+    class P(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=False)
+
+        def handle_decl(self, decl):
+            flush(); out.append(ind() + f"<!{decl}>")
+
+        def handle_pi(self, data):
+            flush(); out.append(ind() + f"<?{data}>")
+
+        def handle_comment(self, data):
+            if raw["tag"]:
+                raw["buf"].append(f"<!--{data}-->"); return
+            if keep_comments:
+                flush(); out.append(ind() + f"<!--{data}-->")
+
+        def handle_starttag(self, tag, attrs):
+            text_ = self.get_starttag_text() or f"<{tag}>"
+            if raw["tag"]:
+                raw["buf"].append(text_); return
+            t = fmt_tag(text_, tag)
+            if keep_inline and tag in _HTML_INLINE:
+                line.append(t); return
+            # Implied end tags: a new <li> closes the open <li>, a block closes a <p>.
+            # Walk down through tags that may be left open; close from the deepest
+            # one this tag ends (a new <tr> closes the open <td> and its <tr>).
+            closes = _HTML_IMPLIED.get(tag, set()) | ({"p"} if tag in _HTML_BLOCK else set())
+            target = None
+            for k in range(len(stack) - 1, -1, -1):
+                name = stack[k][0]
+                if name in closes:
+                    target = k
+                if name not in _HTML_OPTIONAL_END:
+                    break
+            if target is not None:
+                close_to(target)
+            flush()
+            out.append(ind() + t)
+            if tag in _HTML_RAW:
+                raw["tag"], raw["buf"] = tag, []
+            elif tag not in _HTML_VOID:
+                # Indentation grows with depth, so absurd nesting would make the
+                # output (and the work) grow with the square of the input.
+                if len(stack) >= _HTML_MAX_DEPTH:
+                    raise TooDeep
+                stack.append((tag, len(out) - 1))
+                open_count[tag] = open_count.get(tag, 0) + 1
+
+        def handle_startendtag(self, tag, attrs):
+            text_ = self.get_starttag_text() or f"<{tag} />"
+            if raw["tag"]:
+                raw["buf"].append(text_); return
+            t = fmt_tag(text_, tag)
+            if keep_inline and tag in _HTML_INLINE:
+                line.append(t); return
+            flush(); out.append(ind() + t)
+
+        def handle_endtag(self, tag):
+            if raw["tag"]:
+                if tag != raw["tag"]:
+                    raw["buf"].append(f"</{tag}>"); return
+                body = "".join(raw["buf"])
+                if tag in ("script", "style") and body.strip():
+                    # Re-indent the block as a whole, keeping its own relative indentation.
+                    rows = body.split("\n")
+                    while rows and not rows[0].strip():
+                        rows.pop(0)
+                    while rows and not rows[-1].strip():
+                        rows.pop()
+                    common = min((len(r) - len(r.lstrip()) for r in rows if r.strip()), default=0)
+                    body = "\n" + "\n".join((ind(1) + r[common:]) if r.strip() else "" for r in rows) + "\n" + ind()
+                out[-1] = out[-1] + body + f"</{tag}>"
+                raw["tag"] = None; return
+            if tag in _HTML_VOID:
+                return
+            if keep_inline and tag in _HTML_INLINE:
+                line.append(f"</{tag}>"); return
+            if open_count.get(tag):
+                for k in range(len(stack) - 1, -1, -1):
+                    if stack[k][0] == tag:
+                        close_to(k); return
+            # A stray end tag with nothing open to close: keep it so nothing is lost.
+            flush(); out.append(ind() + f"</{tag}>")
+
+        def handle_data(self, data):
+            if raw["tag"]:
+                raw["buf"].append(data); return
+            if data.strip():
+                line.append(data)
+            elif line:
+                line.append(" ")
+
+        def handle_entityref(self, name):
+            (raw["buf"] if raw["tag"] else line).append(f"&{name};")
+
+        def handle_charref(self, name):
+            (raw["buf"] if raw["tag"] else line).append(f"&#{name};")
+
+    p = P()
+    try:
+        p.feed(src)
+        p.close()
+        if raw["tag"]:   # an unclosed <pre> or <script>: keep what was there
+            out[-1] = out[-1] + "".join(raw["buf"])
+        close_to(0)
+    except TooDeep:
+        return ToolResult(meta={"error": "This HTML is nested too deeply to format."})
+    return ToolResult(text="\n".join(out) + "\n",
+                      meta={"lines": len(out), "input_bytes": len(src.encode())})

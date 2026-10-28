@@ -695,7 +695,7 @@ define(ToolConfig(
 define(ToolConfig(
     name="HTML Formatter", slug="html-formatter", category="developer-tools",
     description="Pretty-print and indent HTML.",
-    seo_keywords=["HTML Formatter", "HTML Beautifier"],
+    seo_keywords=["HTML Formatter", "Format HTML Online", "HTML Pretty Print"],
     how_to_use=["Paste HTML", "Format", "Copy result"],
     input_kind=InputKind.text, supports_single_upload=False,
     options=[_opt("indent", "Indent", OptionType.number, default=2, min=0, max=8)],
@@ -2891,6 +2891,22 @@ define(ToolConfig(
     ],
 ))
 define(ToolConfig(
+    name="HTML Beautifier", slug="html-beautifier", category="developer-tools",
+    description="Clean up messy or minified HTML into neatly indented code, without breaking <pre>, scripts, styles or inline text.",
+    seo_keywords=["HTML Beautifier", "Beautify HTML", "Unminify HTML", "HTML Indenter", "Clean Up HTML Code"],
+    input_label="Your HTML",
+    input_placeholder="Paste minified or messy HTML",
+    how_to_use=["Paste your HTML", "Choose the indent and options", "Copy or download the result"],
+    input_kind=InputKind.text, supports_single_upload=False, supports_download=True,
+    options=[
+        _opt("indent", "Indent size", OptionType.number, default=2, min=0, max=8),
+        _opt("use_tabs", "Indent with tabs", OptionType.boolean, default=False),
+        _opt("inline_on_one_line", "Keep inline tags (a, b, span...) in the text line", OptionType.boolean, default=True),
+        _opt("remove_comments", "Remove comments", OptionType.boolean, default=False),
+        _opt("wrap_attributes", "Put attributes on separate lines when a tag is longer than (0 = never)", OptionType.number, default=0, min=0, max=400),
+    ],
+))
+define(ToolConfig(
     name="CSS Beautifier", slug="css-beautifier", category="developer-tools",
     description="Re-indent minified CSS into something readable.",
     seo_keywords=['CSS Beautifier', 'CSS Formatter', 'Unminify CSS'],
@@ -4283,6 +4299,18 @@ define(ToolConfig(
     ],
 ))
 define(ToolConfig(
+    name="Extract Text from Image", slug="extract-text-from-image", category="image-tools",
+    description="Pull text out of photos, screenshots, scans and PDFs into an editable document that keeps bold, colours and tables. Runs in your browser.",
+    seo_keywords=["extract text from image", "image to text", "OCR online", "copy text from picture", "screenshot to text"],
+    how_to_use=[
+        "Add an image, screenshot, scanned PDF or document, or paste a screenshot.",
+        "Pick the language of the text for images and scans.",
+        "Wait while the text is read; it appears in an editor.",
+        "Fix anything you need, then copy it or download it as Word, Excel, PowerPoint, PDF and more.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
     name="Color Palette Extractor", slug="color-palette-extractor", category="image-tools",
     description="Pull a colour palette out of any image, with CSS.",
     seo_keywords=['Color Palette Extractor', 'Image Color Palette', 'Extract Colors From Image'],
@@ -4888,6 +4916,18 @@ define(ToolConfig(
     accepted_extensions=['pdf'], max_upload_mb=50,
     supports_download=True, supports_zip_download=True,
     options=[],
+))
+define(ToolConfig(
+    name="Duplicate Document Checker", slug="duplicate-document-checker", category="pdf-tools",
+    description="Find duplicate and near-duplicate files among PDFs, Word documents and spreadsheets by comparing their text, not their names.",
+    seo_keywords=["duplicate document checker", "find duplicate pdf files", "compare documents for duplicates", "duplicate file finder pdf word", "check if two documents are the same"],
+    how_to_use=[
+        "Add the PDFs, Word files and spreadsheets you want to check.",
+        "Set how similar two files must be to count as duplicates.",
+        "Review the results table: originals, duplicates and unique files.",
+        "Open any pair to see the matching passages side by side, then download the report.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="Compare PDFs", slug="pdf-compare", category="pdf-tools",
