@@ -350,10 +350,14 @@ define(ToolConfig(
 ))
 define(ToolConfig(
     name="PDF To Word", slug="pdf-to-word", category="pdf-tools",
-    description="Extract the text of a PDF into an editable Word (.docx) document.",
-    seo_keywords=["PDF to Word", "PDF to DOCX Converter"],
-    how_to_use=["Upload PDF", "Convert", "Download .docx"],
-    accepted_extensions=["pdf"],
+    description="Convert a PDF into an editable Word (.docx) document that keeps its headings, paragraphs, tables and images. Runs in your browser.",
+    seo_keywords=["PDF to Word", "PDF to DOCX Converter", "convert PDF to editable Word", "PDF to Word online free"],
+    how_to_use=[
+        "Add your PDF.",
+        "Check the preview and choose the pages and layout options you want.",
+        "Convert, then download the Word document.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="PDF Unlock", slug="pdf-unlock", category="pdf-tools",
@@ -4311,6 +4315,29 @@ define(ToolConfig(
     input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
+    name="PNG To DNG Converter", slug="png-to-dng", category="image-tools",
+    description="Convert PNG images to DNG, the open raw format that Lightroom, Photoshop and other photo editors open. Runs in your browser.",
+    seo_keywords=["PNG to DNG", "convert PNG to DNG", "PNG to raw", "DNG converter online"],
+    how_to_use=[
+        "Add one or more PNG images.",
+        "Choose the DNG options.",
+        "Convert, then download the DNG files.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="Duplicate Image Finder", slug="duplicate-image-finder", category="image-tools",
+    description="Find duplicate and near-duplicate photos, even renamed, resized or rotated copies, then download only the images you keep. Runs in your browser.",
+    seo_keywords=["duplicate image finder", "find duplicate photos", "remove duplicate images", "similar image finder", "duplicate photo remover"],
+    how_to_use=[
+        "Add your images, or a whole folder.",
+        "Review each group of similar images; the best copy is marked Keep.",
+        "Remove the duplicates you do not need, or mark a false match as Not a duplicate.",
+        "Download the images you keep as a ZIP or as separate files.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
     name="Color Palette Extractor", slug="color-palette-extractor", category="image-tools",
     description="Pull a colour palette out of any image, with CSS.",
     seo_keywords=['Color Palette Extractor', 'Image Color Palette', 'Extract Colors From Image'],
@@ -4782,18 +4809,15 @@ define(ToolConfig(
 ))
 define(ToolConfig(
     name="Enhance Scanned PDF", slug="pdf-enhance-scan", category="pdf-tools",
-    description="Whiten and sharpen a scanned or photographed document.",
-    seo_keywords=['Enhance Scanned PDF', 'Clean Up Scan', 'Whiten PDF Scan'],
-    how_to_use=['Upload the scan', 'Leave the defaults on', 'Download'],
-    input_kind=InputKind.file, supports_single_upload=True, supports_multi_upload=False,
-    accepted_extensions=['pdf'], max_upload_mb=50,
-    supports_download=True, supports_zip_download=False,
-    options=[
-        _opt("dpi", "Render DPI", OptionType.number, default=200, min=100, max=400),
-        _opt("whiten", "Whiten the paper", OptionType.boolean, default=True),
-        _opt("sharpen", "Sharpen the text", OptionType.boolean, default=True),
-        _opt("quality", "JPEG quality", OptionType.number, default=80, min=30, max=100),
+    description="Clean up a scan (whiter paper, sharper text, straight pages) or make a digital PDF look scanned. Runs in your browser.",
+    seo_keywords=["Enhance Scanned PDF", "Clean Up Scan", "Whiten PDF Scan", "make PDF look scanned", "scan effect PDF"],
+    how_to_use=[
+        "Add a PDF or images.",
+        "Choose Clean up a scan, or Make it look scanned.",
+        "Adjust the settings and compare the original with the result.",
+        "Download the new PDF.",
     ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="Add Text to PDF", slug="pdf-add-text", category="pdf-tools",
@@ -4916,6 +4940,28 @@ define(ToolConfig(
     accepted_extensions=['pdf'], max_upload_mb=50,
     supports_download=True, supports_zip_download=True,
     options=[],
+))
+define(ToolConfig(
+    name="PDF To PowerPoint", slug="pdf-to-ppt", category="pdf-tools",
+    description="Turn each page of a PDF into a PowerPoint slide, with text you can edit where the PDF has it. Runs in your browser.",
+    seo_keywords=["PDF to PPT", "PDF to PowerPoint", "convert PDF to PPTX", "PDF to slides"],
+    how_to_use=[
+        "Add your PDF.",
+        "Choose the pages and how the slides are built.",
+        "Convert, then download the .pptx file.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="PowerPoint To PDF", slug="ppt-to-pdf", category="pdf-tools",
+    description="Convert a PowerPoint (.pptx) presentation into a PDF, one slide per page. Runs in your browser.",
+    seo_keywords=["PPT to PDF", "PowerPoint to PDF", "convert PPTX to PDF", "slides to PDF"],
+    how_to_use=[
+        "Add your .pptx file.",
+        "Check the slide preview and choose the page options.",
+        "Convert, then download the PDF.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
 ))
 define(ToolConfig(
     name="Duplicate Document Checker", slug="duplicate-document-checker", category="pdf-tools",

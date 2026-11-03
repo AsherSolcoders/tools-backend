@@ -409,6 +409,151 @@ RICH: dict[str, dict] = {
              "run it through Extract Text from Image first."),
         ],
     },
+    "pdf-to-word": {
+        "about": (
+            "PDF To Word converts a PDF into a Word (.docx) document you can edit. The default Editable "
+            "layout rebuilds each page as a normal document: wrapped lines are joined back into "
+            "paragraphs, larger text becomes headings, bullet lines become real lists, tables become "
+            "Word tables and pictures stay as pictures. Links stay clickable and landscape pages stay "
+            "landscape.\n\n"
+            "If you need the page to look exactly like the PDF, choose Exact layout instead: the page "
+            "artwork is kept and the text sits in boxes where it was. You can preview the result and "
+            "edit the text before you download, convert several PDFs at once into one ZIP, or save as "
+            "HTML or plain text.\n\n"
+            "Everything is converted in your browser, so your PDF is never uploaded."
+        ),
+        "faqs": [
+            ("Which layout should I choose?",
+             "Editable layout is best when you want to change the text, since it flows like a normal "
+             "Word document. Exact layout is best when the page must look the same as the PDF."),
+            ("Can it convert a scanned PDF?",
+             "A scanned PDF holds only pictures of pages, so it comes through as a picture. To get "
+             "editable text from it, use Extract Text from Image."),
+            ("Will the Word file look exactly like the PDF?",
+             "Close, but not always exact. Spacing and line breaks can shift a little in Editable "
+             "layout, and charts drawn as shapes appear only in Exact layout."),
+        ],
+    },
+    "pdf-enhance-scan": {
+        "about": (
+            "Enhance Scanned PDF works in two ways. Clean up a scan turns a photographed or scanned "
+            "document into a clear one: the paper goes white, shadows and stains fade, the text gets "
+            "darker and sharper, and tilted pages are straightened automatically. Choose colour, grey "
+            "or black and white.\n\n"
+            "Make it look scanned does the opposite. It gives a digital PDF the look of a page that went "
+            "through a scanner, with a slight tilt that varies from page to page, grain, blur, a grey or "
+            "colour tone, yellowed paper and dark scanner edges.\n\n"
+            "In both modes you can add a text or image watermark and a stamp or signature image, compare "
+            "the original with the result side by side, rotate or leave out pages, and choose the "
+            "resolution of the new PDF. You can add a PDF or several images (JPG, PNG, WebP) to make one "
+            "PDF. Everything happens in your browser and nothing is uploaded."
+        ),
+        "faqs": [
+            ("Can I select or search the text in the new PDF?",
+             "No. Each page is saved as an image, so the text can't be selected. To get editable text "
+             "from a scan, use Extract Text from Image."),
+            ("How does it straighten a tilted page?",
+             "It finds the angle at which the lines of text sit level and turns the page by that much. "
+             "Pages with no lines of text, such as photos, are left as they are."),
+            ("Will the tilt and grain be the same every time?",
+             "Yes. The preview and the download match. Choose Shuffle the tilt and grain for a different "
+             "random look."),
+        ],
+    },
+    "pdf-to-ppt": {
+        "about": (
+            "PDF To PowerPoint turns every page of a PDF into a slide in a .pptx file. Where the PDF has "
+            "real text, each line becomes a text box you can edit in PowerPoint, Keynote or Google "
+            "Slides, with its font size, weight and colour. Drawings and pictures are kept behind the "
+            "text, so each slide looks like the page.\n\n"
+            "The slide size follows the pages of your PDF, so a widescreen PDF gives widescreen slides "
+            "and a document gives portrait slides. A page of a different shape is fitted onto the slide "
+            "and centred. You can convert several PDFs at once and download them together as a ZIP.\n\n"
+            "The same tool can also save the PDF as Word, HTML, plain text, Markdown or JSON. Files up "
+            "to 100 MB are converted in your browser and are never uploaded."
+        ),
+        "faqs": [
+            ("Is the text editable in PowerPoint?",
+             "Yes, when the PDF contains real text. A scanned PDF holds only pictures of pages, so its "
+             "slides are pictures too; run it through Extract Text from Image first if you need the text."),
+            ("Why are some lines in separate text boxes?",
+             "Each line of the PDF becomes its own text box so it stays exactly where it was on the page."),
+            ("Does it work with password-protected PDFs?",
+             "No. Unlock the PDF first with PDF Unlock, then convert it."),
+        ],
+    },
+    "ppt-to-pdf": {
+        "about": (
+            "PowerPoint To PDF converts a .pptx presentation into a PDF with one page per slide. The "
+            "page size matches the slides, so a 16:9 deck gives widescreen pages and a 4:3 deck gives "
+            "standard ones. Text, pictures, tables, shapes, colours and backgrounds are drawn as they "
+            "appear on the slide.\n\n"
+            "The PDF keeps a hidden text layer, so you can search and copy the slide text, and web "
+            "links on the slides still work. Turn on high resolution for sharper pages, or include the "
+            "speaker notes in the text outputs.\n\n"
+            "You can also save a presentation as Word, HTML or plain text, and convert several decks at "
+            "once into one ZIP. Files up to 100 MB are converted in your browser and never uploaded."
+        ),
+        "faqs": [
+            ("Does it support old .ppt files?",
+             "No, only .pptx. Open a .ppt file in PowerPoint, Keynote or Google Slides and save it as "
+             ".pptx first."),
+            ("Can I edit the text in the PDF?",
+             "Each page is a picture of the slide with a hidden text layer, so you can search and copy "
+             "the text but not edit it."),
+            ("Will my fonts look the same?",
+             "Mostly. If a slide uses a font that isn't on your device, a similar font is used, so line "
+             "breaks can shift a little."),
+        ],
+    },
+    "duplicate-image-finder": {
+        "about": (
+            "Duplicate Image Finder groups photos that look the same, so you can clear out copies "
+            "before you share, back up or upload a collection. It compares what each image looks like "
+            "rather than its name, so renamed files, resized or re-saved copies, different formats and "
+            "copies rotated by 90, 180 or 270 degrees are found too.\n\n"
+            "In each group the largest, best-quality copy is marked Keep. Remove the others one by one, "
+            "per group or all at once, choose a different copy to keep, or mark a false match as not a "
+            "duplicate. Removed images can be restored at any time, and you can rotate images before "
+            "you download.\n\n"
+            "Add up to 150 MB of images at a time. Everything runs in your browser, so your photos are "
+            "never uploaded, and the files on your device are never changed."
+        ),
+        "faqs": [
+            ("Does it delete files from my computer?",
+             "No. The tool can't change files on your device. Removing an image only takes it out of "
+             "the download, and you download the images you keep as a ZIP or as separate files."),
+            ("What does Match strictness do?",
+             "It sets how similar two images must be to count as duplicates. Low values find only "
+             "near-identical copies; higher values also find edited versions but can group different "
+             "photos with plain backgrounds, so check the preview."),
+            ("Why was a file skipped?",
+             "The browser could not open it. This happens with some HEIC and TIFF files, damaged "
+             "files and images over 120 megapixels. The Skipped files list shows the reason."),
+        ],
+    },
+    "png-to-dng": {
+        "about": (
+            "PNG To DNG Converter turns PNG images into DNG files, the open raw format from Adobe that "
+            "Lightroom, Photoshop and most other raw photo editors open. Use it when an editor or "
+            "workflow accepts only raw files.\n\n"
+            "Choose 16-bit or 8-bit output. 16-bit PNGs keep their full precision, and transparent areas "
+            "are filled with the background colour you pick, since DNG has no transparency. Convert one "
+            "image or a whole batch and download the DNG files one by one or together as a ZIP.\n\n"
+            "Images up to 50 megapixels are converted in your browser, so nothing is uploaded."
+        ),
+        "faqs": [
+            ("Does converting to DNG improve the image?",
+             "No. A DNG made from a PNG has the same pixels as the PNG. It does not add the extra detail "
+             "a camera raw file has; it lets raw-only software open the image."),
+            ("What happens to transparency?",
+             "DNG has no transparency, so transparent areas are filled with the background colour you "
+             "choose."),
+            ("Should I choose 8-bit or 16-bit?",
+             "16-bit gives editors more room for strong adjustments and keeps the precision of 16-bit "
+             "PNGs. 8-bit files are half the size."),
+        ],
+    },
     "html-beautifier": {
         "about": (
             "HTML Beautifier turns minified or messy HTML into neatly indented code that is easy to "
