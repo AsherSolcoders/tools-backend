@@ -546,6 +546,30 @@ define(ToolConfig(
 
 # ---- TEXT TOOLS ----
 define(ToolConfig(
+    name="Online Notepad", slug="online-notepad", category="text-tools",
+    description="A free online notepad with tabs, side-by-side panes, find and replace, and autosave. Export to Word, HTML, Markdown, text or PDF. Runs in your browser.",
+    seo_keywords=["online notepad", "notepad online", "free online notepad", "online text editor", "notepad with autosave"],
+    how_to_use=[
+        "Start typing; your notes save automatically as you go.",
+        "Open more tabs for separate notes, or show up to five side by side.",
+        "Format text, find and replace, or insert tables and special characters.",
+        "Use File, then Save as, to download the note as Word, HTML, Markdown, text or PDF.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
+    name="Online Word Editor", slug="online-word-editor", category="text-tools",
+    description="Write and format documents online with styles, tables, pictures, headers and footers, then save as Word, PDF, RTF, ODT and more. Runs in your browser.",
+    seo_keywords=["online word editor", "word processor online", "free online document editor", "edit docx online", "online word document"],
+    how_to_use=[
+        "Start a new document, or open a Word (.docx), OpenDocument (.odt), HTML, Markdown or text file.",
+        "Format text with the ribbon: fonts, styles, lists, tables, pictures and page layout.",
+        "Your document saves automatically as you type.",
+        "Use File, then Save as, to download it as Word, PDF, RTF, ODT, HTML or text.",
+    ],
+    input_kind=InputKind.options, client_side=True, custom_ui=True,
+))
+define(ToolConfig(
     name="Word Counter", slug="word-counter", category="text-tools",
     description="Count words, characters, sentences, paragraphs and reading time.",
     seo_keywords=["Word Counter", "Character Counter", "Text Counter"],
@@ -901,6 +925,18 @@ define(ToolConfig(
     ],
     input_kind=InputKind.file, client_side=True, pro=True, custom_ui=True,
     accepted_extensions=["mp4", "m4v", "webm", "mov", "ogv", "ogg", "mkv"],
+))
+define(ToolConfig(
+    name="Webcam Test", slug="webcam-test", category="pro-tools",
+    description="Test your webcam and microphone, improve the picture live, take HD photos and record video, and check the camera's quality and security. Runs in your browser.",
+    seo_keywords=["webcam test", "test my webcam", "camera test online", "webcam mic test", "webcam recorder online"],
+    how_to_use=[
+        "Turn on the camera and allow access when your browser asks.",
+        "Pick your camera and microphone, and test your voice.",
+        "Improve the picture with quick looks and enhancements.",
+        "Take photos or record a video, then download them.",
+    ],
+    input_kind=InputKind.options, client_side=True, pro=True, custom_ui=True,
 ))
 
 # ---- CALCULATORS ----

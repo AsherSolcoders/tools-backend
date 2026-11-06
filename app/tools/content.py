@@ -532,6 +532,84 @@ RICH: dict[str, dict] = {
              "files and images over 120 megapixels. The Skipped files list shows the reason."),
         ],
     },
+    "webcam-test": {
+        "about": (
+            "Webcam Test checks that your camera and microphone work before a call, class or "
+            "interview. Turn the camera on to see a live preview with its resolution and frame rate, "
+            "pick a different camera or microphone, and record a few seconds of your voice to hear "
+            "how you sound.\n\n"
+            "Improve the picture live with one-tap looks or detailed adjustments such as brightness, "
+            "contrast, sharpness and colour, and hold Compare to see the original. Take photos or "
+            "record videos of up to 15 minutes, with or without sound, and download them. A quality "
+            "test measures your live camera, and a security check reviews the connection, the "
+            "permissions and the camera sources.\n\n"
+            "Everything runs in your browser. Photos and recordings stay in the tab's memory until you "
+            "download them, and the camera and microphone turn off when you switch them off or leave "
+            "the page."
+        ),
+        "faqs": [
+            ("Why can't the tool see my camera?",
+             "Your browser asks for permission the first time. If you blocked it, allow the camera in "
+             "the site settings next to the address bar, then try again. Also close other apps that "
+             "may be using the camera, such as a video call."),
+            ("Are my photos and videos uploaded?",
+             "No. They are made and kept in your browser and are only saved when you download them. "
+             "Closing or resetting the tool clears them."),
+            ("Does it record sound?",
+             "Only when the Microphone switch is on. With it off, recordings are silent."),
+        ],
+    },
+    "online-notepad": {
+        "about": (
+            "Online Notepad is a free notepad in your browser for quick notes, drafts and lists. Your "
+            "notes save automatically as you type and are still there when you come back on the same "
+            "browser, with no sign-up.\n\n"
+            "Keep separate notes in tabs, show up to five side by side, and format text with fonts, "
+            "headings, colours, lists, links and tables. Find and replace, a word and character count, "
+            "special characters and full screen are built in. Save a checkpoint to go back to after a "
+            "bad edit, and find closed notes again in the browser library.\n\n"
+            "Download any note as a Word document, web page, Markdown, plain text or PDF, or back up "
+            "every tab in one file. You can also open text, Markdown, CSV, HTML and JSON files."
+        ),
+        "faqs": [
+            ("Where are my notes saved?",
+             "In this browser on this device. They are not sent to a server, so they won't appear on "
+             "another device, and clearing your browser's site data deletes them. Use Tools, then Back "
+             "up all tabs, to keep a copy."),
+            ("What is the difference between Save and Save as?",
+             "Your notes save automatically. Save sets a checkpoint you can reset to later, and Save "
+             "as downloads a copy as a Word, HTML, Markdown, text or PDF file."),
+            ("Can I open a Word file?",
+             "Not yet. Save it as text or HTML in Word first, then open it here."),
+        ],
+    },
+    "online-word-editor": {
+        "about": (
+            "Online Word Editor is a free word processor in your browser with a familiar ribbon. Write "
+            "letters, reports and assignments with fonts, styles, lists, tables, pictures, page "
+            "breaks, headers and footers, and page size and margins, then print or download the "
+            "result.\n\n"
+            "Open Word (.docx) and OpenDocument (.odt) files, as well as HTML, Markdown and text. "
+            "Save as Word (.docx), a Word template (.dotx), Rich Text (.rtf), OpenDocument (.odt), "
+            "PDF, HTML, Markdown or text. Your documents also save automatically in this browser, so "
+            "you can close the tab and carry on later.\n\n"
+            "Everything runs in your browser and nothing is uploaded. Complex Word layouts, such as "
+            "text boxes and tracked changes, may look different after opening, so check the document "
+            "before you send it."
+        ),
+        "faqs": [
+            ("Where are my documents saved?",
+             "In this browser on this device, and only there. They are not uploaded, so they won't "
+             "appear on another device, and clearing your browser's site data deletes them. Save as a "
+             "file to keep a copy."),
+            ("Can I open and save Word documents?",
+             "Yes. Open .docx files and save as .docx, and the result opens in Microsoft Word, Google "
+             "Docs and LibreOffice. Very complex layouts may change slightly."),
+            ("How do I make a PDF?",
+             "Choose Save as, then PDF. Your browser's print dialog opens; pick Save as PDF as the "
+             "printer."),
+        ],
+    },
     "png-to-dng": {
         "about": (
             "PNG To DNG Converter turns PNG images into DNG files, the open raw format from Adobe that "
